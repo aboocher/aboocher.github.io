@@ -13,6 +13,8 @@
   <div id="calculator" style="width: 1000px; height: 600px;"></div>;
 
   <script>
+    var b
+    var a
     const input = document.querySelector('input');
     const log = document.getElementById('adam');
     input.addEventListener('input', updateValue);
@@ -21,12 +23,14 @@
 
     function updateValue(e) {
       log.textContent = e.target.value;
-      calculator.setExpression({ id: 'graph1', latex: log.textContent });
+      b = log.textContent;
+      calculator.setExpression({ id: 'graph1', latex: b});
     };
 
     function square() {
-      const a = "("+log.textContent+")^2";
-      calculator.setExpression({ id: 'graph1', latex: a });
+      a = "("+b+")^2";
+      b = a
+      calculator.setExpression({ id: 'graph1', latex: b});
     }
     </script>
 </body>
