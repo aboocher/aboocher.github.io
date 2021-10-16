@@ -2,12 +2,14 @@
 <html>
 <body>
   <h1>Hello World</h1>
-  <p> I am learning Javascript.  This took me several hours, but I am so proud that I did it!</p>
+  <p> I am learning Javascript.  This took me several hours, but I am so proud that I did it! Type a latex expression like x^2 or \sin(x) into the box below.</p>
   <input id="adam", placeholder="Enter a latex expression"/>
 
 <br>
 
 <p> Go ahead and click this button and I will square your function: <button onclick="square()";> Go ahead. You can click me even more than once. </button>
+
+<p id="Idid"> </p>
 
   <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
   <div id="calculator" style="width: 1000px; height: 600px;"></div>;
@@ -17,6 +19,7 @@
     var a
     const input = document.querySelector('input');
     const log = document.getElementById('adam');
+    const jog = document.getElementById('Idid');
     input.addEventListener('input', updateValue);
     var elt = document.getElementById('calculator');
     var calculator = Desmos.GraphingCalculator(elt);
@@ -30,6 +33,7 @@
     function square() {
       a = "("+b+")^2";
       b = a
+      jog.textContent = "I squared your function.";
       calculator.setExpression({ id: 'graph1', latex: b});
     }
     </script>
