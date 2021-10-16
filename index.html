@@ -11,12 +11,21 @@
 
 <p id="Idid"> </p>
 
+<p> If you retype in the box, it will reset the calculator. What is the sum of 4 + 4? <input id="8input" /> <button onclick="is8()">Submit your answer with the press of a button! </button></p>
+
+<div style="background-color: #cfc ; padding: 10px; border: 1px solid green;">
+  <p id="results8"> </p>
+</div>
+
+
+
   <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-  <div id="calculator" style="width: 1000px; height: 600px;"></div>;
+  <div id="calculator" style="width: 800px; height: 400px;"></div>;
 
   <script>
-    var b
-    var a
+    var b;
+    var a;
+    var i = 1;
     const input = document.querySelector('input');
     const log = document.getElementById('adam');
     const jog = document.getElementById('Idid');
@@ -25,16 +34,30 @@
     var calculator = Desmos.GraphingCalculator(elt);
 
     function updateValue(e) {
+      i = 1;
+      jog.textContent = "I squared your function this many times:   "+ String(i-1);
+      calculator.setBlank();
       log.textContent = e.target.value;
       b = log.textContent;
-      calculator.setExpression({ id: 'graph1', latex: b});
+      calculator.setExpression({ id: 'graph'+String(i), latex: b});
     };
 
     function square() {
       a = "("+b+")^2";
-      b = a
-      jog.textContent = "I squared your function.";
-      calculator.setExpression({ id: 'graph1', latex: b});
+      b = a;
+      i = i + 1;
+      jog.textContent = "I squared your function this many times:   "+ String(i-1);
+      calculator.setExpression({ id: 'graph'+String(i+1), latex: b});
+    }
+
+    function is8() {
+      var e = document.getElementById('8input').value;
+      if (e == "8") {document.getElementById('results8').innerHTML = "You are really a pro!";
+      calculator.setBlank();
+    calculator.setExpression({ color: "red", d: 'graph1', latex: "\\left(\\left(\\frac{x}{4}\\right)^{2}+\\left(\\frac{y}{4}\\right)^{2}-1\\right)^{3}=\\frac{x^{2}y^{3}}{\\left(32\\right)^{2}}"});}
+      else { calculator.setBlank();
+        calculator.setExpression({ color: "red", d: 'graph1', latex: "4+4"});
+        document.getElementById('results8').innerHTML  = "That's ok, you can try again. Desmos can help:";}
     }
     </script>
 </body>
