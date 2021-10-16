@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Hello World</h1>
+<input placeholder="Enter some text"/>
+<p id="values"></p>
+
+<script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<div id="calculator" style="width: 1000px; height: 600px;"></div>;
+
+
+<script>
+  const input = document.querySelector('input');
+  const log = document.getElementById('values');
+
+  input.addEventListener('input', updateValue);
+
+  function updateValue(e) {
+    log.textContent = e.target.value;
+    var elt = document.getElementById('calculator');
+    var adam = document.getElementById('values').innerHTML;
+    <! var calculator = Desmos.GraphingCalculator(elt).setExpression({ id: 'graph1', latex: adam });
+    <! calculator;
+  }
+  </script>
+
+
+<script>
+
+</script>

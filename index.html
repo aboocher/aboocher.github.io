@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>Hello World</h1>
-<p>Hello. I'm learning javascript.  Please say the name <br><br> of a function.</p>
+  <h1>Hello World</h1>
+  <p> I am learning Javascript.  This took me several hours, but I am so proud that I did it!</p>
+  <input id="adam", placeholder="Enter a latex expression"/>
 
+<br>
 
-<form>
-    <input type="text" id="input_id">
-    <input type="button" value="Submit" onclick="wawa()" />
-    <div id="alert" style="color: red"></div>
-  </form>
+<p> Go ahead and click this button and I will square your function: <button onclick="square()";> Go ahead</button>
 
-<script>
-   var adam = 'y =x^3'
-</script>
+  <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <div id="calculator" style="width: 1000px; height: 600px;"></div>;
+
   <script>
-    function wawa() {
-      var variable = document.getElementById('input_id').value;
-      var elt = document.getElementById('calculator');
-      var calculator = Desmos.GraphingCalculator(elt);
-      calculator.setExpression({ id: 'graph1', latex: variable});
+    const input = document.querySelector('input');
+    const log = document.getElementById('adam');
+    input.addEventListener('input', updateValue);
+    var elt = document.getElementById('calculator');
+    var calculator = Desmos.GraphingCalculator(elt);
+
+    function updateValue(e) {
+      log.textContent = e.target.value;
+      calculator.setExpression({ id: 'graph1', latex: log.textContent });
+    };
+
+    function square() {
+      const a = "("+log.textContent+")^2";
+      calculator.setExpression({ id: 'graph1', latex: a });
     }
-  </script>
-
-<script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-
-<div id="calculator" style="width: 1000px; height: 600px;"></div>
-
-<script>
-
-</script>
-
+    </script>
 </body>
 </html>
