@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html>
+<head>
+<title>Submit Form Using AJAX PHP and javascript</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link href="css/style.css" rel="stylesheet">
+<script src="script.js"></script>
+</head>
 <body>
-<h1>Hello World</h1>
-<input placeholder="Enter some text"/>
-<p id="values"></p>
-
-<script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-<div id="calculator" style="width: 1000px; height: 600px;"></div>;
-
-
-<script>
-  const input = document.querySelector('input');
-  const log = document.getElementById('values');
-
-  input.addEventListener('input', updateValue);
-
-  function updateValue(e) {
-    log.textContent = e.target.value;
-    var elt = document.getElementById('calculator');
-    var adam = document.getElementById('values').innerHTML;
-    <! var calculator = Desmos.GraphingCalculator(elt).setExpression({ id: 'graph1', latex: adam });
-    <! calculator;
-  }
-  </script>
-
-
-<script>
-
-</script>
+<div id="mainform">
+<div class="innerdiv">
+<h2>Submit Form Using AJAX,PHP and javascript</h2>
+<!-- Required Div Starts Here -->
+<form id="form" name="form">
+<h3>Fill Your Information!</h3>
+<div>
+<label>Name :</label>
+<input id="name" type="text">
+<label>Email :</label>
+<input id="email" type="text">
+<label>Password :</label>
+<input id="password" type="password">
+<label>Contact No :</label>
+<input id="contact" type="text">
+<input id="submit" onclick="myFunction()" type="button" value="Submit">
+</div>
+</form>
+<div id="clear"></div>
+</div>
+<div id="clear"></div>
+</div>
+</body>
+</html>

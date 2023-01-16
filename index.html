@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <style>
     #homemain {
-    line-height: 15px;
-    background-color: transparent;
-    height: 500px;
-    max-width: 600px;
-    float: left;
-    padding: 10px;
-    font-size: 100%;
-    margin: 10px;
-    word-wrap: break-word;
+      line-height: 15px;
+      background-color: transparent;
+      height: 500px;
+      max-width: 600px;
+      float: left;
+      padding: 10px;
+      font-size: 100%;
+      margin: 10px;
+      word-wrap: break-word;
     }
-    </style>
-    </head>
+  </style>
+</head>
+
 <body>
   <div id="homemain">
-  <h1>Hello World</h1>
-  <p> I am learning Javascript.  This took me several hours, but I am so proud that I did it! Type a latex expression like x^2 or \sin(x) into the box below.</p>
-  <input id="adam", placeholder="Enter a latex expression"/>
+    <h1>Hello World</h1>
+    <p> I am learning Javascript. This took me several hours, but I am so proud that I did it! Type a latex expression
+      like x^2 or \sin(x) into the box below.</p>
+    <input id="adam" , placeholder="Enter a latex expression" />
 
-<br>
+    <br>
 
-<p> Go ahead and click this button and I will square your function: <button onclick="square()";> Go ahead. You can click me even more than once. </button>
+    <p> Go ahead and click this button and I will square your function: <button onclick="square()" ;> Go ahead. You can
+        click me even more than once. </button>
 
-<p id="Idid"> </p>
+    <p id="Idid"> </p>
 
-<p> If you retype in the box, it will reset the calculator. What is the sum of 4 + 4? <input id="8input" /> <button onclick="is8()">Submit your answer with the press of a button! </button></p>
+    <p> If you retype in the box, it will reset the calculator. What is the sum of 4 + 4? <input id="8input" /> <button
+        onclick="is8()">Submit your answer with the press of a button! </button></p>
 
-<div style="background-color: #cfc ; width: 25vw; padding: 10px; border: 1px solid green;">
-  <p id="results8"> </p>
-</div>
-
-<p> Here's a graph!</p>
-
-  <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-  <div id="calculator" style="width: 100vmin; height: 60vmin;"></div>;
-
-  <script>
-    var b;
-    var a;
-    var i = 1;
-    const input = document.querySelector('input');
-    const log = document.getElementById('adam');
-    const jog = document.getElementById('Idid');
-    input.addEventListener('input', updateValue);
-    var elt = document.getElementById('calculator');
-    var calculator = Desmos.GraphingCalculator(elt);
-
-    function updateValue(e) {
-      i = 1;
-      jog.textContent = "I squared your function this many times:   "+ String(i-1);
-      calculator.setBlank();
-      log.textContent = e.target.value;
-      b = log.textContent;
-      calculator.setExpression({ id: 'graph'+String(i), latex: b});
-    };
-
-    function square() {
-      a = "("+b+")^2";
-      b = a;
-      i = i + 1;
-      jog.textContent = "I squared your function this many times:   "+ String(i-1);
-      calculator.setExpression({ id: 'graph'+String(i+1), latex: b});
-    }
-
-    function is8() {
-      var e = document.getElementById('8input').value;
-      if (e == "8") {document.getElementById('results8').innerHTML = "You are really a pro!";
-      calculator.setBlank();
-    calculator.setExpression({ color: "red", d: 'graph1', latex: "\\left(\\left(\\frac{x}{4}\\right)^{2}+\\left(\\frac{y}{4}\\right)^{2}-1\\right)^{3}=\\frac{x^{2}y^{3}}{\\left(32\\right)^{2}}"});}
-      else { calculator.setBlank();
-        calculator.setExpression({ color: "red", d: 'graph1', latex: "4+4"});
-        document.getElementById('results8').innerHTML  = "That's ok, you can try again. Desmos can help:";}
-    }
-    </script>
+    <div style="background-color: #cfc ; width: 25vw; padding: 10px; border: 1px solid green;">
+      <p id="results8"> </p>
     </div>
+
+    <p> Here's an exercise </p>
+    <iframe width="100%" height="400" style="border:none;"
+      src="https://mathmatize.com/embed/exercises/d9d1c0db-c717-4888-9f39-eb3ab50386db/" title="MathMatize"></iframe>
+
+    <p> Here's a graph!</p>
+
+    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <div id="calculator" style="width: 100vmin; height: 60vmin;"></div>;
+
+    <script>
+      var b;
+      var a;
+      var i = 1;
+      const input = document.querySelector('input');
+      const log = document.getElementById('adam');
+      const jog = document.getElementById('Idid');
+      input.addEventListener('input', updateValue);
+      var elt = document.getElementById('calculator');
+      var calculator = Desmos.GraphingCalculator(elt);
+
+      function updateValue(e) {
+        i = 1;
+        jog.textContent = "I squared your function this many times:   " + String(i - 1);
+        calculator.setBlank();
+        log.textContent = e.target.value;
+        b = log.textContent;
+        calculator.setExpression({ id: 'graph' + String(i), latex: b });
+      };
+
+      function square() {
+        a = "(" + b + ")^2";
+        b = a;
+        i = i + 1;
+        jog.textContent = "I squared your function this many times:   " + String(i - 1);
+        calculator.setExpression({ id: 'graph' + String(i + 1), latex: b });
+      }
+
+      function is8() {
+        var e = document.getElementById('8input').value;
+        if (e == "8") {
+          document.getElementById('results8').innerHTML = "You are really a pro!";
+          calculator.setBlank();
+          calculator.setExpression({ color: "red", d: 'graph1', latex: "\\left(\\left(\\frac{x}{4}\\right)^{2}+\\left(\\frac{y}{4}\\right)^{2}-1\\right)^{3}=\\frac{x^{2}y^{3}}{\\left(32\\right)^{2}}" });
+        }
+        else {
+          calculator.setBlank();
+          calculator.setExpression({ color: "red", d: 'graph1', latex: "4+4" });
+          document.getElementById('results8').innerHTML = "That's ok, you can try again. Desmos can help:";
+        }
+      }
+    </script>
+  </div>
 </body>
+
 </html>
