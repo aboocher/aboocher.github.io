@@ -1,83 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trivia Game</title>
+  <title>Trivia Gameasdf</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f2f2f2;
     }
     h1 {
-      margin-top: 40px;
-      color: #333333;
+      text-align: center;
     }
     #question {
-      font-weight: bold;
       margin-bottom: 20px;
     }
     #choices {
       margin-bottom: 20px;
     }
-    .choice {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px;
-      border-radius: 8px;
-      background-color: #ffffff;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .choice:hover {
-      background-color: #f5f5f5;
-    }
     #result {
-      font-weight: bold;
       margin-bottom: 20px;
     }
     #score {
+      text-align: center;
       font-weight: bold;
     }
   </style>
   <script>
     var questions = [];
-    var currentQuestion = null;
+    var currentQuestion;
     var score = 0;
 
     function loadQuestions() {
-      // Load the questions from the CSV file (data.csv)
-      // Replace 'data.csv' with the actual path to your CSV file
+      // Fetch questions from the CSV file
       fetch('data.csv')
         .then(response => response.text())
-        .then(text => {
-          // Parse the CSV data
-          var rows = text.split('\n');
+        .then(data => {
+          var rows = data.trim().split('\n');
+          var delimiter = '|'; // Use vertical bar as the delimiter
+
+          // Parse each row of the CSV file
           for (var i = 1; i < rows.length; i++) {
-            var columns = rows[i].split(',');
-            if (columns.length === 5) {
-              var choices = [columns[1], columns[2], columns[3]];
-              shuffleArray(choices);
-              var question = {
-                question: columns[0],
-                choices: choices,
-                answer: columns[1]
-              };
-              questions.push(question);
-            }
+            var row = rows[i].split(delimiter);
+            var question = {
+              question: row[0],
+              choices: [row[1], row[2], row[3]],
+              answer: row[4],
+              explanation: row[5]
+            };
+            questions.push(question);
           }
+
+          // Start the game
           showQuestion();
-        })
-        .catch(error => {
-          console.error('Error loading questions:', error);
         });
     }
 
     function showQuestion() {
-      // Clear previous question and result
-      document.getElementById('question').textContent = '';
-      document.getElementById('choices').innerHTML = '';
-      document.getElementById('result').textContent = '';
-
       // Randomly select a question
       var index = Math.floor(Math.random() * questions.length);
       currentQuestion = questions[index];
@@ -85,38 +61,57 @@
       // Display the question
       document.getElementById('question').textContent = currentQuestion.question;
 
-      // Display the choices
-      var choices = currentQuestion.choices;
-      for (var i = 0; i < choices.length; i++) {
-        var choice = document.createElement('div');
-        choice.className = 'choice';
-        choice.textContent = choices[i];
+      // Shuffle the answer choices
+      shuffleArray(currentQuestion.choices);
+
+      // Display the answer choices
+      document.getElementById('choices').innerHTML = '';
+      for (var i = 0; i < currentQuestion.choices.length; i++) {
+        var choice = document.createElement('button');
+        choice.textContent = currentQuestion.choices[i];
         choice.addEventListener('click', checkAnswer);
         document.getElementById('choices').appendChild(choice);
       }
     }
 
     function checkAnswer(event) {
-      var selectedChoice = event.target.textContent;
+      var selectedChoice = event.target;
+      var userAnswer = selectedChoice.textContent;
 
-      // Check if the selected choice is correct
-      if (selectedChoice === currentQuestion.answer) {
+      // Disable all answer choices
+      var choices = document.querySelectorAll('#choices button');
+      for (var i = 0; i < choices.length; i++) {
+        choices[i].disabled = true;
+      }
+
+      // Check if the user's answer is correct
+      if (userAnswer === currentQuestion.answer) {
         score++;
         document.getElementById('result').textContent = 'Correct!';
+        selectedChoice.style.backgroundColor = 'green';
       } else {
         document.getElementById('result').textContent = 'Incorrect!';
+        selectedChoice.style.backgroundColor = 'red';
       }
+
+      // Display the correct answer
+      var explanation = document.createElement('p');
+      explanation.innerHTML = 'Explanation: ' + currentQuestion.explanation;
+      document.getElementById('result').appendChild(explanation);
 
       // Update the score
       document.getElementById('score').textContent = 'Score: ' + score;
 
-      // Show the correct answer
-      var answer = document.createElement('div');
-      answer.textContent = 'Correct Answer: ' + currentQuestion.answer;
-      document.getElementById('choices').appendChild(answer);
-
-      // Load the next question
-      showQuestion();
+      // Load the next question after a short delay
+      setTimeout(function() {
+        showQuestion();
+        selectedChoice.style.backgroundColor = '';
+        document.getElementById('result').textContent = '';
+        document.getElementById('result').innerHTML = 'Explanation: ';
+        for (var i = 0; i < choices.length; i++) {
+          choices[i].disabled = false;
+        }
+      }, 2000);
     }
 
     // Shuffle array in place using Fisher-Yates algorithm
@@ -129,17 +124,15 @@
       }
     }
 
-    // Start the game
-    window.addEventListener('DOMContentLoaded', function() {
-      loadQuestions();
-    });
+    // Start the game when the page loads
+    window.onload = loadQuestions;
   </script>
 </head>
 <body>
   <h1>Trivia Game</h1>
   <div id="question"></div>
   <div id="choices"></div>
-  <div id="result"></div>
+  <div id="result">Explanation: </div>
   <div id="score">Score: 0</div>
 </body>
 </html>
