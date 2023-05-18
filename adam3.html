@@ -8,12 +8,12 @@
       font-size: 18px;
       text-align: center;
     }
-    
+
     h1 {
       font-size: 24px;
       margin-bottom: 20px;
     }
-    
+
     .quiz-container {
       display: flex;
       flex-direction: column;
@@ -25,28 +25,39 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
     .question-container {
       text-align: left;
       margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
     }
-    
+
     .options-container {
       display: flex;
       flex-direction: column;
       margin-top: 10px;
     }
-    
+
     .option {
       display: flex;
       align-items: center;
       margin-bottom: 8px;
     }
-    
+
     .option input[type="radio"] {
       margin-right: 8px;
     }
-    
+
+    .correct {
+      background-color: #d9f7e8;
+    }
+
+    .incorrect {
+      background-color: #fde2e6;
+    }
+
     .result {
       font-weight: bold;
       margin-top: 20px;
@@ -56,17 +67,17 @@
 <body>
   <div class="quiz-container">
     <h1>Quiz</h1>
-    
+
     <form id="quizForm">
       <div id="questionsContainer"></div>
-      
+
       <br>
       <button type="button" onclick="gradeQuiz()">Submit</button>
     </form>
-    
+
     <div id="result"></div>
   </div>
-  
+
   <script>
     function loadQuestions() {
       var xhr = new XMLHttpRequest();
@@ -81,18 +92,18 @@
           }
         }
       };
-      
+
       xhr.open("GET", "questions.csv", true);
       xhr.send();
     }
-    
+
     function parseCSV(data) {
       var lines = data.split('\n');
       var questions = [];
-      
+
       lines.forEach(function(line) {
         var questionData = line.split(',');
-        if (questionData.length === 2) {
+        if (questionData.length === 3) {
           var question = {
             question: questionData[0],
             options: questionData[1].split('|'),
@@ -101,53 +112,53 @@
           questions.push(question);
         }
       });
-      
+
       return questions;
     }
-    
+
     function displayQuestions(questions) {
       var questionsContainer = document.getElementById('questionsContainer');
-      
+
       questions.forEach(function(question, index) {
         var questionNumber = index + 1;
         var questionDiv = document.createElement('div');
         questionDiv.classList.add('question-container');
-        
+
         questionDiv.innerHTML = `
           <h3>Question ${questionNumber}:</h3>
           <p>${question.question}</p>
         `;
-        
+
         var optionInput = '';
         for (var i = 0; i < question.options.length; i++) {
           var optionLabel = String.fromCharCode(97 + i);
           optionInput += `
             <div class="option">
-              <input type="radio" name="answer${questionNumber}" value="${optionLabel}" required>
-              <label>${optionLabel}) ${question.options[i]}</label>
+              <input type="radio" name="answer${questionNumber}" id="answer${questionNumber}_${i}" value="${i}">
+              <label for="answer${questionNumber}_${i}">${optionLabel}) ${question.options[i]}</label>
             </div>
           `;
         }
-        
+
         questionDiv.innerHTML += `
           <div class="options-container">
             ${optionInput}
           </div>
         `;
-        
+
         questionsContainer.appendChild(questionDiv);
       });
     }
-    
+
     function gradeQuiz() {
       var questionsContainer = document.getElementById('questionsContainer');
       var resultDiv = document.getElementById('result');
       var questions = document.querySelectorAll('.question-container');
       var correctAnswers = 0;
-      
+
       questions.forEach(function(question, index) {
         var answer = question.querySelector(`input[name="answer${index + 1}"]:checked`);
-        
+
         if (answer) {
           var selectedOption = answer.value;
           if (selectedOption === questions[index].correctIndex.toString()) {
@@ -158,10 +169,10 @@
           }
         }
       });
-      
+
       resultDiv.innerHTML = `<p>You scored ${correctAnswers} out of ${questions.length}.</p>`;
     }
-    
+
     loadQuestions();
   </script>
 </body>
