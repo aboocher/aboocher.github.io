@@ -1,11 +1,9 @@
-question,option1,option2,option3,correctIndex
-Which of the following represents the distance between two points on the real number line?,|x - y|,|x + y|,|x * y|,0
-Which of the following inequalities represents the distance between two points x and y being greater than a given positive number ε?,|x - y| > ε,|x - y| ≤ ε,|x - y| = ε,0
-Which of the following inequalities represents the distance between two points x and y being less than a given positive number ε?,|x - y| < ε,|x - y| ≥ ε,|x - y| = ε,2
-Which of the following inequalities represents the distance between two points x and y being equal to zero?,|x - y| > 0,|x - y| < 0,|x - y| = 0,2
-For any real number x, which of the following inequalities represents the property of absolute value?,|x| ≥ 0,|x| > 0,|x| < 0,0
-Which of the following is true about the absolute value of a real number x?,|x| = x,|x| = -x,|x| ≥ x,0
-For any real number x, which of the following inequalities represents the property of symmetry of absolute value?,|x| = |-x|,|x| = -|-x|,|x| = -x,0
-Which of the following represents the distance between two points in a coordinate plane?,√((x₂ - x₁)² + (y₂ - y₁)²),|x - y|,|x + y|,0
-For any real number x, which of the following represents the distance between x and the origin?,|x|,|x - 0|,|0 - x|,0
-Which of the following inequalities represents the distance between two points x and y being less than or equal to 5?,|x - y| ≤ 5,|x - y| > 5,|x - y| = 5,0
+What is the absolute value of -7?,7|-7|0,0
+Which of the following represents the distance between two points x and y on the real number line?,|x - y||x + y||x * y|,0
+Which of the following inequalities represents the distance between two points x and y being greater than a given positive number ε?,|x - y| > ε|x - y| ≤ ε|x - y| = ε,0
+For any real number x, which of the following inequalities represents the property of symmetry of absolute value?,|x| = |-x||x| = -|-x||x| = -x,0
+Find the absolute value of the complex number -2 + 3i.,√(13)|-√(13)|13,1
+Which of the following is true about the absolute value of a real number x?,|x| = x|x| = -x|x| ≥ x,0
+What is the absolute value of 0?,0|-1|1,0
+What is the absolute value of 5 + 3i?,√(34)|-√(34)|34,0
+Find the absolute value of the complex number 4 - 2i.,√(20)|-√(20)|20,0
