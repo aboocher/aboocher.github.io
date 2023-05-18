@@ -1,6 +1,6 @@
-Question,Choice 1,Choice 2,Choice 3
-What is the capital of France?,Paris,London,Berlin
-What is the largest planet in our solar system?,Jupiter,Earth,Mars
-Who painted the Mona Lisa?,Leonardo da Vinci,Michelangelo,Vincent van Gogh
-What is the chemical symbol for gold?,Au,Ag,Cu
-Who wrote the novel "Pride and Prejudice"?,Jane Austen,William Shakespeare,Mark Twain
+Question,Choice 1,Choice 2,Choice 3,Answer
+What is the capital of France?,Paris,London,Berlin,Paris
+What is the largest planet in our solar system?,Jupiter,Earth,Mars,Jupiter
+Who painted the Mona Lisa?,Leonardo da Vinci,Michelangelo,Vincent van Gogh,Leonardo da Vinci
+What is the chemical symbol for gold?,Au,Ag,Cu,Au
+Who wrote the novel "Pride and Prejudice"?,Jane Austen,William Shakespeare,Mark Twain,Jane Austen
