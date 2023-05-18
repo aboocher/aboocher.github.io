@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trivia Game</title>
+  <style>
+    #question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    #choices {
+      margin-bottom: 10px;
+    }
+    #result {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    #score {
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    var questions = [];
+    var currentQuestion = null;
+    var score = 0;
+
+    function loadQuestions() {
+      // Load the questions from the CSV file (data.csv)
+      // Replace 'data.csv' with the actual path to your CSV file
+      fetch('data.csv')
+        .then(response => response.text())
+        .then(text => {
+          // Parse the CSV data
+          var rows = text.split('\n');
+          for (var i = 0; i < rows.length; i++) {
+            var columns = rows[i].split(',');
+            if (columns.length === 4) {
+              var question = {
+                question: columns[0],
+                choices: [columns[1], columns[2], columns[3]],
+                answer: columns[1]
+              };
+              questions.push(question);
+            }
+          }
+          showQuestion();
+        })
+        .catch(error => {
+          console.error('Error loading questions:', error);
+        });
+    }
+
+    function showQuestion() {
+      // Clear previous question and result
+      document.getElementById('question').textContent = '';
+      document.getElementById('choices').innerHTML = '';
+      document.getElementById('result').textContent = '';
+
+      // Randomly select a question
+      var index = Math.floor(Math.random() * questions.length);
+      currentQuestion = questions[index];
+
+      // Display the question
+      document.getElementById('question').textContent = currentQuestion.question;
+
+      // Display the choices
+      var choices = document.getElementById('choices');
+      for (var i = 0; i < currentQuestion.choices.length; i++) {
+        var choice = document.createElement('div');
+        choice.textContent = currentQuestion.choices[i];
+        choice.addEventListener('click', checkAnswer);
+        choices.appendChild(choice);
+      }
+    }
+
+    function checkAnswer(event) {
+      var selectedChoice = event.target.textContent;
+
+      // Check if the selected choice is correct
+      if (selectedChoice === currentQuestion.answer) {
+        score++;
+        document.getElementById('result').textContent = 'Correct!';
+      } else {
+        document.getElementById('result').textContent = 'Incorrect!';
+      }
+
+      // Update the score
+      document.getElementById('score').textContent = 'Score: ' + score;
+
+      // Show the correct answer
+      var answer = document.createElement('div');
+      answer.textContent = 'Correct Answer: ' + currentQuestion.answer;
+      document.getElementById('choices').appendChild(answer);
+
+      // Load the next question
+      showQuestion();
+    }
+
+    // Start the game
+    window.addEventListener('DOMContentLoaded', function() {
+      loadQuestions();
+    });
+  </script>
+</head>
+<body>
+  <h1>Trivia Game</h1>
+  <div id="question"></div>
+  <div id="choices"></div>
+  <div id="result"></div>
+  <div id="score">Score: 0</div>
+</body>
+</html>
