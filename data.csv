@@ -1,5 +1,4 @@
-Question|Choice 1|Choice 2|Choice 3|Answer
-What is the definition of a strict inequality?|For any real numbers $a$ and $b$, $a \neq b$ implies $a < b$|For any real numbers $a$ and $b$, $a \neq b$ implies $a \leq b$|For any real numbers $a$ and $b$, $a \neq b$ implies $a > b"|Choice 1
-Which property of inequalities allows us to add the same number to both sides of an inequality?|Reflexive property|Addition property of inequalities|Multiplication property of inequalities|Choice 2
-What is the correct order of operations for solving an inequality?|Parentheses, Exponents, Multiplication and Division (from left to right), Addition and Subtraction (from left to right)|Exponents, Parentheses, Multiplication and Division (from left to right), Addition and Subtraction (from left to right)|Exponents, Parentheses, Addition and Subtraction (from left to right), Multiplication and Division (from left to right)|Choice 3
-What is the solution set of the inequality $3x + 4 < 10$?|{$x \in \mathbb{R} \mid x < 2$}|{$x \in \mathbb{R} \mid x > 2$}|{$x \in \mathbb{R} \mid x < 6$}|Choice 1
+Question;Choice 1;Choice 2;Choice 3;Answer
+What is the square root of 25?;5;6;7;5
+Solve the equation 2x + 5 = 15;5;6;7;5
+What is the value of 3 * (4 + 2)?;18;20;24;18
