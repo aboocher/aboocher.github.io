@@ -1,10 +1,11 @@
-Which of the following inequalities represents the triangle inequality?,|x + y| ≤ |x| + |y|,|x + y| ≥ |x| + |y|,|x + y| = |x| + |y|,0
-Which of the following is always true for any real number x?,|x| ≥ 0,|x| = 0,|x| ≤ 0,1
-Which of the following inequalities represents the distance between two real numbers x and y being less than or equal to a given positive number ε?,|x - y| ≥ ε,|x - y| ≤ ε,|x - y| = ε,1
-Can the absolute value of a real number be negative?,Yes,No,It depends,1
-What is the absolute value of -5?,5,-5,0,0
-Which of the following inequalities represents the absolute value of x being greater than 10?,|x| < 10,|x| = 10,|x| > 10,2
-Which of the following inequalities represents the absolute value of x being less than or equal to 7?,|x| ≥ 7,|x| ≤ 7,|x| = 7,1
-What is the absolute value of 0?,0,-1,1,2
-Which of the following inequalities represents the absolute value of x being equal to 2?,|x| < 2,|x| = 2,|x| > 2,1
-What is the absolute value of 10?,10,-10,0,0
+question,option1,option2,option3,correctIndex
+Which of the following represents the distance between two points on the real number line?,|x - y|,|x + y|,|x * y|,0
+Which of the following inequalities represents the distance between two points x and y being greater than a given positive number ε?,|x - y| > ε,|x - y| ≤ ε,|x - y| = ε,0
+Which of the following inequalities represents the distance between two points x and y being less than a given positive number ε?,|x - y| < ε,|x - y| ≥ ε,|x - y| = ε,2
+Which of the following inequalities represents the distance between two points x and y being equal to zero?,|x - y| > 0,|x - y| < 0,|x - y| = 0,2
+For any real number x, which of the following inequalities represents the property of absolute value?,|x| ≥ 0,|x| > 0,|x| < 0,0
+Which of the following is true about the absolute value of a real number x?,|x| = x,|x| = -x,|x| ≥ x,0
+For any real number x, which of the following inequalities represents the property of symmetry of absolute value?,|x| = |-x|,|x| = -|-x|,|x| = -x,0
+Which of the following represents the distance between two points in a coordinate plane?,√((x₂ - x₁)² + (y₂ - y₁)²),|x - y|,|x + y|,0
+For any real number x, which of the following represents the distance between x and the origin?,|x|,|x - 0|,|0 - x|,0
+Which of the following inequalities represents the distance between two points x and y being less than or equal to 5?,|x - y| ≤ 5,|x - y| > 5,|x - y| = 5,0
