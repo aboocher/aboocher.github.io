@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    .correct {
+      color: blue;
+    }
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz</h1>
+  
+  <form id="quizForm">
+    <div id="questionsContainer"></div>
+    
+    <br>
+    <button type="button" onclick="gradeQuiz()">Submit</button>
+  </form>
+  
+  <div id="result"></div>
+  
+  <script>
+    function loadQuestions() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            var questionsData = xhr.responseText;
+            var questions = parseCSV(questionsData);
+            displayQuestions(questions);
+          } else {
+            console.log("Failed to load questions.");
+          }
+        }
+      };
+      
+      xhr.open("GET", "questions.csv", true);
+      xhr.send();
+    }
+    
+    function parseCSV(data) {
+      var lines = data.split('\n');
+      var questions = [];
+      
+      lines.forEach(function(line) {
+        var questionData = line.split(',');
+        if (questionData.length === 2) {
+          var question = {
+            question: questionData[0],
+            answer: questionData[1]
+          };
+          questions.push(question);
+        }
+      });
+      
+      return questions;
+    }
+    
+    function displayQuestions(questions) {
+      var questionsContainer = document.getElementById('questionsContainer');
+      
+      questions.forEach(function(question, index) {
+        var questionNumber = index + 1;
+        var questionDiv = document.createElement('div');
+        
+        questionDiv.innerHTML = `
+          <h3>Question ${questionNumber}:</h3>
+          <p>${question.question}</p>
+        `;
+        
+        var isShortAnswer = !isNaN(parseFloat(question.answer)) && isFinite(question.answer);
+        if (isShortAnswer) {
+          var input = `<input type="text" name="answer${questionNumber}" required>`;
+          questionDiv.innerHTML += input;
+        } else {
+          var optionInput = '';
+          for (var i = 0; i < question.options.length; i++) {
+            var optionLabel = String.fromCharCode(97 + i);
+            optionInput += `<input type="radio" name="answer${questionNumber}" value="${optionLabel}" required>`;
+            optionInput += `<label>${question.options[i]}</label><br>`;
+          }
+          questionDiv.innerHTML += optionInput;
+        }
+        
+        questionsContainer.appendChild(questionDiv);
+      });
+    }
+    
+    function gradeQuiz() {
+      var resultDiv = document.getElementById('result');
+      var correctAnswers = 0;
+      
+      // Reset result and previous styling
+      resultDiv.innerHTML = '';
+      var inputs = document.querySelectorAll('input[type="radio"]');
+      inputs.forEach(function(input) {
+        input.parentElement.classList.remove('correct', 'incorrect');
+      });
+      
+      // Grade each question
+      var questions = document.querySelectorAll('#questionsContainer div');
+      questions.forEach(function(question, index) {
+        var questionNumber = index + 1;
+        var answer = document.querySelector(`input[name="answer${questionNumber}"]:checked`);
+        var isShortAnswer = answer === null;
+        
+        if (isShortAnswer) {
+          var userAnswer = document.querySelector(`input[name="answer${questionNumber}"]`).value;
+          var correctAnswer = questions[index].answer;
+          if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            correctAnswers++;
+            question.classList.add('correct');
+          } else {
+            question.classList.add('incorrect');
+          }
+        } else {
+          var selectedOption = answer ? answer.value : '';
+          if (selectedOption === questions[index].correctIndex) {
+            correctAnswers++;
+            question.classList.add('correct');
+          } else {
+            question.classList.add('incorrect');
+          }
+        }
+      });
+      
+      resultDiv.innerHTML = `<p>You scored ${correctAnswers} out of ${questions.length}.</p>`;
+    }
+    
+    loadQuestions();
+  </script>
+</body>
+</html>
