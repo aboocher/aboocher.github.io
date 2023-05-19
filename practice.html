@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Masdfsdfath Problem Practice</title>
+  <title>Math Problem Practice</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -76,28 +76,26 @@
     var problems = []; // This will be populated with problem data from the CSV file
 
     // Function to read problem data from the CSV file
-    // Function to read problem data from the CSV file
     function readProblemsFromCSV(csvFile) {
-  fetch(csvFile)
-    .then(response => response.text())
-    .then(data => {
-      var lines = data.split("\n");
-      var headers = lines[0].split(",");
-      problems = [];
-      for (var i = 1; i < lines.length; i++) {
-        var problem = {};
-        var currentLine = lines[i].split(",");
-        for (var j = 0; j < headers.length; j++) {
-          problem[headers[j]] = currentLine[j];
-        }
-        problems.push(problem);
-      }
-    })
-    .catch(error => {
-      console.log("An error occurred while loading the CSV file:", error);
-    });
-}
-
+      fetch(csvFile)
+        .then(response => response.text())
+        .then(data => {
+          var lines = data.split("\n");
+          var headers = lines[0].split(",");
+          problems = [];
+          for (var i = 1; i < lines.length; i++) {
+            var problem = {};
+            var currentLine = lines[i].split(",");
+            for (var j = 0; j < headers.length; j++) {
+              problem[headers[j]] = currentLine[j];
+            }
+            problems.push(problem);
+          }
+        })
+        .catch(error => {
+          console.log("An error occurred while loading the CSV file:", error);
+        });
+    }
 
     // Function to generate the HTML for a multiple-choice problem
     function generateMultipleChoiceProblem(problem) {
@@ -107,10 +105,11 @@
           <form>
       `;
 
-      problem.options.forEach(function(option, index) {
+      var options = problem.options.split(","); // Split the options by comma
+      options.forEach(function(option, index) {
         problemHTML += `
           <input type="radio" name="answer" value="${String.fromCharCode(97 + index)}">
-          <label>${option}</label><br>
+          <label>${option.trim()}</label><br>
         `;
       });
 
