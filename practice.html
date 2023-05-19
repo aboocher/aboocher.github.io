@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Problem Practice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    label {
+      font-weight: bold;
+    }
+    
+    .problem {
+      margin-bottom: 20px;
+    }
+    
+    .problem p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    
+    .problem input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    
+    .problem input[type="radio"] {
+      margin-right: 5px;
+    }
+    
+    button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Math Problem Practice</h1>
+    <div>
+      <label for="topic-select">Select a topic:</label>
+      <select id="topic-select">
+        <option value="Algebra">Algebra</option>
+        <option value="Geometry">Geometry</option>
+        <option value="Calculus">Calculus</option>
+        <!-- Add more topic options here -->
+      </select>
+    </div>
+    <button onclick="generateProblem()">Generate Problem</button>
+    <div id="problem-container"></div>
+  </div>
+
+  <script>
+    var problems = []; // This will be populated with problem data from the CSV file
+
+    // Function to read problem data from the CSV file
+    function readProblemsFromCSV(csvFile) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var lines = xhr.responseText.split("\n");
+          var headers = lines[0].split(",");
+          problems = [];
+          for (var i = 1; i < lines.length; i++) {
+            var problem = {};
+            var currentLine = lines[i].split(",");
+            for (var j = 0; j < headers.length; j++) {
+              problem[headers[j]] = currentLine[j];
+            }
+            problems.push(problem);
+          }
+        }
+      };
+      xhr.open("GET", csvFile, true);
+      xhr.send();
+    }
+
+    // Function to generate the HTML for a multiple-choice problem
+    function generateMultipleChoiceProblem(problem) {
+      var problemHTML = `
+        <div class="problem">
+          <p>${problem.problem_statement}</p>
+          <form>
+      `;
+
+      problem.options.forEach(function(option, index) {
+        problemHTML += `
+          <input type="radio" name="answer" value="${String.fromCharCode(97 + index)}">
+          <label>${option}</label><br>
+        `;
+      });
+
+      problemHTML += `
+          </form>
+        </div>
+      `;
+
+      return problemHTML;
+    }
+
+    // Function to generate the HTML for a short-answer problem
+    function generateShortAnswerProblem(problem) {
+      var problemHTML = `
+        <div class="problem">
+          <p>${problem.problem_statement}</p>
+          <input type="text" name="answer" placeholder="Enter your answer">
+        </div>
+      `;
+
+      return problemHTML;
+    }
+
+    // Generate the HTML for a problem based on the selected topic
+    function generateProblem() {
+      var selectedTopic = document.getElementById("topic-select").value;
+      var filteredProblems = problems.filter(function(problem) {
+        return problem.topic === selectedTopic;
+      });
+
+      if (filteredProblems.length === 0) {
+        alert("No problem available for the selected topic.");
+        return;
+      }
+
+      var problem = filteredProblems[Math.floor(Math.random() * filteredProblems.length)];
+
+      var problemContainer = document.getElementById("problem-container");
+      if (problem.type === "multiple-choice") {
+        problemContainer.innerHTML = generateMultipleChoiceProblem(problem);
+      } else if (problem.type === "short-answer") {
+        problemContainer.innerHTML = generateShortAnswerProblem(problem);
+      }
+    }
+
+    // Load problem data from the CSV file
+    readProblemsFromCSV("problems.csv");
+  </script>
+</body>
+</html>
