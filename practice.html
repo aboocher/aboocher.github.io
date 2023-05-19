@@ -76,26 +76,28 @@
     var problems = []; // This will be populated with problem data from the CSV file
 
     // Function to read problem data from the CSV file
+    // Function to read problem data from the CSV file
     function readProblemsFromCSV(csvFile) {
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var lines = xhr.responseText.split("\n");
-          var headers = lines[0].split(",");
-          problems = [];
-          for (var i = 1; i < lines.length; i++) {
-            var problem = {};
-            var currentLine = lines[i].split(",");
-            for (var j = 0; j < headers.length; j++) {
-              problem[headers[j]] = currentLine[j];
-            }
-            problems.push(problem);
-          }
+  fetch(csvFile)
+    .then(response => response.text())
+    .then(data => {
+      var lines = data.split("\n");
+      var headers = lines[0].split(",");
+      problems = [];
+      for (var i = 1; i < lines.length; i++) {
+        var problem = {};
+        var currentLine = lines[i].split(",");
+        for (var j = 0; j < headers.length; j++) {
+          problem[headers[j]] = currentLine[j];
         }
-      };
-      xhr.open("GET", csvFile, true);
-      xhr.send();
-    }
+        problems.push(problem);
+      }
+    })
+    .catch(error => {
+      console.log("An error occurred while loading the CSV file:", error);
+    });
+}
+
 
     // Function to generate the HTML for a multiple-choice problem
     function generateMultipleChoiceProblem(problem) {
