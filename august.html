@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Quiz</title>
+    <title>Math Quiz2</title>
     <style>
         /* Add your CSS styling here */
     </style>
@@ -27,9 +27,22 @@
     </div>
 
     <script>
-        const questions = [
-            // Replace with your CSV data (15 questions)
-        ];
+        const questions = [];
+        fetch('questions.csv')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                const headers = lines[0].split(',');
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(',');
+                    const questionObj = {};
+                    for (let j = 0; j < headers.length; j++) {
+                        questionObj[headers[j]] = values[j];
+                    }
+                    questions.push(questionObj);
+                }
+            })
+            .catch(error => console.error('Error loading questions:', error));
 
         const topicSelect = document.getElementById('topic');
         const quizContainer = document.getElementById('quizContainer');
@@ -108,23 +121,5 @@
             });
         }
     </script>
-    <script>
-    const questions = [];
-    fetch('questions.csv')
-        .then(response => response.text())
-        .then(data => {
-            const lines = data.split('\n');
-            const headers = lines[0].split(',');
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',');
-                const questionObj = {};
-                for (let j = 0; j < headers.length; j++) {
-                    questionObj[headers[j]] = values[j];
-                }
-                questions.push(questionObj);
-            }
-        })
-        .catch(error => console.error('Error loading questions:', error));
-</script>
 </body>
 </html>
