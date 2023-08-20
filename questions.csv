@@ -1,9 +1,16 @@
-What is the absolute value of -7?,7|-7|0,0
-Which of the following represents the distance between two points x and y on the real number line?,|x - y||x + y||x * y|,0
-Which of the following inequalities represents the distance between two points x and y being greater than a given positive number ε?,|x - y| > ε|x - y| ≤ ε|x - y| = ε,0
-For any real number x which of the following inequalities represents the property of symmetry of absolute value?,|x| = |-x||x| = -|-x||x| = -x,0
-Find the absolute value of the complex number -2 + 3i.,√(13)|-√(13)|13,1
-Which of the following is true about the absolute value of a real number x?,|x| = x|x| = -x|x| ≥ x,0
-What is the absolute value of 0?,0|-1|1,0
-What is the absolute value of 5 + 3i?,√(34)|-√(34)|34,0
-Find the absolute value of the complex number 4 - 2i.,√(20)|-√(20)|20,0
+topic,question,a,b,c,d,correct
+basics,What is the definition of a limit?,A) A value approached by a function,B) A mathematical constant,C) An irrational number,D) A type of derivative,A
+basics,What is the derivative of a constant?,A) 0,B) 1,C) -1,D) It doesn't exist,A
+basics,What is the integral of x^2?,A) x^3,B) 2x,C) x^2/2,D) x^3/3,A
+basics,What is the definition of continuity?,A) A function with no zeros,B) A function with a limit,C) A function without jumps or breaks,D) A type of derivative,C
+basics,What is the result of 2 + 3 * 4?,A) 14,B) 20,C) 11,D) 9,B
+limits,What is the limit of (sin x) / x as x approaches 0?,A) 1,B) 0,C) Undefined,D) Infinity,A
+limits,What is the limit of 1 / x as x approaches infinity?,A) 0,B) 1,C) Infinity,D) Undefined,A
+limits,What is the limit of (x^2 - 4) / (x - 2) as x approaches 2?,A) 2,B) 0,C) 4,D) 1,D
+limits,What is the limit of e^x as x approaches negative infinity?,A) 0,B) 1,C) -1,D) Infinity,A
+limits,What is the limit of (1 - cos x) / x^2 as x approaches 0?,A) 1/2,B) 0,C) -1/2,D) Undefined,A
+continuity,Which function is continuous on the entire real number line?,A) f(x) = 1/x,B) f(x) = x^2,C) f(x) = sin x,D) f(x) = abs(x),B
+continuity,What is the limit of f(x) = 3x + 2 as x approaches 1?,A) 5,B) 6,C) 3,D) 2,A
+continuity,At which point is the function f(x) = x^3 continuous?,A) x = 0,B) x = 1,C) x = -1,D) x = 2,A
+continuity,What is the derivative of f(x) = ln(x) at x = 1?,A) 0,B) 1,C) -1,D) Undefined,B
+continuity,What is the value of f(x) = e^(2x) when x = 0?,A) 0,B) 1,C) 2,D) Undefined,B
