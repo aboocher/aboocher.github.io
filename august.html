@@ -108,5 +108,23 @@
             });
         }
     </script>
+    <script>
+    const questions = [];
+    fetch('questions.csv')
+        .then(response => response.text())
+        .then(data => {
+            const lines = data.split('\n');
+            const headers = lines[0].split(',');
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const questionObj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    questionObj[headers[j]] = values[j];
+                }
+                questions.push(questionObj);
+            }
+        })
+        .catch(error => console.error('Error loading questions:', error));
+</script>
 </body>
 </html>
