@@ -1,42 +1,34 @@
-
-
-
 const questions = [
     {
-        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq M$ for all $s \\in S$}$$",
-        answers: [
-            { text: "True", correct: true },
-            { text: "False", correct: false },
-        ]
-    },
-    {
-        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq |M|$ for all $s \\in S$}$$",
-        answers: [
-            { text: "True", correct: true },
-            { text: "False", correct: false },
-        ]
-    },
-    {
-        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq M + 1$ for all $s \\in S$}$$",
-        answers: [
-            { text: "True", correct: true },
-            { text: "False", correct: false },
-        ]
-    },
-    {
-        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq 2M$ for all $s \\in S$}$$",
+        question: "You are given that $S$ is a set of real numbers and that $M$ is an upper bound for $S$.  Is it necessarily true that for all $s\\in S$, $$s \\leq 2M?$$",
         answers: [
             { text: "True", correct: false },
             { text: "False", correct: true },
         ]
     },
     {
-        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq 2|M|$ for all $s \\in S$}$$",
+        question: "Suppose that $c> 1$ is a real number and $M$ is a lower bound for a set $S$ of real numbers.  Is $cM$ a lower bound for $S$?",
+        answers: [
+            { text: "Sometimes", correct: true },
+            { text: "Always", correct: false },
+            { text: "Never", correct: false },
+        ]
+    },
+    {
+        question: "Suppose that $S$ is an infinite set of positive real numbers.  Then $S$ has infinitely many lower bounds.",
         answers: [
             { text: "True", correct: true },
             { text: "False", correct: false },
         ]
     },
+    {
+        question: "Suppose that $S$ is a finite set of negative real numbers.  Then when is $0$ the least upper bound for $S$?",
+        answers: [
+            { text: "Sometimes", correct: false },
+            { text: "Always", correct: false },
+            { text: "Never", correct: true },
+        ]
+    }
 ];
 
 
@@ -104,6 +96,8 @@ function resetState() {
 nextButton.addEventListener("click", () => {
     if (currentQuestionIndex < questions.length) {
         handleNextQuestion();
+    } else {
+        startQuiz();
     }
 });
 
@@ -119,7 +113,7 @@ function handleNextQuestion() {
 function showScore() {
     resetState();
     questionElement.innerHTML = "Would you like to play again?";
-    nextButton.innerHTML = "play again?";
+    nextButton.innerHTML = "Yes, why thank you!";
     nextButton.style.display = "block";
 }
 
