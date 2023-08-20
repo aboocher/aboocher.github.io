@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz</title>
+    <style>
+        /* Add your CSS styling here */
+    </style>
+</head>
+<body>
+    <h1>Math Quiz</h1>
+    <label for="topic">Select a topic:</label>
+    <select id="topic">
+        <option value="basics">Basics</option>
+        <option value="limits">Limits</option>
+        <option value="continuity">Continuity</option>
+    </select>
+
+    <div id="quizContainer" style="display: none;">
+        <h2>Quiz Questions</h2>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="submitBtn">Submit Answers</button>
+        <button id="continueBtn" style="display: none;">Continue</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            // Replace with your CSV data (15 questions)
+        ];
+
+        const topicSelect = document.getElementById('topic');
+        const quizContainer = document.getElementById('quizContainer');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const submitBtn = document.getElementById('submitBtn');
+        const continueBtn = document.getElementById('continueBtn');
+        const resultElement = document.getElementById('result');
+
+        let currentTopic = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+
+        topicSelect.addEventListener('change', () => {
+            currentTopic = topicSelect.value;
+            currentQuestions = questions.filter(q => q.topic === currentTopic);
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            showNextQuestion();
+            quizContainer.style.display = 'block';
+            submitBtn.style.display = 'block';
+            continueBtn.style.display = 'none';
+            resultElement.innerHTML = '';
+        });
+
+        submitBtn.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                if (selectedOption.value === currentQuestions[currentQuestionIndex].correct) {
+                    correctAnswers++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    showNextQuestion();
+                } else {
+                    showResults();
+                }
+            }
+        });
+
+        continueBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < currentQuestions.length) {
+                showNextQuestion();
+                resultElement.innerHTML = '';
+            } else {
+                showResults();
+            }
+        });
+
+        function showNextQuestion() {
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                optionsElement.innerHTML += `
+                    <label>
+                        <input type="radio" name="option" value="${option}">
+                        ${option}
+                    </label><br>
+                `;
+            });
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultElement.innerHTML = `
+                <p>You answered ${correctAnswers} out of ${currentQuestions.length} questions correctly.</p>
+                <button id="restartBtn">Restart Quiz</button>
+            `;
+            const restartBtn = document.getElementById('restartBtn');
+            restartBtn.addEventListener('click', () => {
+                topicSelect.value = '';
+                quizContainer.style.display = 'none';
+                resultElement.innerHTML = '';
+            });
+        }
+    </script>
+</body>
+</html>
