@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math 33Quiz</title>
+    <title>Math Quiz</title>
     <style>
         /* Add your CSS styling here */
     </style>
@@ -16,6 +16,7 @@
         <option value="limits">Limits</option>
         <option value="continuity">Continuity</option>
     </select>
+    <button id="selectBtn">Select</button>
 
     <div id="quizContainer" style="display: none;">
         <h2>Quiz Questions</h2>
@@ -45,6 +46,7 @@
             .catch(error => console.error('Error loading questions:', error));
 
         const topicSelect = document.getElementById('topic');
+        const selectBtn = document.getElementById('selectBtn');
         const quizContainer = document.getElementById('quizContainer');
         const questionElement = document.getElementById('question');
         const optionsElement = document.getElementById('options');
@@ -57,7 +59,7 @@
         let currentQuestionIndex = 0;
         let correctAnswers = 0;
 
-        topicSelect.addEventListener('change', () => {
+        selectBtn.addEventListener('click', () => {
             currentTopic = topicSelect.value;
             currentQuestions = questions.filter(q => q.topic === currentTopic);
             currentQuestionIndex = 0;
