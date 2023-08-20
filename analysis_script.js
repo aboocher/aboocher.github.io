@@ -1,48 +1,51 @@
+
+
+
 const questions = [
     {
-        question: "What is 2+2?",
+        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq M$ for all $s \\in S$}$$",
         answers: [
-            { text: "1", correct: false },
-            { text: "2", correct: false },
-            { text: "3", correct: false },
-            { text: "4", correct: true }
+            { text: "True", correct: true },
+            { text: "False", correct: false },
         ]
     },
     {
-        question: "1+2",
+        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq |M|$ for all $s \\in S$}$$",
         answers: [
-            { text: "1", correct: false },
-            { text: "2", correct: false },
-            { text: "3", correct: true },
-            { text: "4", correct: false }
+            { text: "True", correct: true },
+            { text: "False", correct: false },
         ]
     },
     {
-        question: "1+1",
+        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq M + 1$ for all $s \\in S$}$$",
         answers: [
-            { text: "1", correct: false },
-            { text: "2", correct: true },
-            { text: "3", correct: false },
-            { text: "4", correct: false }
+            { text: "True", correct: true },
+            { text: "False", correct: false },
         ]
     },
     {
-        question: "5-2",
+        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq 2M$ for all $s \\in S$}$$",
         answers: [
-            { text: "1", correct: false },
-            { text: "2", correct: false },
-            { text: "3", correct: true },
-            { text: "4", correct: false }
+            { text: "True", correct: false },
+            { text: "False", correct: true },
         ]
-    }
+    },
+    {
+        question: "You are given that $S$ is a set and that $M$ is an upper bound for $S$.  <br> Is the following statement true or false? <br> $$\\mbox{$s \\leq 2|M|$ for all $s \\in S$}$$",
+        answers: [
+            { text: "True", correct: true },
+            { text: "False", correct: false },
+        ]
+    },
 ];
 
 
-
+const testElement = document.getElementById("here");
+// testElement.innerHTML = questions.length;
 const questionElement = document.getElementById("question");
 const answerButtons = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("next-btn");
-
+const scoreElement = document.getElementById("score_number");
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -59,7 +62,6 @@ function showQuestion() {
     let currentQuestion = questions[currentQuestionIndex];
     let questionNo = currentQuestionIndex + 1;
     questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
-
     currentQuestion.answers.forEach(answer => {
         const button = document.createElement("button");
         button.innerHTML = answer.text;
@@ -70,6 +72,7 @@ function showQuestion() {
         }
         button.addEventListener("click", selectAnswer);
     });
+    MathJax.typeset();
 }
 
 function selectAnswer(e) {
@@ -81,6 +84,7 @@ function selectAnswer(e) {
     } else {
         selectedBtn.classList.add("incorrect");
     }
+    scoreElement.innerHTML = score + "/" + (currentQuestionIndex + 1);
     Array.from(answerButtons.children).forEach(button => {
         if (button.dataset.correct === "true") {
             button.classList.add("correct");
@@ -100,8 +104,6 @@ function resetState() {
 nextButton.addEventListener("click", () => {
     if (currentQuestionIndex < questions.length) {
         handleNextQuestion();
-    } else {
-        startQuiz();
     }
 });
 
@@ -116,7 +118,7 @@ function handleNextQuestion() {
 
 function showScore() {
     resetState();
-    questionElement.innerHTML = "Your score is " + score;
+    questionElement.innerHTML = "Would you like to play again?";
     nextButton.innerHTML = "play again?";
     nextButton.style.display = "block";
 }
