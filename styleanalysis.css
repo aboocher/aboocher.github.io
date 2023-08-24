@@ -6,13 +6,21 @@
 }
 
 body {
-    background: lightblue
+    background: lightblue;
 }
 
-.divcontainer {
+#divcontainer0 {
     width: 90%;
     margin: 100px auto 0;
     max-width: 600px;
+}
+
+
+#divcontainer {
+    width: 90%;
+    margin: 100px auto 0;
+    max-width: 600px;
+    display: none;
 }
 
 .topblock {
@@ -34,6 +42,19 @@ body {
     padding: 30px;
     text-align: center;
 }
+
+.remain {
+    float: left;
+    font-size: 18px;
+    /* background: gray; */
+    /* color: white; */
+    /* width: 30%; */
+    margin-top: 50px;
+    /* border-radius: 10px; */
+    /* padding: 30px; */
+    /* text-align: center; */
+}
+
 
 
 #here {
