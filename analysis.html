@@ -17,12 +17,31 @@
     <link rel="stylesheet" href="styleanalysis.css">
 </head>
 
-<body>
 
-    <div class="divcontainer">
+
+
+<body>
+    <div id="divcontainer0">
         <div class="topblock">
-            <!-- <div id="here"> whoa </div> -->
-            <h1>A Math Quiz</h1>
+            <center>
+                <p>Please select the number of questions: </p>
+                <input id="number_of_questions" style="width:10%"> </input>
+                <button id="number_button"> Submit</button>
+                <p>
+                    You have chosen
+                    <span id="test_num"> </span> problems.
+                </p>
+            </center>
+
+        </div>
+        <div class=" score">
+            Score: <span id="score_number"></span>
+        </div>
+    </div>
+
+    <div id="divcontainer">
+        <div class="topblock">
+            <h1>A Math Quiz with <span id="total"></span> questions</h1>
             <div class="quiz">
                 <p id="question">Question goes here</p>
                 <div id="answer-buttons">
@@ -36,6 +55,9 @@
         </div>
         <div class="score">
             Score: <span id="score_number"></span>
+        </div>
+        <div class="remain">
+            Remaining Questions: <span id="remaining_number"></span>
         </div>
     </div>
 
