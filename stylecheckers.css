@@ -1,0 +1,22 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: grid;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    grid-template-columns: repeat(3, auto);
+}
+
+.container div {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border: 1px solid blue;
+    background-color: pink;
+    display: inline-block;
+    float: left;
+}
