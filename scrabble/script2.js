@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const sortedLines = [...selectedLines].sort((a, b) => {
                 const [rawWordA] = a.split(',').map(item => item.trim());
                 const [rawWordB] = b.split(',').map(item => item.trim());
-                const wordA = rawWordA; 
+                const wordA = rawWordA;
                 // rawWordA.endsWith('*') ? rawWordA.slice(0, -1) : rawWordA;
                 const wordB = rawWordB;
                 // rawWordB.endsWith('*') ? rawWordB.slice(0, -1) : rawWordB;
@@ -72,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 sortedLines.forEach((line, index) => {
                     const [rawWord, definition] = line.split(',').map(item => item.trim());
                     const hasAsterisk = rawWord.endsWith('*');
-                    const word = hasAsterisk ? rawWord.slice(0, -1) : rawWord;
+                    const word = rawWord;
+                    // hasAsterisk ? rawWord.slice(0, -1) : rawWord;
                     const bgColor = hasAsterisk ? 'red' : 'blue';
 
                     if (index % numCols === 0) {
