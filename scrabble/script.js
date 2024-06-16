@@ -32,10 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const hintDiv = document.createElement('div');
 
             hintDiv.innerText = 'HINT';
-            hintDiv.style.position = 'absolute';
-            hintDiv.style.top = '10px';
-            hintDiv.style.left = '10px';
+            // hintDiv.style.position = 'absolute';
+            // hintDiv.style.bottom = '10px';
+            // hintDiv.style.left = '10px';
             hintDiv.style.fontSize = '1.5em';
+            hintDiv.style.padding = '1.5em';
             hintDiv.style.cursor = 'pointer';
 
             document.body.appendChild(hintDiv);
