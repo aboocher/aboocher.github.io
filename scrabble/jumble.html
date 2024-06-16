@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Table</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 20px 0;
+        }
+
+        td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid white;
+            word-wrap: break-word;
+            cursor: pointer;
+        }
+
+        #definition,
+        #message,
+        #hooray {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #message {
+            color: red;
+        }
+
+        #hooray {
+            color: green;
+        }
+
+        #hint {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="hint">HINT</div>
+    <div id="message"></div>
+    <table></table>
+    <div id="definition"></div>
+    <div id="hooray"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
