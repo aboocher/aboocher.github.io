@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const sortedLines = [...selectedLines].sort((a, b) => {
                 const [rawWordA] = a.split(',').map(item => item.trim());
                 const [rawWordB] = b.split(',').map(item => item.trim());
-                const wordA = rawWordA.endsWith('*') ? rawWordA.slice(0, -1) : rawWordA;
-                const wordB = rawWordB.endsWith('*') ? rawWordB.slice(0, -1) : rawWordB;
+                const wordA = rawWordA; 
+                // rawWordA.endsWith('*') ? rawWordA.slice(0, -1) : rawWordA;
+                const wordB = rawWordB;
+                // rawWordB.endsWith('*') ? rawWordB.slice(0, -1) : rawWordB;
                 return wordA.localeCompare(wordB);
             });
 
