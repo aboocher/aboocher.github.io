@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degree Sequence Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .legend {
+            margin-bottom: 20px;
+        }
+
+        .legend div {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .legend span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .collapsible {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #ccc;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr.yellow {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Degree Sequence Table</h1>
+    <div class="legend">
+        <div><span style="background-color: #1E90FF;"></span>{1}</div>
+        <div><span style="background-color: #00CED1;"></span>{2}</div>
+        <div><span style="background-color: #00FA9A;"></span>{3}</div>
+        <div><span style="background-color: #20B2AA;"></span>{1, 2}</div>
+        <div><span style="background-color: #3CB371;"></span>{1, 3}</div>
+        <div><span style="background-color: #4682B4;"></span>{2, 3}</div>
+        <div><span style="background-color: #5F9EA0;"></span>{1, 2, 3}</div>
+    </div>
+
+    <!-- Placeholder for collapsible sections -->
+    <div id="collapsible-sections"></div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('deg_seq.txt');
+            const data = await response.text();
+            return data.trim().split('\n');
+        }
+
+        function parseData(lines) {
+            const colorMap = {
+                '{}': 'yellow',
+                '{1}': '#1E90FF',
+                '{2}': '#00CED1',
+                '{3}': '#00FA9A',
+                '{1, 2}': '#20B2AA',
+                '{1, 3}': '#3CB371',
+                '{2, 3}': '#4682B4',
+                '{1, 2, 3}': '#5F9EA0'
+            };
+
+            const sections = {};
+            lines.forEach(line => {
+                const [c, D, P, V, B, RO] = line.split(';').map(item => item.trim());
+                if (!sections[c]) {
+                    sections[c] = [];
+                }
+                sections[c].push({ D, P, V, B, RO });
+            });
+
+            return { sections, colorMap };
+        }
+
+        function createTable(sections, colorMap) {
+            const container = document.getElementById('collapsible-sections');
+            Object.keys(sections).forEach(c => {
+                const button = document.createElement('button');
+                button.classList.add('collapsible');
+                button.innerText = `c = ${c}`;
+                container.appendChild(button);
+
+                const content = document.createElement('div');
+                content.classList.add('content');
+
+                const table = document.createElement('table');
+                const header = document.createElement('tr');
+                header.innerHTML = `<th>Degree Sequence</th>${[...Array(Number(c) + 1).keys()].map(i => `<th>i = ${i}</th>`).join('')}<th>Sum</th><th>RO</th>`;
+                table.appendChild(header);
+
+                sections[c].forEach(row => {
+                    const tr = document.createElement('tr');
+                    const Pset = new Map(row.P.replace(/[{}]/g, '').split(',').map((num, idx) => [idx, num]));
+                    const Vset = new Set(row.V.replace(/[{}]/g, '').split(',').map(Number));
+
+                    let Pcolumns = '';
+                    for (let i = 0; i <= c; i++) {
+                        const value = Pset.get(i) || '';
+                        if (Vset.has(i)) {
+                            Pcolumns += `<td style="color: red; font-weight: bold;">${value}</td>`;
+                        } else {
+                            Pcolumns += `<td>${value}</td>`;
+                        }
+                    }
+
+                    const Bvalue = row.B < 1.5 * (2 ** c) ? `<td style="color: red; font-weight: bold;">${row.B}</td>` : `<td>${row.B}</td>`;
+                    tr.innerHTML = `<td>${row.D}</td>${Pcolumns}${Bvalue}<td>${row.RO}</td>`;
+
+                    if (row.RO === '{}') {
+                        tr.classList.add('yellow');
+                    } else {
+                        tr.style.backgroundColor = colorMap[row.RO];
+                    }
+
+                    table.appendChild(tr);
+                });
+
+                content.appendChild(table);
+                container.appendChild(content);
+            });
+
+            document.querySelectorAll('.collapsible').forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.toggle('active');
+                    const content = button.nextElementSibling;
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+        }
+
+        async function init() {
+            const lines = await fetchData();
+            const { sections, colorMap } = parseData(lines);
+            createTable(sections, colorMap);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
