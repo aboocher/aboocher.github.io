@@ -58,7 +58,6 @@ function updateResults() {
 function nextRound() {
 
     if (currentRound >= howManyForEach.length) {
-        updateRoundCounter();
         return;
     }
 
