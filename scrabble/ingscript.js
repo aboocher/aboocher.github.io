@@ -31,7 +31,7 @@ function easyMode() {
     // document.getElementById('pre-label').style.display = 'none';
     document.getElementById('easy').style.display = 'none';
     document.getElementById('hintq').style.display = 'inline';
-    document.getElementById('maintitle').innerHTML = "Word Game (Easy Mode)"
+    document.getElementById('maintitle').innerHTML = "Word Game (Easy Mode)";
     easyOrHard = 24;
 }
 
@@ -78,7 +78,7 @@ async function loadWords() {
 
 function startGame() {
     const rounds = parseInt(document.getElementById('rounds').value);
-    if (hint == 1) {
+    if (easyOrHard == 24) {
         howManyForEach = Array.from({ length: rounds }, () => 24);
     } else {
         howManyForEach = Array.from({ length: rounds }, () => Math.floor(Math.random() * 4) + 4);
