@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Does it take an S?</title>
+    <title>Word Clicking Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,6 +24,10 @@
             text-align: center;
             width: 100%;
             max-width: 600px;
+        }
+
+        .theRules {
+            text-align: left
         }
 
         h1 {
@@ -96,10 +100,32 @@
 
 <body>
     <div class="container">
-        <h1>Does it take an S?</h1>
-        <label for="rounds" id="round-label">How many rounds would you like to play?</label>
-        <input type="number" id="rounds" value="1" min="1">
-        <button id="start">Start</button>
+        <h1 id="maintitle">Word Study Practice</h1>
+        <div class="pre" id="pre-label">
+            <button id="easy">Enable Easy Mode?</button>
+            <button id="hintq" style="display:none">Enable Hint?</button>
+            <button id="ING">ING +S?</button>
+            <button id="EY">Y or EY?</button>
+            <br><br>
+            <div class="theRules">
+                <ul>
+                    <li>You will be given a grid of 25 words and a question. The answer will be "YES" for something
+                        between 4 and 7 of the words.
+                    <li>
+                        If you'd like to instead just get practice seeing what the YES words are, try Easy Mode. In Easy
+                        Mode the answer will be YES for 24 out of the 25 options.
+                    <li>If you select the hint option in Easy Mode then the first letter of the lone exception will be
+                        below
+                        the table.
+                </ul>
+            </div>
+            <br> <br> Hit refresh whenever you like to restart.
+        </div>
+        <div id="round-count-display" style="display:none">
+            <label for="rounds" id="round-label">How many rounds would you like to play?</label>
+            <input type="number" id="rounds" value="1" min="1">
+            <button id="start">Start</button>
+        </div>
         <div id="game"></div>
         <div class="round-counter" id="round-counter"></div>
         <div class="results" id="result"></div>
