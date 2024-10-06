@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>32x32 Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+            width: 25px;
+            /* Width to minimize space */
+            height: 25px;
+            /* Height to minimize space */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        #label {
+            text-align: left;
+            font-weight: bold;
+            padding-left: 10px;
+        }
+
+        .light-blue {
+            background-color: #add8e6;
+            /* Light Blue */
+        }
+
+        .gray {
+            background-color: gray;
+            /* Gray */
+        }
+
+        .orange {
+            background-color: orange;
+            /* Orange */
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Version</h2>
+    <table>
+        <tr>
+            <th id="label">Variation</th>
+            <!-- Header Row -->
+            <script>
+                for (let j = 1; j <= 30; j++) {
+                    document.write("<th>" + j + "</th>");
+                }
+            </script>
+        </tr>
+        <!-- Table Body -->
+        <script>
+            for (let i = 0; i <= 30; i++) {
+                document.write("<tr>");
+                document.write("<th>" + i + "</th>"); // Header Column
+                for (let j = 1; j <= 30; j++) {
+                    document.write("<td id='cell-" + i + "-" + j + "' class='orange'></td>"); // Set default to orange
+                }
+                document.write("</tr>");
+            }
+        </script>
+    </table>
+
+    <script>
+        // Function to load data from the text file and populate the table
+        function loadData() {
+            fetch('GoldbergUrls.txt')
+                .then(response => {
+                    // Check if the response is okay
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const lines = data.trim().split('\n');
+                    lines.forEach(line => {
+                        const [url, a, b] = line.split(',').map(item => item.trim());
+                        const variation = parseInt(a);
+                        const version = parseInt(b);
+
+                        // Populate the corresponding cell
+                        const cell = document.getElementById(`cell-${variation}-${version}`);
+                        if (cell) {
+                            // Set cell to light blue and add a checkmark link
+                            cell.innerHTML = `<a href="${url}" target="_blank" style="text-decoration: none; color: black;">✓</a>`;
+                            cell.classList.remove('orange');
+                            cell.classList.add('light-blue'); // Add light blue class for link
+
+                            // Check for gray condition after adding the link
+                            if (variation + version > 31) {
+                                cell.classList.remove('light-blue'); // Remove light blue if condition met
+                                cell.classList.add('gray'); // Add gray class
+                            }
+                        }
+                    });
+
+                    // Update colors for remaining cells based on the variation + version condition
+                    for (let i = 0; i <= 30; i++) {
+                        for (let j = 1; j <= 30; j++) {
+                            const cell = document.getElementById(`cell-${i}-${j}`);
+
+                            // If the cell does not have a link (light blue), check for gray
+                            if (!cell.classList.contains('light-blue') && (i + j > 31 || (i == 0 && j > 17))) {
+                                cell.classList.remove('orange'); // Remove orange if it exists
+                                cell.classList.add('gray'); // Set to gray
+                            }
+                        }
+                    }
+                })
+                .catch(error => console.error('Error loading file:', error));
+        }
+
+        // Call the loadData function after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+
+</html>
