@@ -78,10 +78,21 @@
     <h1>Rack Probability Number</h1>
     <p>Type in a 7 or 8 letter NWL word and we'll give its ranking in the probability list.</p>
     <input type="text" id="letterInput" placeholder="Enter letters">
-    <button onclick="lookup()">Lookup</button>
+    <button id="myButton" onclick="lookup()">Lookup</button>
     <p id="result" class="result"></p>
   </div>
-  <script>async function lookup() {
+ 
+  <script>
+ document.getElementById("letterInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      // Prevent the default action if needed
+      event.preventDefault();
+      // Trigger the button's click event
+      document.getElementById("myButton").click();
+    }
+  });
+   
+   async function lookup() {
       const input = document.getElementById("letterInput").value;
       const sortedLetters = input.split('').sort().join('').toUpperCase();
 
