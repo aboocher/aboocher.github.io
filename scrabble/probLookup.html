@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 300px;
+    width: 90%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #4a90e2;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #357ABD;
+  }
+
+  .result {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #4a90e2;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter Lookup</title>
+  <!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+
+<body>
+  <div class="container">
+    <h1>Rack Probability Number</h1>
+    <p>Type in a 7 or 8 letter NWL word and we'll give its ranking in the probability list.</p>
+    <input type="text" id="letterInput" placeholder="Enter letters">
+    <button onclick="lookup()">Lookup</button>
+    <p id="result" class="result"></p>
+  </div>
+  <script>async function lookup() {
+      const input = document.getElementById("letterInput").value;
+      const sortedLetters = input.split('').sort().join('');
+
+      try {
+        const response = await fetch("probability.txt");
+        const data = await response.text();
+        const lines = data.trim().split("\n");
+
+        for (const line of lines) {
+          const [A, B] = line.split(",");
+          if (A === sortedLetters) {
+            document.getElementById("result").textContent = `Found: ${B}`;
+            return;
+          }
+        }
+        document.getElementById("result").textContent = "No match found.";
+      } catch (error) {
+        console.error("Error reading file:", error);
+        document.getElementById("result").textContent = "Error loading data.";
+      }
+    }
+  </script>
+</body>
+
+</html>
