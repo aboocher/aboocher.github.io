@@ -83,7 +83,7 @@
   </div>
   <script>async function lookup() {
       const input = document.getElementById("letterInput").value;
-      const sortedLetters = input.split('').sort().join('');
+      const sortedLetters = input.split('').sort().join('').toUpperCase();
 
       try {
         const response = await fetch("probability.txt");
