@@ -243,12 +243,12 @@
         async function loadWordLists() {
             try {
                 // Load main word list (W)
-                wordLists.W = (await loadTextFile('W.txt')).split('\n').map(word => word.trim());
+                wordLists.W = (await loadTextFile('stuff/W.txt')).split('\n').map(word => word.trim());
 
                 // Load Front and Back lists
                 for (let i = 0; i < 26; i++) {
-                    wordLists.Front[i] = (await loadTextFile(`stuff/\F_${i}.txt`)).split('\n').map(word => word.trim());
-                    wordLists.Back[i] = (await loadTextFile(`stuff/\B_${i}.txt`)).split('\n').map(word => word.trim());
+                    wordLists.Front[i] = (await loadTextFile(`stuff/F_${i}.txt`)).split('\n').map(word => word.trim());
+                    wordLists.Back[i] = (await loadTextFile(`stuff/B_${i}.txt`)).split('\n').map(word => word.trim());
                 }
             } catch (error) {
                 console.error('Error loading word lists:', error);
