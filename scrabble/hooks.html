@@ -299,7 +299,6 @@
             wordsLeft = shuffledHooks.length;
             const currTitle = document.getElementById('titletext');
             const theLetter = parseInt(document.getElementById('letter-select').value);
-            console.log(frontOrBack);
             const theLetters = String.fromCharCode(65 + theLetter);
             currTitle.textContent = frontOrBack + " " + theLetters + " Hooks";
             nextRound(size, probabilityMin, probabilityMax);
