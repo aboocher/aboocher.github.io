@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hooks Game v0.1</title>
+    <title>Hooks Game v0.2</title>
     <style>
         #grid-container {
             display: grid;
@@ -154,8 +154,13 @@
             color: white;
         }
 
+        .grid-cell.darkgreen {
+            background-color: #006400;
+            color: white;
+        }
+
         .grid-cell.blue {
-            background-color: #6495ED;
+            background-color: #F28C28;
             color: white;
         }
 
@@ -373,7 +378,11 @@
                 const word = words[index];
                 const isHook = hooks.includes(word);
                 const isGreen = cell.classList.contains('green');
-                if ((isHook && !isGreen) || (!isHook && isGreen)) {
+                if (isHook && !isGreen)  {
+                    cell.classList.add('darkgreen');
+                    cell.innerHTML += `<br>${isHook ? 'yes' : 'no'} hook`;
+                }
+                if  (!isHook && isGreen) {
                     cell.classList.add('red');
                     cell.innerHTML += `<br>${isHook ? 'yes' : 'no'} hook`;
                 }
