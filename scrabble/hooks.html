@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hooks Game v0.4</title>
+    <title>Hooks Game v0.5</title>
     <style>
         #grid-container {
             display: grid;
@@ -224,7 +224,7 @@
     <div id="grid-container"></div>
     <button id="check-button" class="hidden">Check</button>
     <button id="next-round-button" class="hidden">Next Round</button>
-    <div id="track">Words Left: ???</div>
+    <div id="track">Remaining After This Round: ???</div>
     <script>
         // Game state
         let wordLists = {
@@ -245,8 +245,8 @@
         }
 
         function updateN() {
-            const text_disp = wordsLeft + Math.floor(Math.random() * 11) - 5;
-            document.getElementById("track").innerText = "Left: ~~" + text_disp;
+            const text_disp = wordsLeft;
+            document.getElementById("track").innerText = "Remaining After This Round:" + text_disp;
         }
 
         // Load all word lists
@@ -330,12 +330,11 @@
             const probability = Math.random() * (probabilityMax - probabilityMin) + probabilityMin;
             const totalCells = size * size;
             const hooksCount = Math.floor(totalCells * (probability / 100));
-            wordsLeft = wordsLeft - hooksCount;
-            updateN();
             const wordsFromHooks = shuffledHooks.splice(0, hooksCount);
             const wordsFromW = shuffledW.splice(0, totalCells - hooksCount);
             currentRoundWords = shuffleArray([...wordsFromHooks, ...wordsFromW]);
-
+            wordsLeft = wordsLeft - wordsFromHooks.length;
+            updateN();
             renderGrid(size, currentRoundWords);
 
             // Show Check button and hide Next Round button
