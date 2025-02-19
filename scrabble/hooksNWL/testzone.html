@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text and Box Grid</title>
+    <style>
+        .form-container {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            /* Label column and input box column */
+            gap: 10px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-container label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .form-container input {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name">
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+    </div>
+
+</body>
+
+</html>

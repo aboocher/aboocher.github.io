@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hooks Game v0.5</title>
+    <style>
+        #grid-container {
+            display: grid;
+            gap: 5px;
+            margin: 20px auto;
+            max-width: 90vw;
+        }
+
+        .grid-cell {
+            background-color: #ddd;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            vertical-align: middle;
+            user-select: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .grid-cell.green {
+            background-color: #28a745;
+            color: white;
+            vertical-align: middle;
+        }
+
+        .grid-cell.red {
+            background-color: #dc3545;
+            color: white;
+            vertical-align: middle;
+        }
+
+        .grid-cell.blue {
+            background-color: #6495ED;
+            color: white;
+            vertical-align: middle;
+        }
+
+        .grid-cell.darkergray {
+            background-color: darkgrey;
+            color: white;
+            vertical-align: middle;
+        }
+
+        #check-button,
+        #next-round-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        #check-button:hover,
+        #next-round-button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #track {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+            padding: 20px;
+            align-items: center;
+        }
+
+
+        .controls textlabel {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .controls label,
+        .controls select,
+        .controls input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .mybutton {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .mybutton:hover {
+            background-color: #218838;
+        }
+
+        .probability-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .probability-inputs input {
+            width: 60px;
+            text-align: center;
+        }
+
+        .grid-cell.green {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .grid-cell.red {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .grid-cell.orange {
+            background-color: orange;
+            color: white;
+        }
+
+        .grid-cell.blue {
+            background-color: lightskyblue;
+            color: white;
+        }
+
+        .grid-cell.darkergray {
+            background-color: darkgrey;
+            color: white;
+        }
+
+        #check-button,
+        #next-round-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        #check-button:hover,
+        #next-round-button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="titletext">Hooks Game</h1>
+    <div class="controls" id="controls">
+        <label><input type="radio" name="front-back" value="Front" checked> Front
+        </label>
+        <label>
+            <input type="radio" name="front-back" value="Back"> Back
+        </label>
+        <textlabel>Letter: </textlabel><select id="letter-select">
+            <!-- Options A-Z -->
+        </select>
+        <textlabel>Size of Grid</textlabel>
+        <select id="size-select">
+            <!-- Options 4-10 -->
+        </select>
+        <!-- <div class="probability-inputs"> -->
+        <textlabel>Min Prob</textlabel>
+        <input type="number" id="probability-min" min="0" max="100" value="20">
+        <textlabel>Max</textlabel>
+        <input type="number" id="probability-max" min="0" max="100" value="40">
+        <!-- </div> -->
+    </div>
+    <div class="mybutton" id="start-button">Start</div>
+    <div id="grid-container"></div>
+    <button id="check-button" class="hidden">Check</button>
+    <button id="next-round-button" class="hidden">Next Round</button>
+    <div id="track">Remaining After This Round: ???</div>
+    <script>
+        // Game state
+        let wordLists = {
+            W: [], // Main word list
+            Front: [], // Front lists (F_0 to F_25)
+            Back: [] // Back lists (B_0 to B_25)
+        };
+        let shuffledW = [];
+        let shuffledHooks = [];
+        let currentRoundWords = [];
+        let wordsLeft = 0;
+        let currentTitle = "";
+        // Helper function to load a text file
+        async function loadTextFile(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to load ${url}`);
+            return response.text();
+        }
+
+        function updateN() {
+            const text_disp = wordsLeft;
+            document.getElementById("track").innerText = "Remaining After This Round:" + text_disp;
+        }
+
+        // Load all word lists
+        async function loadWordLists() {
+            try {
+                // Load main word list (W)
+                wordLists.W = (await loadTextFile('stuff/W.txt')).split('\n').map(word => word.trim());
+
+                // Load Front and Back lists
+                for (let i = 0; i < 26; i++) {
+                    wordLists.Front[i] = (await loadTextFile(`stuff/F_${i}.txt`)).split('\n').map(word => word.trim());
+                    wordLists.Back[i] = (await loadTextFile(`stuff/B_${i}.txt`)).split('\n').map(word => word.trim());
+                }
+            } catch (error) {
+                console.error('Error loading word lists:', error);
+            }
+        }
+
+        // Initialize the game
+        function initializeGame() {
+            // Populate letter select options (A-Z)
+            const letterSelect = document.getElementById('letter-select');
+            for (let i = 0; i < 26; i++) {
+                const letter = String.fromCharCode(65 + i);
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = letter;
+                letterSelect.appendChild(option);
+            }
+
+            // Populate size select options (4-10)
+            const sizeSelect = document.getElementById('size-select');
+            for (let i = 4; i <= 10; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i}x${i}`;
+                sizeSelect.appendChild(option);
+            }
+
+            // Set default size to 6
+            sizeSelect.value = 5;
+
+            // Add event listeners
+            document.getElementById('start-button').addEventListener('click', startGame);
+            document.getElementById('check-button').addEventListener('click', checkAnswers);
+            document.getElementById('next-round-button').addEventListener('click', nextRound);
+        }
+
+        // Start the game
+        function startGame() {
+            const frontOrBack = document.querySelector('input[name="front-back"]:checked').value;
+            const letterIndex = parseInt(document.getElementById('letter-select').value);
+            const size = parseInt(document.getElementById('size-select').value);
+            const probabilityMin = parseInt(document.getElementById('probability-min').value);
+            const probabilityMax = parseInt(document.getElementById('probability-max').value);
+            const hooks = frontOrBack === 'Front' ? wordLists.Front[letterIndex] : wordLists.Back[letterIndex];
+            shuffledW = shuffleArray([...wordLists.W]);
+            shuffledHooks = shuffleArray([...hooks]);
+            shuffledW = shuffledW.filter(word => !shuffledHooks.includes(word));
+            wordsLeft = shuffledHooks.length;
+            const currTitle = document.getElementById('titletext');
+            const theLetter = parseInt(document.getElementById('letter-select').value);
+            const theLetters = String.fromCharCode(65 + theLetter);
+            currTitle.textContent = frontOrBack + " " + theLetters + " Hooks";
+            nextRound(size, probabilityMin, probabilityMax);
+
+            // Show Check button
+            document.getElementById('check-button').classList.remove('hidden');
+            document.getElementById('next-round-button').classList.add('hidden');
+            // Hide Controls
+            document.getElementById('controls').classList.add('hidden');
+            document.getElementById('start-button').classList.add('hidden');
+        }
+
+        // Move to the next round
+        function nextRound() {
+            const size = parseInt(document.getElementById('size-select').value);
+            const probabilityMin = parseInt(document.getElementById('probability-min').value);
+            const probabilityMax = parseInt(document.getElementById('probability-max').value);
+
+            const probability = Math.random() * (probabilityMax - probabilityMin) + probabilityMin;
+            const totalCells = size * size;
+            const hooksCount = Math.floor(totalCells * (probability / 100));
+            const wordsFromHooks = shuffledHooks.splice(0, hooksCount);
+            const wordsFromW = shuffledW.splice(0, totalCells - hooksCount);
+            currentRoundWords = shuffleArray([...wordsFromHooks, ...wordsFromW]);
+            wordsLeft = wordsLeft - wordsFromHooks.length;
+            updateN();
+            renderGrid(size, currentRoundWords);
+
+            // Show Check button and hide Next Round button
+            document.getElementById('check-button').classList.remove('hidden');
+            document.getElementById('next-round-button').classList.add('hidden');
+        }
+
+        // Render the grid
+        function renderGrid(size, words) {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            words.forEach(word => {
+                const cell = document.createElement('div');
+                cell.classList.add('grid-cell');
+                cell.textContent = word;
+                cell.addEventListener('click', () => toggleCell(cell));
+                gridContainer.appendChild(cell);
+            });
+        }
+
+        // Toggle cell color
+        function toggleCell(cell) {
+            cell.classList.toggle('green');
+        }
+
+        // Check answers
+        function checkAnswers() {
+            const frontOrBack = document.querySelector('input[name="front-back"]:checked').value;
+            const letterIndex = parseInt(document.getElementById('letter-select').value);
+            const hooks = frontOrBack === 'Front' ? wordLists.Front[letterIndex] : wordLists.Back[letterIndex];
+            const cells = document.querySelectorAll('.grid-cell');
+            const words = Array.from(cells).map(cell => cell.textContent);
+            evaluateGrid(words, hooks);
+
+            // Hide Check button and show Next Round button
+            document.getElementById('check-button').classList.add('hidden');
+            document.getElementById('next-round-button').classList.remove('hidden');
+        }
+
+        // Evaluate the grid
+        function evaluateGrid(words, hooks) {
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach((cell, index) => {
+                const word = words[index];
+                const isHook = hooks.includes(word);
+                const isGreen = cell.classList.contains('green');
+                if (isHook && !isGreen) {
+                    cell.classList.add('orange');
+                    cell.innerHTML += `<br>${isHook ? 'yes' : 'no'} hook`;
+                }
+                if (!isHook && isGreen) {
+                    cell.classList.add('red');
+                    cell.innerHTML += `<br>${isHook ? 'yes' : 'no'} hook`;
+                }
+                if (isHook && isGreen) {
+                    cell.classList.add('blue');
+                }
+                if (!isHook && !isGreen) {
+                    cell.classList.add('darkergray');
+                }
+            });
+        }
+
+        // Helper function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Load word lists and initialize the game
+        loadWordLists().then(initializeGame);
+    </script>
+</body>
+
+</html>
