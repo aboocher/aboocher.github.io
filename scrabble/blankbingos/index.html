@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanks Bingoes!</title>
+    <style>
+        body {
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90vh;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        }
+
+        .score {
+            /* Use flexbox to align items in a row */
+            justify-content: space-between;
+            /* Space out the elements with equal space */
+            gap: 20px;
+            /* Add some space between each element */
+        }
+
+        .score p {
+            margin: 0;
+            /* Remove default margins on <p> tags */
+        }
+
+        .topinfo {
+            width: 50%;
+            color: purple;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            /* Use flexbox to align items */
+            width: 100%;
+            height: 60vh;
+            padding: 20px;
+            /* Full viewport height */
+        }
+
+        .left {
+            flex: 4;
+            /* Left column takes up 3.5 parts of the space */
+            padding: 20px;
+            background-color: lightblue;
+            display: flex;
+            /* Use flexbox for the left column */
+            flex-direction: column;
+            /* Stack grid and input-area vertically */
+            height: 100%;
+        }
+
+        .right {
+            flex: 1;
+            /* Take up 1 part of the space */
+            display: flex;
+            flex-direction: column;
+            /* Stack B and C vertically */
+            padding: 20px;
+        }
+
+        .grid {
+            flex: 9.5;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background-color: lightblue;
+            margin-top: 10px;
+        }
+
+        .grid div {
+            display: inline-block;
+            padding: 1px;
+            min-width: 120px;
+            max-width: 200px;
+            white-space: nowrap;
+            background-color: #f4e1d2;
+            /* Light sepia shade */
+            border: 1px solid #d3a87d;
+            /* Sepia-colored border */
+            border-radius: 5px;
+            /* Optional: rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* Light shadow for subtle depth */
+            text-align: center;
+            /* Center the text inside the box */
+            /* Set font to Courier New (monospace) */
+            font-family: 'Nimbus Mono', monospace;
+            font-size: 126%;
+            /* Larger font size */
+            font-weight: normal;
+            /* Optional: Make the text bold */
+            line-height: 1.5;
+            /* Add space between lines for clarity */
+            color: #3b3b3b;
+            /* Dark text color for better contrast */
+
+            /* Adjust spacing between characters */
+            letter-spacing: 3px;
+            /* Increase the spacing between characters */
+        }
+
+
+        .input-area {
+            flex: 1;
+            display: flex;
+            padding: 15px;
+            /* Space inside the box */
+            font-size: 18px;
+            /* Font size for the text */
+            width: 300px;
+            /* Set the width of the input box */
+            /* Set the minimum height */
+            /* Allow height to adjust automatically */
+            border: 2px solid #ccc;
+            /* Border for the input */
+            border-radius: 5px;
+            /* Rounded corners */
+            /* Show scrollbars when needed */
+        }
+
+        .input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .wordbox {
+            background-color: white;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            /* Stack items vertically */
+            justify-content: flex-start;
+            /* Align items to the top */
+            font-size: 20px;
+            height: 45%;
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            border: 1px solid #ccc;
+            padding: 10px;
+            flex-grow: 1;
+            /* Allow the word box to grow in height as needed */
+        }
+
+        .wordbox div {
+            white-space: normal;
+            /* Ensure the text wraps to the next line */
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #d9534f;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .start-btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #58a6ff;
+            /* Light blue background */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background-color: #007bff;
+            /* Darker blue when hovering */
+        }
+
+        .start-btn:focus {
+            outline: none;
+            /* Remove focus outline for a cleaner look */
+        }
+
+        .start-btn:active {
+            background-color: #0056b3;
+            /* Even darker blue when clicked */
+        }
+    </style>
+</head>
+<h1>Blank Bingos!</h1>
+<div class="topinfo" id="info">
+    Upload a text file of seven letter words that you know. If you don't have one, just hit enter, and a default list
+    will be all bingos in ??AENRT. 50 words will be selected with at most 9 anagrams. The app will tell you how many
+    anagrams there are
+    that you know. There might be more that you haven't learned yet. After you clear all the ones you know the cell will
+    change color and you'll see how many more there are. There is no timer or solutions, but there is a cheat button.
+    Once
+    you click it, cheat mode will be active. Just click on what you're struggling with and it will give the answers.
+</div>
+<div class="score" id="scoreBox">
+    <p id="score1"> Score: will update after you type the first word</p>
+    <p id="score2"> Since I cannot figure out for the life of me how </p>
+    <p id="score3"> To get asynchronous functions to work!</p>
+</div>
+<input type="file" id="fileInput">
+<div class="container">
+    <div class="left">
+        <div class="grid" id="grid"></div>
+        <div class="input-area">
+            <input type="text" id="wordInput" placeholder="Guess" autocomplete="off">
+        </div>
+    </div>
+    <div class="right">
+        <div class="wordbox" id="wordBox">Words Correct:<br></div>
+        <div class="wordbox" id="hintBox">Cheaters Only:<br></div>
+    </div>
+    <div class="timer" id="timer">Time Left: 5:00</div>
+
+
+
+</div>
+<br><br>
+<div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
+    <div><button id="cheat" onclick="addEventListenersToElements(wordCounts)">Cheat</button>
+        </button></div>
+</div>
+
+<script>
+    document.getElementById("cheat").classList.add("hidden");
+    document.getElementById("scoreBox").classList.add("hidden");
+    let timeLeft = 300;
+    let total1 = 0;
+    let total2 = 0;
+    let score1 = 0;
+    let score2 = 0;
+    let timerInterval;
+    let userWords = new Set();
+    let masterData = {};
+    let gridWords = [];
+    let wordCounts = {};
+    let enteredWords = new Set();
+
+    function updateScores() {
+        document.getElementById("scoreBox").style.display = "flex";
+        const score1Element = document.getElementById("score1");
+        const score2Element = document.getElementById("score2");
+        const score3Element = document.getElementById("score3");
+        let score3 = score1 + score2;
+        let total3 = total1 + total2;
+        let percentage1 = ((score1 / total1) * 100).toFixed(1);
+        console.log(score1, score2, total1, total2);
+        let percentage2 = ((score2 / total2) * 100).toFixed(1);
+        let percentage3 = ((score3 / total3) * 100).toFixed(1);
+        // Update the scores in the HTML
+        score1Element.textContent = `Known: ${score1} of ${total1} (${percentage1}%)`;
+        score2Element.textContent = `Unknown: ${score2} of ${total2} (${percentage2}%)`;
+        score3Element.textContent = `Total: ${score3} of ${total3} (${percentage3}%)`;
+    }
+
+
+    async function startGame(fileURL = null, fileText = null) {
+        // Hide the start button once the game starts
+        processFile();
+        document.getElementById("startButton").classList.add("hidden");
+        document.getElementById("info").classList.add("hidden");
+
+        // Hide the file input and maxMi options
+        document.getElementById("fileInput").classList.add("hidden");
+
+        // Show the word input box
+        document.getElementById("wordInput").classList.remove("hidden");
+        document.getElementById("scoreBox").classList.remove("hidden");
+        document.getElementById("cheat").classList.remove("hidden");
+        document.getElementById("wordInput").focus()
+        startTimer();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById("timer").textContent = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up!");
+            }
+        }, 1000);
+    }
+
+    async function loadMasterData() {
+        const response = await fetch("master.txt");
+        const text = await response.text();
+        text.split('\n').forEach(line => {
+            const parts = line.trim().split(' ');
+            if (parts.length > 1) {
+                const key = parts[0];
+                const values = parts.slice(1);
+                masterData[key] = values;
+            }
+        });
+    }
+
+    document.getElementById("wordInput").classList.add("hidden");
+    document.getElementById("timer").classList.add("hidden");
+    async function processFile() {
+        await loadMasterData();
+        const fileInput = document.getElementById('fileInput');
+        let file = fileInput.files[0]; // Get the first file in the input
+        if (!file) {
+            const response = await fetch("default.txt");
+            const blob = await response.blob();
+            file = new File([blob], "default.txt", { type: "text/plain" });
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            // Step 1: Parse the input and create a Set of user words
+            userWords = new Set(e.target.result.split('\n').map(line => line.trim()).filter(line => line));
+
+            let gridWords = [];
+            let gridHtml = "";
+
+            // Step 2: Loop to fill the grid with words, filtering out those with m > 9
+            while (gridWords.length < 50) {
+                const modifiedWords = Array.from(userWords).sort(() => Math.random() - 0.5);
+
+                // Step 3: Process words and check if m <= 9
+                for (let word of modifiedWords) {
+                    const chars = word.split("");
+                    const randomIndex = Math.floor(Math.random() * chars.length);
+                    chars[randomIndex] = "?";  // Randomize a character to replace it with "?"
+                    let modifiedWord = chars.sort().join("");  // Sort the characters
+                    modifiedWord = modifiedWord.replace(/\n/g, '');
+                    let n = 0, m = 0;
+                    if (masterData[modifiedWord]) {
+                        const validWords = masterData[modifiedWord];
+                        m = validWords.length;
+                        n = validWords.filter(w => userWords.has(w)).length;
+                    }
+
+                    // Add the word to the grid if its m value is 9 or less
+                    if (m <= 9 && !gridWords.includes(modifiedWord)) {
+                        wordCounts[modifiedWord] = { n, m, words: masterData[modifiedWord] || [] };
+                        gridWords.push(modifiedWord);  // Add word to grid
+                        total1 += n;
+                        total2 += m;
+                        gridHtml += `
+                                <div class = 'gridinside' id='${modifiedWord}'>${modifiedWord} ${n}|${m}</div>`;
+                    }
+
+                    // Break the loop if we have enough words (50 in total)
+                    if (gridWords.length >= 50) {
+                        break;
+                    }
+                }
+            }
+
+            // Step 4: Output the final HTML grid (if needed, or return it for use in your app)
+            document.getElementById("grid").innerHTML = gridHtml;
+            <!-- startTimer(); -->
+        };
+        reader.readAsText(file);
+    }
+
+    document.getElementById("wordInput").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            const inputWord = event.target.value.trim().toUpperCase();
+            event.target.value = "";
+            if (!inputWord || enteredWords.has(inputWord)) return;
+            enteredWords.add(inputWord);
+            let addMe = 0;
+
+            Object.keys(wordCounts).forEach(modifiedWord => {
+                if (wordCounts[modifiedWord].words.includes(inputWord)) {
+                    addMe = 1;
+                    wordCounts[modifiedWord].words = wordCounts[modifiedWord].words.filter(item => item !== inputWord);
+                    wordCounts[modifiedWord].m--;
+                    score2 += 1;
+                    if (userWords.has(inputWord)) {
+                        wordCounts[modifiedWord].n--;
+                        score1 += 1;
+                    }
+                    const gridCell = document.getElementById(modifiedWord);
+                    if (gridCell) {
+                        if (wordCounts[modifiedWord].n > 0) {
+                            gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m} `;
+                        } else if (wordCounts[modifiedWord].m > 0) {
+                            gridCell.style.backgroundColor = "#ffd700";
+                            gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m} `;
+                        } else {
+                            gridCell.style.backgroundColor = "blue";
+                            gridCell.innerHTML = ``;
+
+                        }
+                        updateScores();
+                    }
+
+                }
+
+            });
+            if (addMe === 1) { addWordToBox(inputWord); addMe = 0; }
+        }
+
+    });
+
+    function addWordToBox(word) {
+        const wordBox = document.querySelector('.wordbox');
+        // Create a new div for the word
+        const wordDiv = document.createElement('div');
+        wordDiv.textContent = word;
+        // Add the word div to the word box
+        wordBox.appendChild(wordDiv);
+        // Auto-scroll to the bottom of the wordbox
+        wordBox.scrollTop = wordBox.scrollHeight;
+    }
+
+    function addEventListenersToElements(hashTable) {
+        // Loop through each key in the hash table
+        document.getElementById("cheat").innerHTML = "What A Cheater!";
+        for (const key in hashTable) {
+            if (hashTable.hasOwnProperty(key)) {
+                // Get the element by its id
+                const element = document.getElementById(key);
+                // Check if the element exists
+                if (element) {
+                    // Add an event listener to the element
+                    element.addEventListener("click", function () {
+                        // This function runs when the element is clicked
+                        element.style.backgroundColor = "grey"; // Example: change background color
+                        for (const cheatword of wordCounts[key].words) {
+                            addCheatWordToBox(cheatword);
+                        }
+
+                    });
+                } else {
+                }
+            }
+        }
+    }
+
+    function addCheatWordToBox(word) {
+        const wordBox = document.getElementById("hintBox")
+        // Create a new div for the word
+        const wordDiv = document.createElement('div');
+        wordDiv.textContent = word;
+        // Add the word div to the word box
+        wordBox.appendChild(wordDiv);
+        // Auto-scroll to the bottom of the wordbox
+        wordBox.scrollTop = wordBox.scrollHeight;
+    }
+
+</script>
+</body>
+
+</html>
