@@ -6,66 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blanks Bingoes!</title>
     <style>
+        /* Global Styles */
+
         body {
             font-family: monospace;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            /* Center the content horizontally */
             justify-content: center;
-            height: 90vh;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            /* Center vertically */
+            height: 100%;
+            background-color: lightblue;
+            margin: 10px 10px 10px;
+            padding: 0;
         }
 
         .score {
-            /* Use flexbox to align items in a row */
-            justify-content: space-between;
-            /* Space out the elements with equal space */
-            gap: 20px;
-            /* Add some space between each element */
+            position: relative;
+            width: 95%;
+            height: 95%;
+            /* Positioning relative to the body */
+            /* Space from the top */
+            /* Space from the left */
+            font-size: 18px;
+            font-weight: bold;
+            /* Ensure it's on top of other elements */
+            display: flex;
+            /* Space between the <p> elements */
+            gap: 60px;
+            border: 1px solid #d3a87d;
         }
 
-        .score p {
-            margin: 0;
-            /* Remove default margins on <p> tags */
+        .container {
+            display: flex;
+            width: 95%;
+            height: 95%;
+            padding: 1px;
+            justify-content: center;
+            border: 1px solid #d3a87d;
+            /* Keep content centered horizontally */
         }
 
-        .topinfo {
-            width: 50%;
-            color: purple;
+        .left {
+            flex: 4;
+            padding: 20px;
+            background-color: lightblue;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .right {
+            flex: 1;
+            padding: 2px;
         }
 
         h1 {
             color: #333;
         }
 
-        .container {
-            display: flex;
-            /* Use flexbox to align items */
-            width: 100%;
-            height: 60vh;
-            padding: 20px;
-            /* Full viewport height */
-        }
-
-        .left {
-            flex: 4;
-            /* Left column takes up 3.5 parts of the space */
-            padding: 20px;
-            background-color: lightblue;
-            display: flex;
-            /* Use flexbox for the left column */
-            flex-direction: column;
-            /* Stack grid and input-area vertically */
-            height: 100%;
-        }
-
-        .right {
-            flex: 1;
-            /* Take up 1 part of the space */
-            display: flex;
-            flex-direction: column;
-            /* Stack B and C vertically */
-            padding: 20px;
+        .topinfo {
+            width: 80%;
+            color: purple;
         }
 
         .grid {
@@ -83,165 +85,221 @@
             max-width: 200px;
             white-space: nowrap;
             background-color: #f4e1d2;
-            /* Light sepia shade */
             border: 1px solid #d3a87d;
-            /* Sepia-colored border */
             border-radius: 5px;
-            /* Optional: rounded corners */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            /* Light shadow for subtle depth */
             text-align: center;
-            /* Center the text inside the box */
-            /* Set font to Courier New (monospace) */
             font-family: 'Nimbus Mono', monospace;
             font-size: 126%;
-            /* Larger font size */
             font-weight: normal;
-            /* Optional: Make the text bold */
             line-height: 1.5;
-            /* Add space between lines for clarity */
             color: #3b3b3b;
-            /* Dark text color for better contrast */
-
-            /* Adjust spacing between characters */
             letter-spacing: 3px;
-            /* Increase the spacing between characters */
         }
 
-
+        /* Input Area */
         .input-area {
             flex: 1;
             display: flex;
             padding: 15px;
-            /* Space inside the box */
-            font-size: 18px;
-            /* Font size for the text */
-            width: 300px;
-            /* Set the width of the input box */
-            /* Set the minimum height */
-            /* Allow height to adjust automatically */
-            border: 2px solid #ccc;
-            /* Border for the input */
-            border-radius: 5px;
-            /* Rounded corners */
-            /* Show scrollbars when needed */
+            width: 30%;
+            box-sizing: border-box;
         }
 
-        .input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .input-area input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 20px;
+            border: 2px solid #888;
+            border-radius: 8px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .input-area input:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+        }
+
+        /* Wordbox and Hints */
+        .wordbox-title {
+            font-size: 12pt;
+            font-weight: 400;
+            margin: 5px 0 5px;
+            color: #2d2d2d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .wordbox {
-            background-color: white;
-            margin-bottom: 10px;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            /* Stack items vertically */
             justify-content: flex-start;
-            /* Align items to the top */
-            font-size: 20px;
-            height: 45%;
+            height: 20%;
+            max-height: 300px;
             overflow-y: auto;
-            /* Enables vertical scrolling */
-            border: 1px solid #ccc;
-            padding: 10px;
-            flex-grow: 1;
-            /* Allow the word box to grow in height as needed */
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .wordbox div {
-            white-space: normal;
-            /* Ensure the text wraps to the next line */
+        .wordbox div,
+        #hintBox div {
+            font-size: 12pt;
+            transition: background-color 0.3s ease;
         }
 
-        .timer {
-            margin-top: 10px;
-            font-size: 18px;
-            color: #d9534f;
+        .wordbox div:hover,
+        #hintBox div:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
         }
 
-        .hidden {
-            display: none;
+        .wordbox div:nth-child(even),
+        #hintBox div:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
+        .wordbox:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border-color: #bdbdbd;
+        }
+
+        /* Hint Box */
+        #hintBox div {
+            padding: 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #hintBox div:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        #hintBox div:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Button Styles */
         .start-btn {
-            padding: 12px 25px;
-            font-size: 18px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            cursor: pointer;
             background-color: #58a6ff;
-            /* Light blue background */
             color: white;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .start-btn:hover {
             background-color: #007bff;
-            /* Darker blue when hovering */
         }
 
         .start-btn:focus {
             outline: none;
-            /* Remove focus outline for a cleaner look */
         }
 
         .start-btn:active {
             background-color: #0056b3;
-            /* Even darker blue when clicked */
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        .cleared {
+            animation: flashBlue 0.3s ease;
+            background-color: blueviolet;
+        }
+
+        @keyframes flashBlue {
+            0% {
+                background-color: #00f;
+            }
+
+            100% {
+                background-color: orange;
+            }
         }
     </style>
 </head>
-<h1>Blank Bingos!</h1>
 <div class="topinfo" id="info">
-    Upload a text file of seven letter words that you know. If you don't have one, just hit enter, and a default list
-    will be all bingos in ??AENRT. 50 words will be selected with at most 9 anagrams. The app will tell you how many
-    anagrams there are
-    that you know. There might be more that you haven't learned yet. After you clear all the ones you know the cell will
-    change color and you'll see how many more there are. There is no timer or solutions, but there is a cheat button.
-    Once
-    you click it, cheat mode will be active. Just click on what you're struggling with and it will give the answers.
+    <h1>Blank Bingos!</h1>
+    <p>This game will help you practice finding bingos that you (in theory) know and also tell you how many others there
+        are. Upload a list of words (not alphagrams) that you know. If you don't have one, just click start and it will
+        default to a "known" word list that is all the words containing AENRT. As you type the words, if it's a word on
+        your
+        list it will pop up in blue, otherwise in black.</p>
+
+    If you get stuck, active the helpful tools. There is a hint / answer toggle. If you click on a cell, it will tell
+    you either the first letter of all the remaining words, or just give you the answer. It is color coded as well.
+    <p>
+        There's also an animate button that will go through the whole grid and change the blank from A to Z one per
+        second.
+        Turn it off when you are done.</p>
 </div>
 <div class="score" id="scoreBox">
-    <p id="score1"> Score: will update after you type the first word</p>
-    <p id="score2"> Since I cannot figure out for the life of me how </p>
-    <p id="score3"> To get asynchronous functions to work!</p>
+    <p> Scores:</p>
+    <p id="score1"></p>
+    <p id="score2"> </p>
+    <p id="score3"></p>
 </div>
 <input type="file" id="fileInput">
-<div class="container">
+<br>
+<div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
+</div>
+
+<div class="container hidden" id="maincont">
     <div class="left">
         <div class="grid" id="grid"></div>
         <div class="input-area">
             <input type="text" id="wordInput" placeholder="Guess" autocomplete="off">
         </div>
+
+        <button id="cheat" onclick="enableCheatMode()" class="start-btn hidden">Activate Help Tools</button>
+        <div id="cheat-controls" class="hidden">
+            <button onclick="toggleAnimateGridSolve(this)">Animate Blanks (Toggle)</button>
+            Click a word to see: <label>
+                <input type="radio" name="cheatMode" value="hint" checked> 1st Letters
+            </label>
+            <label>
+                <input type="radio" name="cheatMode" value="answer"> Answers
+            </label>
+            <button id="clearHints">Clear Hints</button>
+        </div>
     </div>
     <div class="right">
-        <div class="wordbox" id="wordBox">Words Correct:<br></div>
-        <div class="wordbox" id="hintBox">Cheaters Only:<br></div>
+        <div class="wordbox-title">Words Correct:</div>
+        <div class="wordbox" id="wordBox"></div>
+
+        <div class="wordbox-title">Hints:</div>
+        <div class="wordbox" id="hintBox"></div>
+
+        <div class="wordbox-title">Extra Info:</div> <!-- Third box -->
+        <div class="wordbox" id="wrongBox"></div> <!-- Third box content -->
     </div>
-    <div class="timer" id="timer">Time Left: 5:00</div>
-
+</div>
 
 
 </div>
-<br><br>
-<div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
-    <div><button id="cheat" onclick="addEventListenersToElements(wordCounts)">Cheat</button>
-        </button></div>
-</div>
+
 
 <script>
-    document.getElementById("cheat").classList.add("hidden");
     document.getElementById("scoreBox").classList.add("hidden");
     let timeLeft = 300;
     let total1 = 0;
     let total2 = 0;
     let score1 = 0;
     let score2 = 0;
-    let timerInterval;
     let userWords = new Set();
     let masterData = {};
     let gridWords = [];
@@ -249,7 +307,6 @@
     let enteredWords = new Set();
 
     function updateScores() {
-        document.getElementById("scoreBox").style.display = "flex";
         const score1Element = document.getElementById("score1");
         const score2Element = document.getElementById("score2");
         const score3Element = document.getElementById("score3");
@@ -269,6 +326,10 @@
     async function startGame(fileURL = null, fileText = null) {
         // Hide the start button once the game starts
         processFile();
+        document.getElementById("scoreBox").classList.remove("hidden");
+        document.getElementById("wordInput").focus();
+        document.getElementById("maincont").classList.remove("hidden");
+        document.getElementById("cheat").classList.remove("hidden");
         document.getElementById("startButton").classList.add("hidden");
         document.getElementById("info").classList.add("hidden");
 
@@ -277,23 +338,7 @@
 
         // Show the word input box
         document.getElementById("wordInput").classList.remove("hidden");
-        document.getElementById("scoreBox").classList.remove("hidden");
-        document.getElementById("cheat").classList.remove("hidden");
         document.getElementById("wordInput").focus()
-        startTimer();
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById("timer").textContent = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                alert("Time's up!");
-            }
-        }, 1000);
     }
 
     async function loadMasterData() {
@@ -310,7 +355,6 @@
     }
 
     document.getElementById("wordInput").classList.add("hidden");
-    document.getElementById("timer").classList.add("hidden");
     async function processFile() {
         await loadMasterData();
         const fileInput = document.getElementById('fileInput');
@@ -366,11 +410,29 @@
 
             // Step 4: Output the final HTML grid (if needed, or return it for use in your app)
             document.getElementById("grid").innerHTML = gridHtml;
-            <!-- startTimer(); -->
         };
         reader.readAsText(file);
     }
+    function isMatchingWithWildcard(x, y) {
+        // Step 1: Sort and capitalize x
+        const sortedX = x.toUpperCase().split('').sort().join('');
 
+        // Step 2: Get the last 6 characters of y (ignoring the ?)
+        const last6Y = y.slice(1).toUpperCase();  // Remove '?' and capitalize the letters
+
+        // Step 3: Check if any combination of 6 letters from sortedX matches the last 6 letters of y
+        for (let i = 0; i < sortedX.length; i++) {
+            // Remove one letter from sortedX
+            const newX = sortedX.slice(0, i) + sortedX.slice(i + 1);  // Remove the i-th letter
+
+            // Check if the new X matches the last 6 characters of y
+            if (newX === last6Y) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     document.getElementById("wordInput").addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
             const inputWord = event.target.value.trim().toUpperCase();
@@ -380,6 +442,10 @@
             let addMe = 0;
 
             Object.keys(wordCounts).forEach(modifiedWord => {
+                if (isMatchingWithWildcard(inputWord, modifiedWord) & !wordCounts[modifiedWord].words.includes(inputWord)) {
+                    addWordToWrongBox(inputWord + "*");
+                    return;
+                }
                 if (wordCounts[modifiedWord].words.includes(inputWord)) {
                     addMe = 1;
                     wordCounts[modifiedWord].words = wordCounts[modifiedWord].words.filter(item => item !== inputWord);
@@ -397,9 +463,9 @@
                             gridCell.style.backgroundColor = "#ffd700";
                             gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m} `;
                         } else {
+                            gridCell.classList.add("cleared");
+                            gridCell.innerHTML = "";
                             gridCell.style.backgroundColor = "blue";
-                            gridCell.innerHTML = ``;
-
                         }
                         updateScores();
                     }
@@ -407,55 +473,150 @@
                 }
 
             });
-            if (addMe === 1) { addWordToBox(inputWord); addMe = 0; }
+            if (addMe === 1) { addWordToWordBox(inputWord); addMe = 0; }
         }
 
     });
 
-    function addWordToBox(word) {
-        const wordBox = document.querySelector('.wordbox');
-        // Create a new div for the word
-        const wordDiv = document.createElement('div');
+    function addWordToWrongBox(word) {
+        const wordBox = document.getElementById("wrongBox");
+        const wordDiv = document.createElement("div");
+
+        // Check if the word is in userWords to color it blue
         wordDiv.textContent = word;
-        // Add the word div to the word box
+        wordDiv.style.color = "red"; // Non-user word in gray
+
         wordBox.appendChild(wordDiv);
-        // Auto-scroll to the bottom of the wordbox
         wordBox.scrollTop = wordBox.scrollHeight;
     }
 
-    function addEventListenersToElements(hashTable) {
-        // Loop through each key in the hash table
-        document.getElementById("cheat").innerHTML = "What A Cheater!";
-        for (const key in hashTable) {
-            if (hashTable.hasOwnProperty(key)) {
-                // Get the element by its id
-                const element = document.getElementById(key);
-                // Check if the element exists
-                if (element) {
-                    // Add an event listener to the element
-                    element.addEventListener("click", function () {
-                        // This function runs when the element is clicked
-                        element.style.backgroundColor = "grey"; // Example: change background color
-                        for (const cheatword of wordCounts[key].words) {
-                            addCheatWordToBox(cheatword);
-                        }
+    function addWordToWordBox(word) {
+        const wordBox = document.getElementById("wordBox");
+        const wordDiv = document.createElement("div");
 
-                    });
-                } else {
-                }
+        // Check if the word is in userWords to color it blue
+        if (userWords.has(word)) {
+            wordDiv.textContent = word;
+            wordDiv.style.color = "blue"; // User word in blue
+        } else {
+            wordDiv.textContent = word;
+            wordDiv.style.color = "gray"; // Non-user word in gray
+        }
+
+        wordBox.appendChild(wordDiv);
+        wordBox.scrollTop = wordBox.scrollHeight;
+    }
+
+    function enableCheatMode() {
+        document.getElementById("cheat").classList.add("hidden");
+        document.getElementById("cheat-controls").classList.remove("hidden");
+        document.getElementById("wordInput").focus();
+
+        for (const key in wordCounts) {
+            const element = document.getElementById(key);
+            if (element) {
+                element.addEventListener("click", function () {
+                    element.style.backgroundColor = "grey";
+                    const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
+
+                    for (const word of wordCounts[key].words) {
+                        if (cheatMode === "hint") {
+                            if (userWords.has(word)) {
+                                addCheatHintToBox(word[0], "lightblue");
+                            } else { addCheatHintToBox(word[0], "white"); }
+                        } else {
+                            if (userWords.has(word)) {
+                                addCheatWordToBox(word, "lightblue");
+                            } else {
+                                addCheatWordToBox(word, "white");
+                            }
+                        }
+                    }
+                });
             }
         }
     }
+    document.getElementById("clearHints").addEventListener("click", function () {
+        const hintBox = document.getElementById("hintBox");
+        hintBox.innerHTML = ""; // Clear all children
+    });
 
-    function addCheatWordToBox(word) {
+    function addCheatHintToBox(firstLetter, c) {
+        const wordBox = document.getElementById("hintBox");
+        const hintDiv = document.createElement("div");
+        hintDiv.style.backgroundColor = c;
+        hintDiv.textContent = firstLetter;
+        wordBox.appendChild(hintDiv);
+        wordBox.scrollTop = wordBox.scrollHeight;
+    }
+
+    function addCheatWordToBox(word, c) {
         const wordBox = document.getElementById("hintBox")
         // Create a new div for the word
         const wordDiv = document.createElement('div');
         wordDiv.textContent = word;
+        wordDiv.style.backgroundColor = c;
         // Add the word div to the word box
         wordBox.appendChild(wordDiv);
         // Auto-scroll to the bottom of the wordbox
         wordBox.scrollTop = wordBox.scrollHeight;
+    }
+
+    let isAnimating = false;
+    let animationInterval = null;
+    let originalGridWords = {};
+
+    function toggleAnimateGridSolve(button) {
+        document.getElementById("wordInput").focus();
+        const keys = Object.keys(wordCounts);
+
+        if (!isAnimating) {
+            // Save original words and start animation
+            originalGridWords = {};
+            keys.forEach(id => {
+                const el = document.getElementById(id);
+                originalGridWords[id] = el.textContent;
+            });
+
+            let step = 0;
+            const maxSteps = 26;
+
+            animationInterval = setInterval(() => {
+                if (step >= maxSteps) step = 0;
+
+                keys.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el.classList.contains("cleared")) return; // Skip if it has the "cleared" class
+
+                    const original = originalGridWords[id];
+                    const letters = original.slice(0, 7).split("");
+                    const rest = original.slice(7); // Keep trailing characters like n, m
+
+                    const animated = letters.map(char =>
+                        char === "?" ? String.fromCharCode(65 + step) : char
+                    );
+                    el.textContent = animated.sort().join("");
+                });
+
+                step++;
+            }, 1000);
+
+            button.textContent = "Stop Animation";
+            isAnimating = true;
+
+        } else {
+            // Stop animation and restore original
+            clearInterval(animationInterval);
+            animationInterval = null;
+
+            Object.entries(originalGridWords).forEach(([id, original]) => {
+                const el = document.getElementById(id);
+                el.textContent = original;
+            });
+
+            button.textContent = "Animate";
+            isAnimating = false;
+        }
     }
 
 </script>
