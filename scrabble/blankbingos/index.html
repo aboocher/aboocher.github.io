@@ -232,6 +232,8 @@
         }
     </style>
 </head>
+
+
 <div class="topinfo" id="info">
     <h1>Blank Bingos!</h1>
     <p>This game will help you practice finding bingos that you (in theory) know and also tell you how many others there
@@ -255,6 +257,13 @@
 </div>
 <input type="file" id="fileInput">
 <br>
+
+<div><label for="nwl" class="radio-label">NWL</label>
+    <input type="radio" id="nwl" name="wordlist" value="NWL" checked />
+
+    <label for="csw" class="radio-label">CSW</label>
+    <input type="radio" id="csw" name="wordlist" value="CSW" />
+</div>
 <div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
 </div>
 
@@ -297,6 +306,23 @@
 
 
 <script>
+
+    const nwlRadio = document.getElementById('nwl');
+    const cswRadio = document.getElementById('csw');
+
+    let wordListType = nwlRadio.checked ? 'NWL' : 'CSW';
+
+    nwlRadio.addEventListener('change', () => {
+        if (nwlRadio.checked) {
+            wordListType = 'NWL';
+        }
+    });
+
+    cswRadio.addEventListener('change', () => {
+        if (cswRadio.checked) {
+            wordListType = 'CSW';
+        }
+    });
     document.getElementById("scoreBox").classList.add("hidden");
     let timeLeft = 300;
     let total1 = 0;
@@ -345,7 +371,11 @@
     }
 
     async function loadMasterData() {
-        const response = await fetch("master.txt");
+        if (wordListType == "NWL") {
+            response = await fetch("master.txt");
+        } else {
+            response = await fetch("masterCSW.txt");
+        }
         const text = await response.text();
         text.split('\n').forEach(line => {
             const parts = line.trim().split(' ');
