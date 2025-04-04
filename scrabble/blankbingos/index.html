@@ -258,7 +258,7 @@
 <input type="file" id="fileInput">
 <br>
 
-<div><label for="nwl" class="radio-label">NWL</label>
+<div id="lexchoose"><label for="nwl" class="radio-label">NWL</label>
     <input type="radio" id="nwl" name="wordlist" value="NWL" checked />
 
     <label for="csw" class="radio-label">CSW</label>
@@ -361,6 +361,7 @@
         document.getElementById("cheat").classList.remove("hidden");
         document.getElementById("startButton").classList.add("hidden");
         document.getElementById("info").classList.add("hidden");
+        document.getElementById("lexchoose").classList.add("hidden");
 
         // Hide the file input and maxMi options
         document.getElementById("fileInput").classList.add("hidden");
