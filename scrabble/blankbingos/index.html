@@ -274,6 +274,9 @@
             <label>
                 <input type="radio" name="cheatMode" value="answer"> Answers
             </label>
+            <label>
+                <input type="radio" name="cheatMode" value="blank"> Blank Letter
+            </label>
             <button id="clearHints">Clear Hints</button>
         </div>
     </div>
@@ -524,6 +527,11 @@
                             if (userWords.has(word)) {
                                 addCheatHintToBox(word[0], "lightblue");
                             } else { addCheatHintToBox(word[0], "white"); }
+                        } else if (cheatMode === "blank") {
+                            let blankIs = findRemovedChar(word, key);
+                            if (userWords.has(word)) {
+                                addCheatBlankToBox(blankIs, "lightblue");
+                            } else { addCheatBlankToBox(blankIs, "white"); }
                         } else {
                             if (userWords.has(word)) {
                                 addCheatWordToBox(word, "lightblue");
@@ -550,6 +558,14 @@
         wordBox.scrollTop = wordBox.scrollHeight;
     }
 
+    function addCheatBlankToBox(firstLetter, c) {
+        const wordBox = document.getElementById("hintBox");
+        const hintDiv = document.createElement("div");
+        hintDiv.style.backgroundColor = c;
+        hintDiv.textContent = "Blank is: " + firstLetter;
+        wordBox.appendChild(hintDiv);
+        wordBox.scrollTop = wordBox.scrollHeight;
+    }
     function addCheatWordToBox(word, c) {
         const wordBox = document.getElementById("hintBox")
         // Create a new div for the word
@@ -617,6 +633,31 @@
             button.textContent = "Animate";
             isAnimating = false;
         }
+    }
+
+    function findRemovedChar(x, y) {
+        // Strip the first character of y ('?') and the last 6 characters
+        let yLast6 = y.slice(1, -6);
+        console.log(y.slice(1, -6));
+        // Sort the characters from y
+        let sortedY = y.slice(-6).split('').sort().join('');
+
+        // Iterate over each character in x and remove it
+        for (let i = 0; i < x.length; i++) {
+            // Remove the i-th character from x
+            let xModified = x.slice(0, i) + x.slice(i + 1);
+
+            // Sort the remaining characters of x
+            let sortedX = xModified.split('').sort().join('');
+
+            // If the sorted characters match, return the removed character
+            if (sortedX === sortedY) {
+                return x[i];
+            }
+        }
+
+        // If no match is found, return null
+        return null;
     }
 
 </script>
