@@ -281,6 +281,8 @@
             Click a word to see: <label>
                 <input type="radio" name="cheatMode" value="hint" checked> 1st Letters
             </label>
+            <label for="numInput"></label>
+            <input type="number" id="numInput" min="1" max="10" value="1">
             <label>
                 <input type="radio" name="cheatMode" value="answer"> Answers
             </label>
@@ -335,6 +337,7 @@
     let gridWords = [];
     let wordCounts = {};
     let enteredWords = new Set();
+    let hintLength = 1;
 
     function updateScores() {
         const score1Element = document.getElementById("score1");
@@ -551,14 +554,15 @@
             const element = document.getElementById(key);
             if (element) {
                 element.addEventListener("click", function () {
+                    document.getElementById("wordInput").focus();
                     element.style.backgroundColor = "grey";
                     const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
 
                     for (const word of wordCounts[key].words) {
                         if (cheatMode === "hint") {
                             if (userWords.has(word)) {
-                                addCheatHintToBox(word[0], "lightblue");
-                            } else { addCheatHintToBox(word[0], "white"); }
+                                addCheatHintToBox(word.slice(0, hintLength), "lightblue");
+                            } else { addCheatHintToBox(word.slice(0, hintLength), "white"); }
                         } else if (cheatMode === "blank") {
                             let blankIs = findRemovedChar(word, key);
                             if (userWords.has(word)) {
@@ -578,6 +582,7 @@
     }
     document.getElementById("clearHints").addEventListener("click", function () {
         const hintBox = document.getElementById("hintBox");
+        document.getElementById("wordInput").focus();
         hintBox.innerHTML = ""; // Clear all children
     });
 
@@ -691,7 +696,13 @@
         // If no match is found, return null
         return null;
     }
+    const numInput = document.getElementById('numInput');
 
+    numInput.addEventListener('input', () => {
+        hintLength = parseInt(numInput.value, 10);
+        //console.log("Selected value:", value);
+        // You can do more with the value here
+    });
 </script>
 </body>
 
