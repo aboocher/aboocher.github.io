@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blanks Bingoes!</title>
+    <style>
+        /* Global Styles */
+
+        body {
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            /* Center the content horizontally */
+            justify-content: center;
+            /* Center vertically */
+            height: 100%;
+            background-color: lightblue;
+            margin: 10px 10px 10px;
+            padding: 0;
+        }
+
+        .score {
+            position: relative;
+            width: 95%;
+            height: 95%;
+            /* Positioning relative to the body */
+            /* Space from the top */
+            /* Space from the left */
+            font-size: 18px;
+            font-weight: bold;
+            /* Ensure it's on top of other elements */
+            display: flex;
+            /* Space between the <p> elements */
+            gap: 60px;
+            border: 1px solid #d3a87d;
+        }
+
+        .container {
+            display: flex;
+            width: 95%;
+            height: 95%;
+            padding: 1px;
+            justify-content: center;
+            border: 1px solid #d3a87d;
+            /* Keep content centered horizontally */
+        }
+
+        .left {
+            flex: 4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .left .doggo {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: url("doggoscrabble.jpg") center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .right {
+            flex: 1;
+            padding: 2px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .topinfo {
+            text-align: center;
+            margin: 0 auto;
+            width: 80%;
+            color: purple;
+        }
+
+        .grid {
+            flex: 9.5;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-top: 10px;
+        }
+
+        .grid div {
+            display: inline-block;
+            padding: 1px;
+            min-width: 120px;
+            max-width: 200px;
+            white-space: nowrap;
+            background-color: #f4e1d2;
+            border: 1px solid #d3a87d;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-family: 'Nimbus Mono', monospace;
+            font-size: 126%;
+            font-weight: normal;
+            line-height: 1.5;
+            color: #3b3b3b;
+            letter-spacing: 3px;
+        }
+
+        /* Input Area */
+        .input-area {
+            flex: 1;
+            display: flex;
+            padding: 15px;
+            width: 30%;
+            box-sizing: border-box;
+        }
+
+        .input-area input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 20px;
+            border: 2px solid #888;
+            border-radius: 8px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .input-area input:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+        }
+
+        .wordbox-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* or 'flex-start' to keep them close */
+            gap: 10px;
+        }
+
+        .wordbox-button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* Wordbox and Hints */
+        .wordbox-title {
+            font-size: 12pt;
+            font-weight: 400;
+            margin: 5px 0 5px;
+            color: #2d2d2d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .wordbox {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 20%;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .wordbox div,
+        #hintBox div {
+            font-size: 12pt;
+            transition: background-color 0.3s ease;
+        }
+
+        .wordbox div:hover,
+        #hintBox div:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        .wordbox div:nth-child(even),
+        #hintBox div:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .wordbox:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border-color: #bdbdbd;
+        }
+
+        /* Hint Box */
+        #hintBox div {
+            padding: 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #hintBox div:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        #hintBox div:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Button Styles */
+        .start-btn {
+            padding: 8px 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #58a6ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background-color: #007bff;
+        }
+
+        .start-btn:focus {
+            outline: none;
+        }
+
+        .start-btn:active {
+            background-color: #0056b3;
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        .cleared {
+            animation: flashBlue 0.3s ease;
+            background-color: blueviolet;
+        }
+
+        .correct {
+            animation: flashGreen 0.3s ease;
+        }
+
+        @keyframes flashBlue {
+            0% {
+                background-color: #00f;
+            }
+
+            100% {
+                background-color: orange;
+            }
+        }
+
+        @keyframes flashGreen {
+            0% {
+                background-color: lightgreen;
+            }
+
+            100% {
+                background-color: orange;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topinfo" id="info">
+        <h1>Words With Hints!</h1>
+        <div id="step1">
+            Ready to have some fun with hints? <br>
+            <!-- <button id="yesbutton" onclick="yesUpload()" class="start-btn">Yes</button> --><br>
+            <button id="nobutton" onclick="noUpload()" class="start-btn">I'm gonna use the hints at the bottom if I need
+                them!</button>
+        </div>
+
+        <div id="step2" class="hidden">
+            Do you want to use a premade list by probability? (Type upper limit here and hit yes)<br><br>
+            <label for="number-input">Max Probability Order:</label>
+            <input type="number" id="number-input" value="1000"><br><br>
+            <button id="yesbutton" onclick="getProb()" class="start-btn">Yes</button>
+            <button id="nobutton" onclick="noProb()" class="start-btn">No, take the full list of 7s</button>
+        </div>
+
+
+
+        <div id="lexchoose" class="hidden">Upload:<input type="file" id="fileInput">
+            <div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
+            </div>
+        </div>
+    </div>
+    <div class="score hidden" id="scoreBox">
+        <p> Scores:</p>
+        <p id="score1"></p>
+    </div>
+    <div class="container hidden" id="maincont">
+        <div class="left">
+            <div class="doggo" id="doggoid"></div>
+            <div class="grid" id="grid"></div>
+            <div class="input-area">
+                <input type="text" id="wordInput" placeholder="Guess" autocomplete="off">
+            </div>
+
+            <button id="cheat" onclick="enableCheatMode()" class="start-btn hidden">Activate Help Tools</button>
+            <div id="cheat-controls" class="hidden">
+                Click a word to see: <label>
+                    <input type="radio" name="cheatMode" value="hint" checked> 1st Letters
+                </label>
+                <label>
+                    <input type="radio" name="cheatMode" value="answer"> Answers
+                </label>
+            </div>
+        </div>
+        <div class="right">
+            <div class="wordbox-title">Words Correct:</div>
+            <div class="wordbox" id="wordBox"></div>
+            <div class="wordbox-header">
+                <div class="wordbox-title">Hints:</div>
+                <button class="wordbox-button" id="clearHints">Clear Hints</button>
+            </div>
+            <div class="wordbox" id="hintBox"></div>
+            <div class="wordbox-title">Missed Words:</div> <!-- Third box -->
+            <div class="wordbox" id="wrongBox"></div> <!-- Third box content -->
+        </div>
+    </div>
+    </div>
+    <script>
+        document.getElementById("scoreBox").classList.add("hidden");
+
+        const dogElt = document.getElementById("doggoid");
+        let probMax = 0;
+        let timeLeft = 300;
+        let total1 = 0;
+        let total2 = 0;
+        let score1 = 0;
+        let score2 = 0;
+        let userWords = new Set();
+        let masterData = {};
+        let gridWords = [];
+        let wordCounts = {};
+        let enteredWords = new Set();
+
+        function updateScores() {
+            const score1Element = document.getElementById("score1");
+            let percentage1 = ((score1 / total1) * 100).toFixed(1);
+            // Update the scores in the HTML
+            score1Element.textContent = `Known: ${score1} of ${total1} (${percentage1}%)`;
+            dogElt.style.opacity = 2 * percentage1 / 100;
+        }
+
+        async function startGame(fileURL = null, fileText = null) {
+            // Hide the start button once the game starts
+            processFile();
+            document.getElementById("scoreBox").classList.remove("hidden");
+            document.getElementById("wordInput").focus();
+            document.getElementById("maincont").classList.remove("hidden");
+            document.getElementById("cheat").classList.remove("hidden");
+            document.getElementById("startButton").classList.add("hidden");
+            document.getElementById("info").classList.add("hidden");
+            document.getElementById("lexchoose").classList.add("hidden");
+
+            // Hide the file input and maxMi options
+            document.getElementById("fileInput").classList.add("hidden");
+
+            // Show the word input box
+            document.getElementById("wordInput").classList.remove("hidden");
+            document.getElementById("wordInput").focus()
+        }
+
+        async function loadMasterData() {
+            response = await fetch("master7s.txt");
+            const text = await response.text();
+            text.split('\n').forEach(line => {
+                const parts = line.trim().split(' ');
+                if (parts.length > 1) {
+                    const key = parts[0];
+                    const values = parts.slice(1);
+                    masterData[key] = values;
+                }
+            });
+        }
+
+        document.getElementById("wordInput").classList.add("hidden");
+        async function processFile() {
+            await loadMasterData();
+            const fileInput = document.getElementById('fileInput');
+            let file = fileInput.files[0]; // Get the first file in the input
+            if (!file) {
+                const response = await fetch("master7sByProb.txt");
+                const text = await response.text(); // Read as text
+
+                // Split into lines and take the first n
+                const lines = text.split('\n').slice(0, probMax);
+                const newContent = lines.join('\n');
+
+                // Create a new File object with just the first n lines
+                file = new File([newContent], "master7sByProb.txt", { type: "text/plain" });
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Step 1: Parse the input and create a Set of user words
+                //userWords = new Set(e.target.result.split('\n').map(line => line.trim()).filter(line => line)); 
+                userWords = new Set(
+                    e.target.result
+                        .split('\n')
+                        .map(line => line.trim().split(/\s+/)) // split by spaces, ignore the first word
+                        .flat() // flatten into a single array of words
+                        .filter(word => word) // remove empty strings
+                );
+                let gridWords = [];
+                let gridHtml = "";
+
+                // Step 2: Loop to fill the grid with words, filtering out those with m > 9
+                while (gridWords.length < 50) {
+                    const modifiedWords = Array.from(userWords).sort(() => Math.random() - 0.5);
+                    // Step 3: Process words and check if m <= 9
+                    for (let word of modifiedWords) {
+                        const chars = word.split("");
+                        //const randomIndex = Math.floor(Math.random() * chars.length);
+                        //chars[randomIndex] = "?";  // Randomize a character to replace it with "?"
+                        let modifiedWord = chars.sort().join("");  // Sort the characters
+                        modifiedWord = modifiedWord.replace(/\n/g, '');
+                        let n = 0, m = 0;
+                        if (masterData[modifiedWord]) {
+                            const validWords = masterData[modifiedWord];
+                            m = validWords.length;
+                            n = validWords.filter(w => userWords.has(w)).length;
+                        }
+                        // Add the word to the grid if its m value is 9 or less
+                        if (m <= 9 && !gridWords.includes(modifiedWord)) {
+                            wordCounts[modifiedWord] = { n, m, words: masterData[modifiedWord] || [] };
+                            gridWords.push(modifiedWord);  // Add word to grid
+                            total1 += n;
+                            total2 += m;
+                            gridHtml += `
+                                <div class = 'gridinside' id='${modifiedWord}'>${modifiedWord} ${n}</div>`;
+                        }
+
+                        // Break the loop if we have enough words (50 in total)
+                        if (gridWords.length >= 50) {
+                            break;
+                        }
+                    }
+                }
+
+                // Step 4: Output the final HTML grid (if needed, or return it for use in your app)
+                document.getElementById("grid").innerHTML = gridHtml;
+            };
+            reader.readAsText(file);
+        }
+        function ismatching(x, y) {
+            // Step 1: Sort and capitalize x
+            const sortedX = x.toUpperCase().split('').sort().join('');
+
+            // Step 2: Get the last 6 characters of y (ignoring the ?)
+            const sortedY = y.slice(0).toUpperCase().split('').sort().join(''); // Remove '?' and capitalize the letters
+            return (sortedX === sortedY);
+        }
+        document.getElementById("wordInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                const inputWord = event.target.value.trim().toUpperCase();
+                event.target.value = "";
+                if (!inputWord || enteredWords.has(inputWord)) return;
+                enteredWords.add(inputWord);
+                let addMe = 0;
+
+                Object.keys(wordCounts).forEach(modifiedWord => {
+                    if (ismatching(inputWord, modifiedWord) & !wordCounts[modifiedWord].words.includes(inputWord)) {
+                        addWordToWrongBox(inputWord + "*");
+                        return;
+                    }
+                    if (wordCounts[modifiedWord].words.includes(inputWord)) {
+                        addMe = 1;
+                        wordCounts[modifiedWord].words = wordCounts[modifiedWord].words.filter(item => item !== inputWord);
+                        wordCounts[modifiedWord].m--;
+                        score2 += 1;
+                        if (userWords.has(inputWord)) {
+                            wordCounts[modifiedWord].n--;
+                            score1 += 1;
+                        }
+                        const gridCell = document.getElementById(modifiedWord);
+                        if (gridCell) {
+                            if (wordCounts[modifiedWord].n > 0) {
+                                gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}`;
+                                gridCell.classList.remove("correct");
+                                void gridCell.offsetWidth;
+                                gridCell.classList.add("correct");
+                            } else if (wordCounts[modifiedWord].m > 0) {
+                                gridCell.style.backgroundColor = "#ffd700";
+                                gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}`;
+                            } else {
+                                gridCell.classList.add("cleared");
+                                void gridCell.offsetWidth;
+                                gridCell.style.opacity = 0;
+                                gridCell.innerHTML = "";
+                                //gridCell.style.backgroundColor = "blue";
+                            }
+                            updateScores();
+                        }
+
+                    }
+
+                });
+                if (addMe === 1) { addWordToWordBox(inputWord); addMe = 0; }
+            }
+
+        });
+
+        function addWordToWrongBox(word) {
+            const wordBox = document.getElementById("wrongBox");
+            const wordDiv = document.createElement("div");
+
+            // Check if the word is in userWords to color it blue
+            wordDiv.textContent = word;
+            wordDiv.style.color = "red"; // Non-user word in gray
+
+            wordBox.appendChild(wordDiv);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function addWordToWordBox(word) {
+            const wordBox = document.getElementById("wordBox");
+            const wordDiv = document.createElement("div");
+
+            // Check if the word is in userWords to color it blue
+            if (userWords.has(word)) {
+                wordDiv.textContent = word;
+                wordDiv.style.color = "blue"; // User word in blue
+            } else {
+                wordDiv.textContent = word;
+                wordDiv.style.color = "gray"; // Non-user word in gray
+            }
+
+            wordBox.appendChild(wordDiv);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function enableCheatMode() {
+            document.getElementById("cheat").classList.add("hidden");
+            document.getElementById("cheat-controls").classList.remove("hidden");
+            document.getElementById("wordInput").focus();
+
+            for (const key in wordCounts) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.addEventListener("click", function () {
+                        element.style.backgroundColor = "grey";
+                        const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
+
+                        for (const word of wordCounts[key].words) {
+                            if (cheatMode === "hint") {
+                                if (userWords.has(word)) {
+                                    addCheatHintToBox(word[0], "white");
+                                } else { addCheatHintToBox(word[0], "white"); }
+                            } else if (cheatMode === "blank") {
+                                let blankIs = findRemovedChar(word, key);
+                                if (userWords.has(word)) {
+                                    addCheatBlankToBox(blankIs, "white");
+                                } else { addCheatBlankToBox(blankIs, "white"); }
+                            } else {
+                                if (userWords.has(word)) {
+                                    addCheatWordToBox(word, "white");
+                                } else {
+                                    addCheatWordToBox(word, "white");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        document.getElementById("clearHints").addEventListener("click", function () {
+            const hintBox = document.getElementById("hintBox");
+            hintBox.innerHTML = ""; // Clear all children
+        });
+
+        function addCheatHintToBox(firstLetter, c) {
+            const wordBox = document.getElementById("hintBox");
+            const hintDiv = document.createElement("div");
+            hintDiv.textContent = firstLetter;
+            wordBox.appendChild(hintDiv);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function addCheatBlankToBox(firstLetter, c) {
+            const wordBox = document.getElementById("hintBox");
+            const hintDiv = document.createElement("div");
+            hintDiv.textContent = "Blank is: " + firstLetter;
+            wordBox.appendChild(hintDiv);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+        function addCheatWordToBox(word, c) {
+            const wordBox = document.getElementById("hintBox")
+            // Create a new div for the word
+            const wordDiv = document.createElement('div');
+            wordDiv.textContent = word;
+            // Add the word div to the word box
+            wordBox.appendChild(wordDiv);
+            // Auto-scroll to the bottom of the wordbox
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        let isAnimating = false;
+        let animationInterval = null;
+        let originalGridWords = {};
+
+        function toggleAnimateGridSolve(button) {
+            document.getElementById("wordInput").focus();
+            const keys = Object.keys(wordCounts);
+
+            if (!isAnimating) {
+                // Save original words and start animation
+                originalGridWords = {};
+                keys.forEach(id => {
+                    const el = document.getElementById(id);
+                    originalGridWords[id] = el.textContent;
+                });
+
+                let step = 0;
+                const maxSteps = 26;
+
+                animationInterval = setInterval(() => {
+                    if (step >= maxSteps) step = 0;
+
+                    keys.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el.classList.contains("cleared")) return; // Skip if it has the "cleared" class
+
+                        const original = originalGridWords[id];
+                        const letters = original.slice(0, 7).split("");
+                        const rest = original.slice(7); // Keep trailing characters like n, m
+
+                        const animated = letters.map(char =>
+                            char === "?" ? String.fromCharCode(65 + step) : char
+                        );
+                        el.textContent = animated.sort().join("");
+                    });
+
+                    step++;
+                }, 1000);
+
+                button.textContent = "Stop Animation";
+                isAnimating = true;
+
+            } else {
+                // Stop animation and restore original
+                clearInterval(animationInterval);
+                animationInterval = null;
+
+                Object.entries(originalGridWords).forEach(([id, original]) => {
+                    const el = document.getElementById(id);
+                    el.textContent = original;
+                });
+
+                button.textContent = "Animate";
+                isAnimating = false;
+            }
+        }
+
+        function findRemovedChar(x, y) {
+            // Strip the first character of y ('?') and the last 6 characters
+            let yLast6 = y.slice(1, -6);
+            console.log(y.slice(1, -6));
+            // Sort the characters from y
+            let sortedY = y.slice(-6).split('').sort().join('');
+
+            // Iterate over each character in x and remove it
+            for (let i = 0; i < x.length; i++) {
+                // Remove the i-th character from x
+                let xModified = x.slice(0, i) + x.slice(i + 1);
+
+                // Sort the remaining characters of x
+                let sortedX = xModified.split('').sort().join('');
+
+                // If the sorted characters match, return the removed character
+                if (sortedX === sortedY) {
+                    return x[i];
+                }
+            }
+
+            // If no match is found, return null
+            return null;
+        }
+        function yesUpload() {
+            document.getElementById("step1").classList.add("hidden");
+            document.getElementById("lexchoose").classList.remove("hidden");
+        }
+        function noUpload() {
+            document.getElementById("step1").classList.add("hidden");
+            document.getElementById("step2").classList.remove("hidden");
+        }
+        function getProb() {
+            probMax = parseInt(document.getElementById('number-input').value, 10);
+            console.log("probMax", probMax);
+            document.getElementById("step2").classList.add("hidden");
+            startGame();
+        }
+        function noProb() {
+            probMax = 21223;
+            parseInt(document.getElementById('number-input').value, 10);
+            document.getElementById("step2").classList.add("hidden");
+            startGame();
+        }
+    </script>
+</body>
+
+</html>
