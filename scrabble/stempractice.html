@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Word Rack Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #rack {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            color: black;
+        }
+
+        .cell {
+            font-size: 48px;
+            font-weight: bold;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+        #answersFoundContainer {
+            margin: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #allAnswers {
+            margin: 10px;
+        }
+
+        #gameArea {
+            display: none;
+        }
+
+        .answer {
+            display: inline-block;
+            margin: 4px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            color: red;
+        }
+
+        .validanswer {
+            display: inline-block;
+            margin: 4px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            color: blue;
+        }
+
+        hr {
+            border: 1px solid #eee;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Stem Recognition</h1>
+
+    <!-- Setup Screen -->
+    <div id="setup">
+        <label>How many rounds? <input type="number" id="roundsInput" value="20" min="1"></label><br><br>
+        <textarea id="wordList" rows="10" cols="40" placeholder="Enter words, one per line"></textarea><br><br>
+        <button id="all7Btn">All 7s</button>
+        <button id="all8Btn">All 8s</button>
+        <button id="all78Btn">All 7s and 8s</button><br> <br> <button id="startBtn">Start Game</button>
+    </div>
+
+
+    <!-- Game Screen -->
+    <div id="gameArea">
+        <div>Round <span id="roundNum"></span> / <span id="totalRounds"></span></div>
+        <div id="rack"></div>
+        <div>Words remaining: <span id="remaining"></span></div>
+        <input type="text" id="guessInput" placeholder="Type your guess">
+        <button id="guessBtn">Guess</button>
+        <button id="giveUpBtn">Give up</button>
+
+        <div id="answersFoundContainer">
+            <div id="answersFound"></div>
+        </div>
+    </div>
+
+    <script>
+        let data = [];
+        let totalRounds = 20;
+        let currentRound = 0;
+        let answers = [];
+        let found = [];
+        let rack = "";
+
+        // Utility: check if word is subset of rack letters
+        function isSubset(word, rack) {
+            let rackCounts = {};
+            for (let c of rack) rackCounts[c] = (rackCounts[c] || 0) + 1;
+            for (let c of word) {
+                if (!rackCounts[c]) return false;
+                rackCounts[c]--;
+            }
+            return true;
+        }
+
+        function shuffleString(str) {
+            let arr = str.split("");
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join("");
+        }
+
+        function renderRack(rack) {
+            const rackDiv = document.getElementById("rack");
+            rackDiv.innerHTML = "";
+            for (let c of rack) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                cell.textContent = c;
+                rackDiv.appendChild(cell);
+            }
+        }
+
+        function startGame() {
+            totalRounds = parseInt(document.getElementById("roundsInput").value) || 20;
+            data = document.getElementById("wordList").value.trim().split(/\n+/).map(w => w.toUpperCase()).filter(w => w.length > 0);
+            currentRound = 0;
+            document.getElementById("setup").style.display = "none";
+            document.getElementById("gameArea").style.display = "block";
+            document.getElementById("totalRounds").textContent = totalRounds;
+            document.getElementById("guessInput").focus(); // focus cursor at start
+            nextRound();
+        }
+        function startGame7s() {
+            totalRounds = parseInt(document.getElementById("roundsInput").value) || 20;
+            fetch("stem7s.txt")
+                .then(resp => resp.text())
+                .then(text => {
+                    data = text.trim().split(/\n+/).map(w => w.toUpperCase());
+                });
+            currentRound = 0;
+            document.getElementById("setup").style.display = "none";
+            document.getElementById("gameArea").style.display = "block";
+            document.getElementById("totalRounds").textContent = totalRounds;
+            document.getElementById("guessInput").focus(); // focus cursor at start
+            nextRound();
+        }
+
+        function nextRound() {
+            if (currentRound >= totalRounds) {
+                location.reload();
+                return;
+            }
+            currentRound++;
+            document.getElementById("roundNum").textContent = currentRound;
+            found = [];
+
+            // Pick word w
+            let w = data[Math.floor(Math.random() * data.length)];
+            let extra = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            rack = shuffleString(w + extra);
+
+            // Find answers
+            answers = data.filter(p => isSubset(p, rack) && p.length < rack.length);
+            renderRack(rack);
+            document.getElementById("remaining").textContent = answers.length;
+
+            // Add a separator for the new round
+            if (currentRound > 1) {
+                document.getElementById("answersFound").innerHTML += "<hr>";
+            }
+
+            document.getElementById("guessInput").focus();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById("answersFoundContainer");
+            container.scrollTop = container.scrollHeight;
+        }
+        function stringDifference(rack, guess) {
+            let rackArr = rack.split("");
+            for (let c of guess) {
+                let index = rackArr.indexOf(c);
+                if (index !== -1) rackArr.splice(index, 1); // remove one occurrence
+            }
+            return rackArr.join("");
+        }
+        function isValid(x) {
+            console.log("valid check");
+            return lookupSet.has(x.toUpperCase());
+        }
+        loadLookup();
+        function makeGuess() {
+            let guess = document.getElementById("guessInput").value.toUpperCase().trim();
+            document.getElementById("guessInput").value = "";
+            if (answers.includes(guess) && !found.includes(guess)) {
+                found.push(guess);
+                let suffix = stringDifference(rack, guess);
+                let potentialword = (suffix + guess).split("").sort().join("");
+                if (isValid(potentialword)) {
+                    console.log("valid");
+                    document.getElementById("answersFound").innerHTML += `<div class="validanswer">${guess}+${suffix}</div>`;
+                } else {
+                    document.getElementById("answersFound").innerHTML += `<div class="answer">${guess}+${suffix}</div>`;
+                }
+                document.getElementById("remaining").textContent = answers.length - found.length;
+                scrollToBottom();
+                if (found.length === answers.length) {
+                    <!-- alert("Round complete!"); -->
+                    nextRound();
+                }
+            }
+            document.getElementById("guessInput").focus();
+        }
+
+        function giveUp() {
+            let missing = answers.filter(a => !found.includes(a));
+
+            if (missing.length > 0) {
+                missing.forEach(guess => {
+                    let suffix = stringDifference(rack, guess);
+                    let potentialword = (suffix + guess).split("").sort().join("");
+                    if (isValid(potentialword)) {
+                        console.log("valid");
+                        document.getElementById("answersFound").innerHTML += `<div class="validanswer">${guess}+${suffix}</div>`;
+                    } else {
+                        document.getElementById("answersFound").innerHTML += `<div class="answer">${guess}+${suffix}</div>`;
+                    }
+                });
+            }
+            scrollToBottom();
+            const rackEl = document.getElementById("rack");
+            rackEl.style.background = "pink";
+
+            // Remove the shading after 1 second
+            setTimeout(() => {
+                rackEl.style.background = "none";
+                nextRound();
+            }, 1000);
+        }
+        document.getElementById("all7Btn").addEventListener("click",
+            async () => {
+                try {
+                    const response = await fetch("stems7s.txt"); // fetch the file
+                    const text = await response.text();       // get the file contents
+                    document.getElementById("wordList").value = text; // put it in the textbox
+                } catch (err) {
+                    console.error("Failed to load file:", err);
+                }
+            });
+        document.getElementById("all8Btn").addEventListener("click",
+            async () => {
+                try {
+                    const response = await fetch("stems8s.txt"); // fetch the file
+                    const text = await response.text();       // get the file contents
+                    document.getElementById("wordList").value = text; // put it in the textbox
+                } catch (err) {
+                    console.error("Failed to load file:", err);
+                }
+            });
+        document.getElementById("all78Btn").addEventListener("click",
+            async () => {
+                const textbox = document.getElementById("wordList");
+                try {
+                    const response = await fetch("stems7s.txt"); // fetch the file
+                    const text = await response.text();       // get the file contents
+                    textbox.value = text; // put it in the textbox
+                    const response2 = await fetch("stems8s.txt");
+                    const text2 = await response2.text();
+                    textbox.value += "\n" + text2;  // append str2.txt content
+                } catch (err) {
+                    console.error("Failed to load file:", err);
+                }
+            }
+        );
+        document.getElementById("startBtn").addEventListener("click", startGame);
+        document.getElementById("guessBtn").addEventListener("click", makeGuess);
+        document.getElementById("giveUpBtn").addEventListener("click", giveUp);
+        document.getElementById("guessInput").addEventListener("keypress", e => {
+            if (e.key === "Enter") makeGuess();
+        });
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") {
+                giveUp();
+            }
+        });
+        let lookupSet = new Set();
+        async function loadLookup() {
+            const response = await fetch("lookup.txt");
+            const text = await response.text();
+            text.split(/\r?\n/).forEach(line => {
+                const w = line.split(",")[0].trim();
+                if (w) lookupSet.add(w.toUpperCase());
+            });
+            console.log("Lookup loaded:", lookupSet.size, "entries");
+        }
+
+    </script>
+</body>
+
+</html>
