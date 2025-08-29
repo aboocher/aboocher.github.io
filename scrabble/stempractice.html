@@ -268,7 +268,7 @@
                 rack = shuffleString(w + extra);
 
                 // Find answers
-                answers = data.filter(p => isSubset(p, rack) && p.length < rack.length);
+                answers = data.filter(p => isSubset(p, rack) && p.length == rack.length - 1);
                 renderRack(rack);
                 document.getElementById("remaining").textContent = answers.length;
 
