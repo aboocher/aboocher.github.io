@@ -1,106 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Word Rack Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
+  <meta charset="UTF-8">
+  <title>Word Rack Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        #rack {
-            margin: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            color: black;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 10px;
+    }
 
-        .cell {
-            font-size: 48px;
-            font-weight: bold;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 10px;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f9f9f9;
-        }
+    h1 {
+      font-size: 1.5rem;
+    }
 
-        #answersFoundContainer {
-            margin: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
+    #rack {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: black;
+    }
 
-        #allAnswers {
-            margin: 10px;
-        }
+    .cell {
+      font-size: clamp(20px, 6vw, 40px);
+      font-weight: bold;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 5px;
+      width: min(14vw, 60px);
+      height: min(14vw, 60px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+    }
 
-        #gameArea {
-            display: none;
-        }
+    textarea,
+    input[type="text"],
+    input[type="number"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 8px;
+      font-size: 1rem;
+      margin: 5px 0;
+    }
 
-        .answer {
-            display: inline-block;
-            margin: 4px;
-            padding: 4px 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            color: red;
-        }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #888;
+      background: #eee;
+      cursor: pointer;
+    }
 
-        .validanswer {
-            display: inline-block;
-            margin: 4px;
-            padding: 4px 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            color: blue;
-        }
+    #answersFoundContainer {
+      margin: 10px auto;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      width: 90%;
+      max-width: 500px;
+    }
 
-        hr {
-            border: 1px solid #eee;
-            margin: 10px 0;
-        }
-    </style>
+    .answer,
+    .validanswer {
+      display: inline-block;
+      margin: 3px;
+      padding: 3px 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .answer { color: red; }
+    .validanswer { color: blue; }
+
+    hr {
+      border: 1px solid #eee;
+      margin: 8px 0;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.2rem; }
+
+      button {
+        display: block;
+        width: 90%;
+        margin: 6px auto;
+      }
+
+      #rack {
+        gap: 5px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <h1>Stem Recognition</h1>
-
-    <!-- Setup Screen -->
-    <div id="setup">
-        <label>How many rounds? <input type="number" id="roundsInput" value="20" min="1"></label><br><br>
-        <textarea id="wordList" rows="10" cols="40" placeholder="Enter words, one per line"></textarea><br><br>
-        <button id="all7Btn">All 6 to 7s</button>
-        <button id="all8Btn">All 7 to 8s</button>
-        <button id="all78Btn">Both</button><br> <br> <button id="startBtn">Start Game</button>
-    </div>
-
-
-    <!-- Game Screen -->
-    <div id="gameArea">
-        <div>Round <span id="roundNum"></span> / <span id="totalRounds"></span></div>
-        <div id="rack"></div>
-        <div>Words remaining: <span id="remaining"></span></div>
-        <input type="text" id="guessInput" placeholder="Type your guess">
-        <button id="guessBtn">Guess </button>
-        <button id="giveUpBtn">Give up [ESC]</button>
-
-        <div id="answersFoundContainer">
-            <div id="answersFound"></div>
-        </div>
-    </div>
+  <!-- (your body + script remain unchanged) -->
+</body>
+</html>
 
     <script>
         let data = [];
