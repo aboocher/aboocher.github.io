@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Combinatorial Word Value Table</title>
+    <style>
+        body {
+            font-family: system-ui, Arial, sans-serif;
+            padding: 20px;
+            max-width: 950px;
+        }
+
+        input,
+        button,
+        label {
+            font-size: 1rem;
+            padding: 6px;
+            margin-right: 8px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #bbb;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #f6f6f6;
+            font-weight: 600;
+        }
+
+        #relativeContainer {
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>How does Aerolith Calculate Probability?</h2>
+
+    <p>If you want to compare two words, type them below, e.g. GREENLET GREENLIT and the table will show the number of
+        ways to
+        draw each rack from a full bag with 0 / 1 / 2 blanks. The total numbers at the bottom then show the full number
+        of ways
+        to draw the tiles. If you then click the "relative" button things will normalize so that the less likely word
+        becomes 100% and
+        you can see how each of these numbers is related.
+    </p>
+
+    <p>Try e.g. comparing ANEROID and TRAINEE. Note that with no blanks, TRAINEE is more likely, but including the
+        possibility of blanks ANEROID wins. Or check out ISOLATE INERTIA. They are very close with blanks but about 10%
+        apart with 0 blanks.</p>
+
+    <input id="wordsInput" placeholder="e.g. CAT DOG MOUSE" size="50" />
+    <button id="calcBtn">Calculate</button>
+
+    <div id="relativeContainer">
+        <label>
+            <input type="checkbox" id="relativeToggle" /> Relative
+        </label>
+    </div>
+
+    <div id="tableContainer"></div>
+
+    <script>
+        const SD = {
+            A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1,
+            K: 1, L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R: 6, S: 4, T: 6,
+            U: 4, V: 2, W: 2, X: 1, Y: 2, Z: 1
+        };
+
+        function combBig(n, r) {
+            if (r > n) return 0n;
+            if (r === 0 || r === n) return 1n;
+            r = Math.min(r, n - r);
+            let num = 1n, den = 1n;
+            for (let i = 0; i < r; i++) num *= BigInt(n - i);
+            for (let i = 1; i <= r; i++) den *= BigInt(i);
+            return num / den;
+        }
+
+        function removeFirstOccurrence(s, ch) {
+            const idx = s.indexOf(ch);
+            if (idx === -1) return s;
+            return s.slice(0, idx) + s.slice(idx + 1);
+        }
+
+        function find_value(s, blanks = 0) {
+            s = s.toUpperCase().replace(/[^A-Z]/g, '');
+            if (s.length === 0) return 0n;
+
+            if (blanks === 0) {
+                const counts = {};
+                for (let ch of s) counts[ch] = (counts[ch] || 0) + 1;
+                let product = 1n;
+                for (let ch in counts) {
+                    const supply = SD[ch] ?? 0;
+                    product *= combBig(supply, counts[ch]);
+                }
+                return product;
+            }
+
+            if (blanks === 1) {
+                const uniqueChars = Array.from(new Set(s.split('')));
+                let out = 0n;
+                for (let x of uniqueChars) {
+                    const idx = s.indexOf(x);
+                    const new_s = s.slice(0, idx) + s.slice(idx + 1);
+                    out += 2n * find_value(new_s, 0);
+                }
+                return out;
+            }
+
+            if (blanks === 2) {
+                const chars = s.split('');
+                const pairKeys = new Set();
+                for (let i = 0; i < chars.length; i++) {
+                    for (let j = i + 1; j < chars.length; j++) {
+                        const a = chars[i], b = chars[j];
+                        const key = a <= b ? `${a}|${b}` : `${b}|${a}`;
+                        pairKeys.add(key);
+                    }
+                }
+                let out = 0n;
+                for (let key of pairKeys) {
+                    const [x, y] = key.split('|');
+                    const afterX = removeFirstOccurrence(s, x);
+                    const afterXY = removeFirstOccurrence(afterX, y);
+                    out += find_value(afterXY, 0);
+                }
+                return out;
+            }
+            return 0n;
+        }
+
+        let tableValues = []; // stores calculated BigInt values
+        let wordHeaders = [];
+
+        function makeTable() {
+            const raw = document.getElementById('wordsInput').value;
+            if (!raw.trim()) {
+                document.getElementById('tableContainer').innerHTML = '<p>No words entered.</p>';
+                document.getElementById('relativeContainer').style.display = 'none';
+                return;
+            }
+
+            const rawWords = raw.split(/[\s,]+/).filter(w => w.length > 0);
+            wordHeaders = rawWords.map(w => ({ display: w, compute: w.toUpperCase().replace(/[^A-Z]/g, '') }));
+
+            // calculate values and store in tableValues: [row][col]
+            tableValues = [];
+            for (let b = 0; b <= 2; b++) {
+                let row = [];
+                wordHeaders.forEach(w => row.push(find_value(w.compute, b)));
+                tableValues.push(row);
+            }
+
+            // Total row
+            const totals = wordHeaders.map((_, col) => tableValues.reduce((acc, row) => acc + row[col], 0n));
+            tableValues.push(totals);
+
+            renderTable();
+            document.getElementById('relativeContainer').style.display = 'inline-block';
+        }
+
+        function renderTable() {
+            const relative = document.getElementById('relativeToggle').checked;
+
+            // find minimum of totals for relative mode
+            let x = null;
+            if (relative) {
+                x = tableValues[3].reduce((min, val) => min === null || val < min ? val : min, null);
+                if (x === 0n) x = 1n; // prevent division by zero
+            }
+
+            let html = '<table><tr><th>Blanks ↓ / Words →</th>';
+            for (const w of wordHeaders) html += `<th>${escapeHtml(w.display)}</th>`;
+            html += '</tr>';
+
+            for (let r = 0; r < tableValues.length; r++) {
+                html += `<tr><th>${r < 3 ? `${r} blank${r === 1 ? '' : 's'}` : 'Total (all blanks)'}</th>`;
+                for (let c = 0; c < wordHeaders.length; c++) {
+                    let val = tableValues[r][c];
+                    if (relative && x !== null) {
+                        const normalized = Number(val) / Number(x);
+                        const formatted = normalized.toFixed(3);
+                        const style = normalized < 1 ? 'color:black' : '';
+                        html += `<td><b><span style="${style}">${formatted}</span></b></td>`;
+                    } else {
+                        html += `<td>${val.toString()}</td>`;
+                    }
+                }
+                html += '</tr>';
+            }
+
+            document.getElementById('tableContainer').innerHTML = html;
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        }
+
+        document.getElementById('calcBtn').addEventListener('click', makeTable);
+        document.getElementById('wordsInput').addEventListener('keydown', e => { if (e.key === 'Enter') makeTable(); });
+        document.getElementById('relativeToggle').addEventListener('change', renderTable);
+    </script>
+</body>
+
+</html>
