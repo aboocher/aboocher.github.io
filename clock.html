@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Big Clock</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #0b1220;
+      --text: #f8fafc;
+    }
+
+    /* Nice centered layout */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+      box-sizing:border-box;
+    }
+
+    /* The big time */
+    .clock{
+      text-align:center;
+      line-height:1;
+      user-select:none;
+    }
+
+    /* Responsive huge text:
+       clamp(min, preferred, max). The middle uses viewport width
+       so the time grows on big screens but remains reasonable on small ones. */
+    .time {
+      font-weight: 700;
+      font-size: clamp(48px, 18vw, 220px);
+      letter-spacing: -0.02em;
+    }
+
+    /* Small label below (optional) */
+    .label {
+      margin-top: .25rem;
+      font-size: clamp(14px, 3.5vw, 22px);
+      opacity: .85;
+      font-weight: 500;
+    }
+
+    /* Simple focus style if interactive controls are added later */
+    .sr-only {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    /* Light-mode tweak */
+    @media (prefers-color-scheme: light) {
+      :root { --bg1: #f8fafc; --bg2: #eef2ff; --text: #071133; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- aria-live to announce updates for assistive tech -->
+    <div class="clock" role="timer" aria-live="polite" id="clock">
+      <div class="time" id="timeText">--:--</div>
+      <div class="label" id="labelText">Current time</div>
+    </div>
+  </div>
+
+  <noscript>
+    <style> .time { font-size: clamp(28px, 12vw, 120px); } </style>
+    <div style="position:fixed;left:0;right:0;bottom:0;padding:8px;background:#ffefc2;color:#222;text-align:center;">
+      JavaScript is required for the live clock to update — please enable JS for accurate minutes.
+    </div>
+  </noscript>
+
+  <script>
+    // Get references
+    const timeEl = document.getElementById('timeText');
+    const labelEl = document.getElementById('labelText');
+    const clockEl = document.getElementById('clock');
+
+    // Format the time (no seconds). Uses user's locale by default.
+    function formatNow(hour12Preference = undefined) {
+      const now = new Date();
+      // options: hour and minute only
+      const opts = { hour: '2-digit', minute: '2-digit' };
+      if (typeof hour12Preference === 'boolean') opts.hour12 = hour12Preference;
+      return now.toLocaleTimeString([], opts);
+    }
+
+    // Update displayed time and aria-label
+    function updateTime() {
+      const now = new Date();
+      // Format time string (no seconds)
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      timeEl.textContent = timeStr;
+      // Provide a more descriptive aria label for screen readers
+      clockEl.setAttribute('aria-label', 'Current time: ' + timeStr);
+      // Optionally update label with date or timezone — left simple here
+    }
+
+    // Set initial time immediately
+    updateTime();
+
+    // Compute ms until the next minute boundary and set a timeout,
+    // then use setInterval every 60,000 ms (1 minute).
+    (function scheduleMinuteUpdates() {
+      const now = new Date();
+      const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+      // Safety: if negative or 0, just schedule next minute in 1s
+      const firstDelay = msUntilNextMinute > 0 ? msUntilNextMinute : 1000;
+
+      setTimeout(() => {
+        updateTime(); // update exactly at the minute boundary
+        // Now schedule recurring updates every 60,000 ms
+        setInterval(updateTime, 60 * 1000);
+      }, firstDelay);
+    })();
+  </script>
+</body>
+</html>
