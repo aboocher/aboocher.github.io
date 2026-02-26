@@ -673,11 +673,11 @@
     }
 
     function findRemovedChar(x, y) {
-        // Strip the first character of y ('?') and the last 6 characters
-        let yLast6 = y.slice(1, -6);
-        console.log(y.slice(1, -6));
+        // Strip the first character of y ('?')
+        const numLetters = y.length - 1; // everything after the ?
+        
         // Sort the characters from y
-        let sortedY = y.slice(-6).split('').sort().join('');
+        let sortedY = y.slice(-numLetters).split('').sort().join('');
 
         // Iterate over each character in x and remove it
         for (let i = 0; i < x.length; i++) {
