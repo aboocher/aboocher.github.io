@@ -4,706 +4,894 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blanks Bingoes!</title>
+    <title>Blank Bingos</title>
     <style>
-        /* Global Styles */
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --border-color: #e2e8f0;
+            --tile-bg: #f8fafc;
+            --tile-border: #cbd5e1;
+            --tile-text: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
 
         body {
-            font-family: monospace;
-            display: flex;
-            flex-direction: column;
-            /* Center the content horizontally */
-            justify-content: center;
-            /* Center vertically */
-            height: 100%;
-            background-color: lightblue;
-            margin: 10px 10px 10px;
-            padding: 0;
-        }
-
-        .score {
-            position: relative;
-            width: 95%;
-            height: 95%;
-            /* Positioning relative to the body */
-            /* Space from the top */
-            /* Space from the left */
-            font-size: 18px;
-            font-weight: bold;
-            /* Ensure it's on top of other elements */
-            display: flex;
-            /* Space between the <p> elements */
-            gap: 60px;
-            border: 1px solid #d3a87d;
-        }
-
-        .container {
-            display: flex;
-            width: 95%;
-            height: 95%;
-            padding: 1px;
-            justify-content: center;
-            border: 1px solid #d3a87d;
-            /* Keep content centered horizontally */
-        }
-
-        .left {
-            flex: 4;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
             padding: 20px;
-            background-color: lightblue;
             display: flex;
-            flex-direction: column;
-            height: 100%;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        .right {
-            flex: 1;
-            padding: 2px;
+        .app-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            border: 1px solid var(--border-color);
         }
 
         h1 {
-            color: #333;
+            margin-top: 0;
+            font-size: 28px;
+            color: var(--primary);
+            letter-spacing: -0.5px;
         }
 
-        .topinfo {
-            width: 80%;
-            color: purple;
+        p {
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        /* Top Bar & Setup */
+        .setup-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .radio-group label {
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        input[type="file"] {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        button,
+        .start-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgb(99 102 241 / 0.2);
+        }
+
+        button:hover,
+        .start-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Score Box */
+        .score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .score p {
+            margin: 0;
+            color: white;
+            opacity: 0.9;
+        }
+
+        /* Main Game Layout */
+        .main-layout {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 200px);
+            min-height: 600px;
+        }
+
+        .left-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Grid */
+        .grid-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            position: relative;
+            /* Crucial for our ghost layer to stick to */
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+        }
+
+        /* The Ghost Dog Layer */
+        .grid-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('doggoscrabble.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: var(--dog-opacity, 0);
+            /* Starts at 0, JavaScript controls this! */
+            z-index: -1;
+            /* Keeps it behind the tiles */
+            transition: opacity 0.5s ease-in-out;
         }
 
         .grid {
-            flex: 9.5;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background-color: lightblue;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
         }
 
         .grid div {
-            display: inline-block;
-            padding: 1px;
-            min-width: 120px;
-            max-width: 200px;
-            white-space: nowrap;
-            background-color: #f4e1d2;
-            border: 1px solid #d3a87d;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-family: 'Nimbus Mono', monospace;
-            font-size: 126%;
-            font-weight: normal;
-            line-height: 1.5;
-            color: #3b3b3b;
-            letter-spacing: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--tile-bg);
+            border: 2px solid var(--tile-border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--tile-text);
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+        }
+
+        .grid div:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
 
         /* Input Area */
-        .input-area {
-            flex: 1;
-            display: flex;
-            padding: 15px;
-            width: 30%;
-            box-sizing: border-box;
-        }
-
         .input-area input {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 20px;
-            border: 2px solid #888;
-            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
             outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            transition: border 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.05);
         }
 
         .input-area input:focus {
-            border-color: #58a6ff;
-            box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgb(99 102 241 / 0.1);
         }
 
-        /* Wordbox and Hints */
+        /* Right Panel Lists */
+        .list-card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            background-color: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
         .wordbox-title {
-            font-size: 12pt;
-            font-weight: 400;
-            margin: 5px 0 5px;
-            color: #2d2d2d;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .wordbox {
-            background-color: #ffffff;
+            overflow-y: auto;
+            flex-grow: 1;
+            font-family: monospace;
+            font-size: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            height: 20%;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            gap: 4px;
         }
 
         .wordbox div,
         #hintBox div {
-            font-size: 12pt;
-            transition: background-color 0.3s ease;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: transparent;
+            /* Changed from var(--bg-color) */
+            transition: background-color 0.2s;
         }
 
         .wordbox div:hover,
         #hintBox div:hover {
-            background-color: #f0f0f0;
-            cursor: pointer;
+            background: #e2e8f0;
         }
 
-        .wordbox div:nth-child(even),
-        #hintBox div:nth-child(even) {
-            background-color: #f9f9f9;
+        /* Cheat Controls */
+        #cheat-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--tile-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
         }
 
-        .wordbox:hover {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            border-color: #bdbdbd;
+        #cheat-controls input[type="number"] {
+            width: 50px;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            text-align: center;
         }
 
-        /* Hint Box */
-        #hintBox div {
-            padding: 0px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        #hintBox div:hover {
-            background-color: #f0f0f0;
-            cursor: pointer;
-        }
-
-        #hintBox div:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        /* Button Styles */
-        .start-btn {
-            padding: 8px 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            background-color: #58a6ff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .start-btn:hover {
-            background-color: #007bff;
-        }
-
-        .start-btn:focus {
-            outline: none;
-        }
-
-        .start-btn:active {
-            background-color: #0056b3;
-        }
-
-        /* Hidden Class */
+        /* State Classes */
         .hidden {
-            display: none;
+            display: none !important;
         }
 
-        /* Animations */
         .cleared {
-            animation: flashBlue 0.3s ease;
-            background-color: blueviolet;
+            animation: popAndVanish 0.5s ease forwards;
+            pointer-events: none;
         }
 
-        @keyframes flashBlue {
+        @keyframes popAndVanish {
             0% {
-                background-color: #00f;
+                transform: scale(1);
+                background-color: var(--primary);
+                opacity: 1;
+            }
+
+            40% {
+                transform: scale(1.1);
+                background-color: var(--success);
+                opacity: 1;
             }
 
             100% {
-                background-color: orange;
+                transform: scale(0.9);
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .partial {
+            background-color: #fef3c7 !important;
+            border-color: var(--warning) !important;
+            color: #b45309 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Universal Success Pulse for ANY correct word */
+        /* Animation for the Input Box on every match */
+        .tile-pulse {
+            animation: popAndReset 0.5s ease forwards;
+        }
+
+        @keyframes popAndReset {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            40% {
+                transform: scale(1.1);
+                background-color: var(--success);
+                opacity: 0.5;
+                /* Dips in visibility briefly */
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+                /* The background color will be set by your getTileColor function in JS */
             }
         }
     </style>
 </head>
 
+<body>
+    <div id="game-background"></div>
+    <div class="app-wrapper">
 
-<div class="topinfo" id="info">
-    <h1>Blank Bingos!</h1>
-    <p>This game will help you practice finding bingos that you (in theory) know and also tell you how many others there
-        are. Upload a list of words (not alphagrams) that you know. If you don't have one, just click start and it will
-        default to a "known" word list that is all the words containing AENRT. As you type the words, if it's a word on
-        your
-        list it will pop up in blue, otherwise in black.</p>
+        <div class="card" id="info">
+            <h1>Blank Bingos</h1>
+            <p>This game helps you practice finding bingos that you (in theory) know. Upload a list of known words, or
+                use the default (words containing AENRT). Known words appear in <span
+                    style="color: var(--primary); font-weight: bold;">Blue</span>, unknowns in Black.</p>
 
-    If you get stuck, active the helpful tools. There is a hint / answer toggle. If you click on a cell, it will tell
-    you either the first letter of all the remaining words, or just give you the answer. It is color coded as well.
-    <p>
-        There's also an animate button that will go through the whole grid and change the blank from A to Z one per
-        second.
-        Turn it off when you are done.</p>
-</div>
-<div class="score" id="scoreBox">
-    <p> Scores:</p>
-    <p id="score1"></p>
-    <p id="score2"> </p>
-    <p id="score3"></p>
-</div>
+            <div class="setup-bar" id="lexchoose">
+                <input type="file" id="fileInput">
+                <div class="radio-group">
+                    <label><input type="radio" id="nwl" name="wordlist" value="NWL" checked /> WOW</label>
+                    <label><input type="radio" id="csw" name="wordlist" value="CSW" /> CSW</label>
+                </div>
 
+                <div class="radio-group" style="align-items: center;">
+                    <label for="targetCards" style="font-weight: 500;">Cards:</label>
+                    <input type="number" id="targetCards" value="50" min="10" max="200"
+                        style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
 
+                    <div style="width: 1px; height: 16px; background: var(--border-color); margin: 0 8px;"></div>
 
-<div id="lexchoose">Upload your file here or click start for default: <input type="file" id="fileInput">
-    <br><label for="nwl" class="radio-label">WOW</label>
-    <input type="radio" id="nwl" name="wordlist" value="NWL" checked />
+                    <label for="targetAnswers" style="font-weight: 500;">Answers:</label>
+                    <input type="number" id="targetAnswers" value="100" min="10" max="1000"
+                        style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                </div>
 
-    <label for="csw" class="radio-label">CSW</label>
-    <input type="radio" id="csw" name="wordlist" value="CSW" />
-</div>
-<div><button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
-</div>
-
-<div class="container hidden" id="maincont">
-    <div class="left">
-        <div class="grid" id="grid"></div>
-        <div class="input-area">
-            <input type="text" id="wordInput" placeholder="Guess" autocomplete="off">
+                <button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
+            </div>
         </div>
 
-        <button id="cheat" onclick="enableCheatMode()" class="start-btn hidden">Activate Help Tools</button>
-        <div id="cheat-controls" class="hidden">
-            <button onclick="toggleAnimateGridSolve(this)">Animate Blanks (Toggle)</button>
-            Click a word to see: <label>
-                <input type="radio" name="cheatMode" value="hint" checked> 1st Letters
-            </label>
-            <label for="numInput"></label>
-            <input type="number" id="numInput" min="1" max="10" value="1">
-            <label>
-                <input type="radio" name="cheatMode" value="answer"> Answers
-            </label>
-            <label>
-                <input type="radio" name="cheatMode" value="blank"> Blank Letter
-            </label>
-            <button id="clearHints">Clear Hints</button>
+        <div class="score hidden" id="scoreBox">
+            <p>🎯 SCORES</p>
+            <p id="score1"></p>
+            <p id="score2"></p>
+            <p id="score3"></p>
         </div>
+
+        <div class="main-layout hidden" id="maincont">
+
+            <div class="left-panel">
+                <div class="card grid-container">
+                    <div class="grid" id="grid"></div>
+                </div>
+
+                <div class="input-area card">
+                    <input type="text" id="wordInput" placeholder="TYPE GUESS AND PRESS ENTER..." autocomplete="off">
+                </div>
+
+                <button id="cheat" onclick="enableCheatMode()"
+                    style="align-self: flex-start; background: var(--text-muted);">Activate Help Tools</button>
+
+                <div id="cheat-controls" class="hidden">
+                    <button onclick="toggleAnimateGridSolve(this)" style="background: var(--text-main);">Animate
+                        Blanks</button>
+                    <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 8px;"></div>
+                    <span style="font-size: 14px; font-weight: 500; color: var(--text-muted);">Click a tile for:</span>
+                    <label><input type="radio" name="cheatMode" value="hint" checked> First few letters</label>
+                    <input type="number" id="numInput" min="1" max="10" value="1">
+                    <label><input type="radio" name="cheatMode" value="answer"> Answers</label>
+                    <label><input type="radio" name="cheatMode" value="blank"> Blank values</label>
+                    <button id="clearHints" style="margin-left: auto; background: var(--text-muted);">Clear</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="card list-card">
+                    <div class="wordbox-title">✅ Correct Words</div>
+                    <div class="wordbox" id="wordBox"></div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="wordbox-title">💡 Hints</div>
+                    <div class="wordbox" id="hintBox"></div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="wordbox-title">❌ Missed Words</div>
+                    <div class="wordbox" id="wrongBox"></div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-    <div class="right">
-        <div class="wordbox-title">Words Correct:</div>
-        <div class="wordbox" id="wordBox"></div>
 
-        <div class="wordbox-title">Hints:</div>
-        <div class="wordbox" id="hintBox"></div>
+    <script>
+        const nwlRadio = document.getElementById('nwl');
+        const cswRadio = document.getElementById('csw');
+        let wordListType = nwlRadio.checked ? 'NWL' : 'CSW';
 
-        <div class="wordbox-title">Missed Words:</div> <!-- Third box -->
-        <div class="wordbox" id="wrongBox"></div> <!-- Third box content -->
-    </div>
-</div>
+        nwlRadio.addEventListener('change', () => { if (nwlRadio.checked) wordListType = 'NWL'; });
+        cswRadio.addEventListener('change', () => { if (cswRadio.checked) wordListType = 'CSW'; });
 
+        let total1 = 0; let total2 = 0;
+        let score1 = 0; let score2 = 0;
+        let userWords = new Set();
+        let userAlphagrams = new Set();
+        let masterData = {};
+        let gridWords = [];
+        let wordCounts = {};
+        let enteredWords = new Set();
+        let hintLength = 1;
 
-</div>
+        // NEW: Generates an indigo heat-map based strictly on knowns left
+        // 1. NEW RAINBOW COLOR SCHEME
+        function getTileColor(n) {
+            if (n === 0) return ""; // Let CSS handle solved/partial states
 
+            // Distinct colors for 1 through 7+ knowns
+            const rainbow = [
+                "",          // 0 (handled above)
+                <!-- "#ffb3ba",   // 1: Pastel Red -->
+                "#ffdfba",   // 2: Pastel Orange
+                "#ffffba",   // 3: Pastel Yellow
+                "#baffc9",   // 4: Pastel Green
+                "#bae1ff",   // 5: Pastel Blue
+                "#c9c9ff",   // 6: Pastel Indigo
+                "#e8baff"    // 7+: Pastel Violet
+            ];
 
-<script>
-
-    const nwlRadio = document.getElementById('nwl');
-    const cswRadio = document.getElementById('csw');
-
-    let wordListType = nwlRadio.checked ? 'NWL' : 'CSW';
-
-    nwlRadio.addEventListener('change', () => {
-        if (nwlRadio.checked) {
-            wordListType = 'NWL';
+            // Cap at 7 so anything 7 or higher gets the violet color
+            return rainbow[Math.min(n, 7)];
         }
-    });
 
-    cswRadio.addEventListener('change', () => {
-        if (cswRadio.checked) {
-            wordListType = 'CSW';
-        }
-    });
-    document.getElementById("scoreBox").classList.add("hidden");
-    let timeLeft = 300;
-    let total1 = 0;
-    let total2 = 0;
-    let score1 = 0;
-    let score2 = 0;
-    let userWords = new Set();
-    let masterData = {};
-    let gridWords = [];
-    let wordCounts = {};
-    let enteredWords = new Set();
-    let hintLength = 1;
-
-    function updateScores() {
-        const score1Element = document.getElementById("score1");
-        const score2Element = document.getElementById("score2");
-        const score3Element = document.getElementById("score3");
-        let score3 = score1 + score2;
-        let total3 = total1 + total2;
-        let percentage1 = ((score1 / total1) * 100).toFixed(1);
-        console.log(score1, score2, total1, total2);
-        let percentage2 = ((score2 / total2) * 100).toFixed(1);
-        let percentage3 = ((score3 / total3) * 100).toFixed(1);
-        // Update the scores in the HTML
-        score1Element.textContent = `Known: ${score1} of ${total1} (${percentage1}%)`;
-        score2Element.textContent = `Unknown: ${score2} of ${total2} (${percentage2}%)`;
-        score3Element.textContent = `Total: ${score3} of ${total3} (${percentage3}%)`;
-    }
-
-
-    async function startGame(fileURL = null, fileText = null) {
-        // Hide the start button once the game starts
-        processFile();
-        document.getElementById("scoreBox").classList.remove("hidden");
-        document.getElementById("wordInput").focus();
-        document.getElementById("maincont").classList.remove("hidden");
-        document.getElementById("cheat").classList.remove("hidden");
-        document.getElementById("startButton").classList.add("hidden");
-        document.getElementById("info").classList.add("hidden");
-        document.getElementById("lexchoose").classList.add("hidden");
-
-        // Hide the file input and maxMi options
-        document.getElementById("fileInput").classList.add("hidden");
-
-        // Show the word input box
-        document.getElementById("wordInput").classList.remove("hidden");
-        document.getElementById("wordInput").focus()
-    }
-
-    async function loadMasterData() {
-        if (wordListType == "NWL") {
-            response = await fetch("master.txt");
-        } else {
-            response = await fetch("masterCSW.txt");
-        }
-        const text = await response.text();
-        text.split('\n').forEach(line => {
-            const parts = line.trim().split(' ');
-            if (parts.length > 1) {
-                const key = parts[0];
-                const values = parts.slice(1);
-                masterData[key] = values;
+        // 2. AGGRESSIVE FOCUS LISTENER
+        // Forces focus back to the input anytime you click anywhere on the page
+        document.body.addEventListener('click', function (e) {
+            const wordInput = document.getElementById("wordInput");
+            // We ignore clicks on other inputs (like the target sliders) so you can still use them!
+            if (e.target.tagName !== 'INPUT' && wordInput) {
+                wordInput.focus();
             }
         });
-    }
 
-    document.getElementById("wordInput").classList.add("hidden");
-    async function processFile() {
-        await loadMasterData();
-        const fileInput = document.getElementById('fileInput');
-        let file = fileInput.files[0]; // Get the first file in the input
-        if (!file) {
-            const response = await fetch("default.txt");
-            const blob = await response.blob();
-            file = new File([blob], "default.txt", { type: "text/plain" });
+        function isKnownWord(word) {
+            return userAlphagrams.has(word.split('').sort().join(''));
         }
 
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            // Step 1: Parse the input and create a Set of user words
-            userWords = new Set(e.target.result.split('\n').map(line => line.trim()).filter(line => line));
+        function updateScores() {
+            let score3 = score1 + score2;
+            let total3 = total1 + total2;
+            let p1 = total1 > 0 ? ((score1 / total1) * 100).toFixed(1) : 0;
+            let p2 = total2 > 0 ? ((score2 / total2) * 100).toFixed(1) : 0;
+            let p3 = total3 > 0 ? ((score3 / total3) * 100).toFixed(1) : 0;
 
-            let gridWords = [];
+            document.getElementById("score1").textContent = `Known: ${score1}/${total1} (${p1}%)`;
+            document.getElementById("score2").textContent = `Unknown: ${score2}/${total2} (${p2}%)`;
+            document.getElementById("score3").textContent = `Total: ${score3}/${total3} (${p3}%)`;
+
+            // Calculate how far along you are (0.0 to 1.0)
+            let progress = 0;
+            // Assuming your total possible score variable is 'total1' and current is 'score1'
+            // (Update these variable names if you use different ones in your score tracker!)
+            if (total1 > 0) {
+                progress = score1 / total1;
+            }
+            if (progress > 1) progress = 1;
+
+            // Send that progress number directly to our CSS ghost layer!
+            const gridContainer = document.querySelector('.grid-container');
+            if (gridContainer) {
+                gridContainer.style.setProperty('--dog-opacity', progress);
+            }
+        }
+
+        async function startGame() {
+            processFile();
+            document.getElementById("info").classList.add("hidden");
+            document.getElementById("scoreBox").classList.remove("hidden");
+            document.getElementById("maincont").classList.remove("hidden");
+            setTimeout(() => document.getElementById("wordInput").focus(), 100);
+        }
+
+        async function loadMasterData() {
+            try {
+                let response = await fetch(wordListType === "NWL" ? "master.txt" : "masterCSW.txt");
+                const text = await response.text();
+                text.split('\n').forEach(line => {
+                    const parts = line.trim().split(' ');
+                    if (parts.length > 1) {
+                        masterData[parts[0]] = parts.slice(1);
+                    }
+                });
+            } catch (e) {
+                console.warn("Could not load master data. Ensure files exist.", e);
+            }
+        }
+
+        async function processFile() {
+            await loadMasterData();
+            const fileInput = document.getElementById('fileInput');
+            let fileText = "";
+
+            if (fileInput.files.length > 0) {
+                fileText = await fileInput.files[0].text();
+                localStorage.setItem('blankBingosWordList', fileText);
+            } else if (localStorage.getItem('blankBingosWordList')) {
+                fileText = localStorage.getItem('blankBingosWordList');
+            } else {
+                try {
+                    const response = await fetch("default.txt");
+                    fileText = await response.text();
+                } catch (e) {
+                    console.warn("Could not load default.txt", e);
+                    return;
+                }
+            }
+
+            userWords = new Set(fileText.split(/\r?\n/).map(l => l.trim().toUpperCase()).filter(l => l));
+            userAlphagrams = new Set([...userWords].map(w => w.split('').sort().join('')));
+
             let gridHtml = "";
+            gridWords = [];
+            total1 = 0; total2 = 0;
+            score1 = 0; score2 = 0;
 
-            // Step 2: Loop to fill the grid with words, filtering out those with m > 9
-            while (gridWords.length < 50) {
-                const modifiedWords = Array.from(userWords).sort(() => Math.random() - 0.5);
+            const targetCards = parseInt(document.getElementById('targetCards').value, 10) || 50;
+            const targetAnswers = parseInt(document.getElementById('targetAnswers').value, 10) || 100;
+            let currentTotalAnswers = 0;
 
-                // Step 3: Process words and check if m <= 9
-                for (let word of modifiedWords) {
-                    const chars = word.split("");
-                    const randomIndex = Math.floor(Math.random() * chars.length);
-                    chars[randomIndex] = "?";  // Randomize a character to replace it with "?"
-                    let modifiedWord = chars.sort().join("");  // Sort the characters
-                    modifiedWord = modifiedWord.replace(/\n/g, '');
-                    let n = 0, m = 0;
-                    if (masterData[modifiedWord]) {
-                        const validWords = masterData[modifiedWord];
-                        m = validWords.length;
-                        n = validWords.filter(w => userWords.has(w)).length;
+            let candidates = [];
+            let seenModified = new Set();
+
+            for (let word of userWords) {
+                for (let i = 0; i < word.length; i++) {
+                    let chars = word.split("");
+                    chars[i] = "?";
+                    let modifiedWord = chars.sort().join("").replace(/[\r\n]+/g, '');
+
+                    if (!seenModified.has(modifiedWord)) {
+                        seenModified.add(modifiedWord);
+                        if (masterData[modifiedWord]) {
+                            const validWords = masterData[modifiedWord];
+                            let m = validWords.length;
+                            if (m <= 9) {
+                                let n = validWords.filter(w => isKnownWord(w)).length;
+                                candidates.push({ modifiedWord, n, m, words: validWords });
+                            }
+                        }
                     }
+                }
+            }
 
-                    // Add the word to the grid if its m value is 9 or less
-                    if (m <= 9 && !gridWords.includes(modifiedWord)) {
-                        wordCounts[modifiedWord] = { n, m, words: masterData[modifiedWord] || [] };
-                        gridWords.push(modifiedWord);  // Add word to grid
-                        total1 += n;
-                        total2 += m;
-                        gridHtml += `
-                                <div class = 'gridinside' id='${modifiedWord}'>${modifiedWord} ${n}|${m}</div>`;
-                    }
+            wordCounts = {};
+            candidates.sort(() => Math.random() - 0.5);
 
-                    // Break the loop if we have enough words (50 in total)
-                    if (gridWords.length >= 50) {
+            for (let i = 0; i < targetCards; i++) {
+                if (candidates.length === 0) break;
+
+                let cardsLeft = targetCards - i;
+                let safeMax = (targetAnswers - currentTotalAnswers) - (cardsLeft - 1);
+                if (safeMax < 1) safeMax = 1;
+
+                let selectedIdx = candidates.findIndex(c => c.m <= safeMax);
+                if (selectedIdx === -1) {
+                    let minM = Math.min(...candidates.map(c => c.m));
+                    selectedIdx = candidates.findIndex(c => c.m === minM);
+                }
+
+                let bestFit = candidates.splice(selectedIdx, 1)[0];
+
+                wordCounts[bestFit.modifiedWord] = { n: bestFit.n, m: bestFit.m, words: bestFit.words };
+                gridWords.push(bestFit.modifiedWord);
+
+                total1 += bestFit.n;
+                total2 += (bestFit.m - bestFit.n);
+                currentTotalAnswers += bestFit.m;
+
+                let bgColor = getTileColor(bestFit.n);
+                // NEW: Spans added for flexbox left/right alignment + dynamic background
+                gridHtml += `<div id='${bestFit.modifiedWord}' style='background-color: ${bgColor}'><span>${bestFit.modifiedWord}</span> <span>${bestFit.n}|${bestFit.m}</span></div>`;
+            }
+
+            document.getElementById("grid").innerHTML = gridHtml;
+            updateScores();
+        }
+
+        function isMatchingWithWildcard(guess, wildcardAlphagram) {
+            const sortedGuess = guess.toUpperCase().split('').sort().join('');
+            const baseAlphagram = wildcardAlphagram.replace('?', '').toUpperCase();
+            for (let i = 0; i < sortedGuess.length; i++) {
+                if (sortedGuess.slice(0, i) + sortedGuess.slice(i + 1) === baseAlphagram) return true;
+            }
+            return false;
+        }
+
+        document.getElementById("wordInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                const inputWord = event.target.value.trim().toUpperCase();
+                const inputBox = event.target;
+                inputBox.value = "";
+
+                if (!inputWord || enteredWords.has(inputWord)) return;
+
+                // 1. IS IT A VALID WORD IN THE DICTIONARY?
+                // We check if the word's alphagram exists in our masterData keys
+                const inputAlphagram = inputWord.split('').sort().join('');
+                let isRealWord = false;
+
+                // Check every wildcard entry in masterData to see if this word is a valid bingo
+                for (let key in masterData) {
+                    if (masterData[key].includes(inputWord)) {
+                        isRealWord = true;
                         break;
                     }
                 }
-            }
 
-            // Step 4: Output the final HTML grid (if needed, or return it for use in your app)
-            document.getElementById("grid").innerHTML = gridHtml;
-        };
-        reader.readAsText(file);
-    }
-    function isMatchingWithWildcard(x, y) {
-        // Step 1: Sort and capitalize x
-        const sortedX = x.toUpperCase().split('').sort().join('');
-
-        // Step 2: Get the last 6 characters of y (ignoring the ?)
-        const last6Y = y.slice(1).toUpperCase();  // Remove '?' and capitalize the letters
-
-        // Step 3: Check if any combination of 6 letters from sortedX matches the last 6 letters of y
-        for (let i = 0; i < sortedX.length; i++) {
-            // Remove one letter from sortedX
-            const newX = sortedX.slice(0, i) + sortedX.slice(i + 1);  // Remove the i-th letter
-
-            // Check if the new X matches the last 6 characters of y
-            if (newX === last6Y) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    document.getElementById("wordInput").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            const inputWord = event.target.value.trim().toUpperCase();
-            event.target.value = "";
-            if (!inputWord || enteredWords.has(inputWord)) return;
-            enteredWords.add(inputWord);
-            let addMe = 0;
-
-            Object.keys(wordCounts).forEach(modifiedWord => {
-                if (isMatchingWithWildcard(inputWord, modifiedWord) & !wordCounts[modifiedWord].words.includes(inputWord)) {
-                    addWordToWrongBox(inputWord + "*");
-                    return;
+                if (!isRealWord) {
+                    // It's not in the dictionary at all. STRAIGHT TO WRONG BOX.
+                    addWordToWrongBox(inputWord);
+                    return; // Stop here, don't check the grid
                 }
-                if (wordCounts[modifiedWord].words.includes(inputWord)) {
-                    addMe = 1;
-                    wordCounts[modifiedWord].words = wordCounts[modifiedWord].words.filter(item => item !== inputWord);
-                    wordCounts[modifiedWord].m--;
-                    score2 += 1;
-                    if (userWords.has(inputWord)) {
-                        wordCounts[modifiedWord].n--;
-                        score1 += 1;
-                    }
-                    const gridCell = document.getElementById(modifiedWord);
-                    if (gridCell) {
-                        if (wordCounts[modifiedWord].n > 0) {
-                            gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m} `;
-                        } else if (wordCounts[modifiedWord].m > 0) {
-                            gridCell.style.backgroundColor = "#ffd700";
-                            gridCell.innerHTML = `${modifiedWord} ${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m} `;
+
+                // 2. IT IS A REAL WORD. Now check if it matches any tiles on the grid.
+                let matchedAnyTile = false;
+                Object.keys(wordCounts).forEach(modifiedWord => {
+                    if (wordCounts[modifiedWord].words.includes(inputWord)) {
+                        matchedAnyTile = true;
+
+                        wordCounts[modifiedWord].words = wordCounts[modifiedWord].words.filter(w => w !== inputWord);
+                        wordCounts[modifiedWord].m--;
+
+                        if (isKnownWord(inputWord)) {
+                            wordCounts[modifiedWord].n--;
+                            score1++;
                         } else {
-                            gridCell.classList.add("cleared");
-                            gridCell.innerHTML = "";
-                            gridCell.style.backgroundColor = "blue";
+                            score2++;
                         }
-                        updateScores();
-                    }
 
-                }
+                        const gridCell = document.getElementById(modifiedWord);
+                        if (gridCell) {
+                            gridCell.classList.remove("tile-pulse");
+                            void gridCell.offsetWidth;
 
-            });
-            if (addMe === 1) { addWordToWordBox(inputWord); addMe = 0; }
-        }
-
-    });
-
-    function addWordToWrongBox(word) {
-        const wordBox = document.getElementById("wrongBox");
-        const wordDiv = document.createElement("div");
-
-        // Check if the word is in userWords to color it blue
-        wordDiv.textContent = word;
-        wordDiv.style.color = "red"; // Non-user word in gray
-
-        wordBox.appendChild(wordDiv);
-        wordBox.scrollTop = wordBox.scrollHeight;
-    }
-
-    function addWordToWordBox(word) {
-        const wordBox = document.getElementById("wordBox");
-        const wordDiv = document.createElement("div");
-
-        // Check if the word is in userWords to color it blue
-        if (userWords.has(word)) {
-            wordDiv.textContent = word;
-            wordDiv.style.color = "blue"; // User word in blue
-        } else {
-            wordDiv.textContent = word;
-            wordDiv.style.color = "gray"; // Non-user word in gray
-        }
-
-        wordBox.appendChild(wordDiv);
-        wordBox.scrollTop = wordBox.scrollHeight;
-    }
-
-    function enableCheatMode() {
-        document.getElementById("cheat").classList.add("hidden");
-        document.getElementById("cheat-controls").classList.remove("hidden");
-        document.getElementById("wordInput").focus();
-
-        for (const key in wordCounts) {
-            const element = document.getElementById(key);
-            if (element) {
-                element.addEventListener("click", function () {
-                    document.getElementById("wordInput").focus();
-                    element.style.backgroundColor = "grey";
-                    const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
-
-                    for (const word of wordCounts[key].words) {
-                        if (cheatMode === "hint") {
-                            if (userWords.has(word)) {
-                                addCheatHintToBox(word.slice(0, hintLength), "lightblue");
-                            } else { addCheatHintToBox(word.slice(0, hintLength), "white"); }
-                        } else if (cheatMode === "blank") {
-                            let blankIs = findRemovedChar(word, key);
-                            if (userWords.has(word)) {
-                                addCheatBlankToBox(blankIs, "lightblue");
-                            } else { addCheatBlankToBox(blankIs, "white"); }
-                        } else {
-                            if (userWords.has(word)) {
-                                addCheatWordToBox(word, "lightblue");
+                            if (wordCounts[modifiedWord].m > 0) {
+                                gridCell.classList.add("tile-pulse");
+                                if (wordCounts[modifiedWord].n > 0) {
+                                    gridCell.style.backgroundColor = getTileColor(wordCounts[modifiedWord].n);
+                                } else {
+                                    gridCell.classList.add("partial");
+                                }
+                                gridCell.innerHTML = `<span>${modifiedWord}</span> <span>${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m}</span>`;
                             } else {
-                                addCheatWordToBox(word, "white");
+                                gridCell.classList.remove("partial", "tile-pulse");
+                                gridCell.classList.add("cleared");
+                                gridCell.innerHTML = "";
                             }
                         }
                     }
                 });
+
+                // 3. FINAL VERDICT FOR REAL WORDS
+                enteredWords.add(inputWord);
+                addWordToWordBox(inputWord); // All real words go to the "Correct/Found" list
+                if (matchedAnyTile) {
+                    updateScores();
+                }
+            }
+        });
+
+        function addWordToWrongBox(word) {
+            const wordBox = document.getElementById("wrongBox");
+            const div = document.createElement("div");
+            div.textContent = word;
+            div.style.color = "var(--danger)";
+            div.style.fontWeight = "bold";
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function addWordToWordBox(word) {
+            const wordBox = document.getElementById("wordBox");
+            const div = document.createElement("div");
+            div.textContent = word;
+            const known = isKnownWord(word);
+            div.style.color = known ? "var(--primary)" : "var(--text-main)";
+            div.style.fontWeight = known ? "bold" : "normal";
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function enableCheatMode() {
+            document.getElementById("cheat").classList.add("hidden");
+            document.getElementById("cheat-controls").classList.remove("hidden");
+            document.getElementById("wordInput").focus();
+
+            for (const key in wordCounts) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.addEventListener("click", function () {
+                        document.getElementById("wordInput").focus();
+                        if (!element.classList.contains("cleared")) element.style.borderColor = "var(--text-muted)";
+                        const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
+
+                        for (const word of wordCounts[key].words) {
+                            const known = isKnownWord(word);
+                            const color = known ? "#e0e7ff" : "transparent";
+                            const textColor = known ? "var(--primary)" : "inherit";
+
+                            if (cheatMode === "hint") {
+                                addCheatItemToBox(word.slice(0, hintLength), color, textColor);
+                            } else if (cheatMode === "blank") {
+                                addCheatItemToBox("Blank: " + findRemovedChar(word, key), color, textColor);
+                            } else {
+                                addCheatItemToBox(word, color, textColor);
+                            }
+                        }
+                    });
+                }
             }
         }
-    }
-    document.getElementById("clearHints").addEventListener("click", function () {
-        const hintBox = document.getElementById("hintBox");
-        document.getElementById("wordInput").focus();
-        hintBox.innerHTML = ""; // Clear all children
-    });
 
-    function addCheatHintToBox(firstLetter, c) {
-        const wordBox = document.getElementById("hintBox");
-        const hintDiv = document.createElement("div");
-        hintDiv.style.backgroundColor = c;
-        hintDiv.textContent = firstLetter;
-        wordBox.appendChild(hintDiv);
-        wordBox.scrollTop = wordBox.scrollHeight;
-    }
+        document.getElementById("clearHints").addEventListener("click", function () {
+            document.getElementById("hintBox").innerHTML = "";
+            document.getElementById("wordInput").focus();
+        });
 
-    function addCheatBlankToBox(firstLetter, c) {
-        const wordBox = document.getElementById("hintBox");
-        const hintDiv = document.createElement("div");
-        hintDiv.style.backgroundColor = c;
-        hintDiv.textContent = "Blank is: " + firstLetter;
-        wordBox.appendChild(hintDiv);
-        wordBox.scrollTop = wordBox.scrollHeight;
-    }
-    function addCheatWordToBox(word, c) {
-        const wordBox = document.getElementById("hintBox")
-        // Create a new div for the word
-        const wordDiv = document.createElement('div');
-        wordDiv.textContent = word;
-        wordDiv.style.backgroundColor = c;
-        // Add the word div to the word box
-        wordBox.appendChild(wordDiv);
-        // Auto-scroll to the bottom of the wordbox
-        wordBox.scrollTop = wordBox.scrollHeight;
-    }
+        function addCheatItemToBox(text, bgColor, textColor) {
+            const wordBox = document.getElementById("hintBox");
+            const div = document.createElement("div");
+            div.style.backgroundColor = bgColor;
+            div.style.color = textColor;
+            div.style.fontWeight = textColor !== "inherit" ? "bold" : "normal";
+            div.textContent = text;
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
 
-    let isAnimating = false;
-    let animationInterval = null;
-    let originalGridWords = {};
+        let isAnimating = false;
+        let animationInterval = null;
+        let originalGridWords = {};
 
-    function toggleAnimateGridSolve(button) {
-        document.getElementById("wordInput").focus();
-        const keys = Object.keys(wordCounts);
+        function toggleAnimateGridSolve(button) {
+            document.getElementById("wordInput").focus();
+            const keys = Object.keys(wordCounts);
 
-        if (!isAnimating) {
-            // Save original words and start animation
-            originalGridWords = {};
-            keys.forEach(id => {
-                const el = document.getElementById(id);
-                originalGridWords[id] = el.textContent;
-            });
-
-            let step = 0;
-            const maxSteps = 26;
-
-            animationInterval = setInterval(() => {
-                if (step >= maxSteps) step = 0;
-
+            if (!isAnimating) {
+                originalGridWords = {};
                 keys.forEach(id => {
                     const el = document.getElementById(id);
-                    if (el.classList.contains("cleared")) return; // Skip if it has the "cleared" class
-
-                    const original = originalGridWords[id];
-                    const letters = original.slice(0, 7).split("");
-                    const rest = original.slice(7); // Keep trailing characters like n, m
-
-                    const animated = letters.map(char =>
-                        char === "?" ? String.fromCharCode(65 + step) : char
-                    );
-                    el.textContent = animated.sort().join("");
+                    if (el) originalGridWords[id] = el.textContent;
                 });
 
-                step++;
-            }, 1000);
+                let step = 0;
+                animationInterval = setInterval(() => {
+                    if (step >= 26) step = 0;
+                    keys.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (!el || el.classList.contains("cleared")) return;
 
-            button.textContent = "Stop Animation";
-            isAnimating = true;
+                        const [originalWord, ...restParts] = originalGridWords[id].split(" ");
+                        const rest = restParts.length ? " " + restParts.join(" ") : "";
+                        const animated = originalWord.split("").map(c => c === "?" ? String.fromCharCode(65 + step) : c);
+                        el.textContent = animated.sort().join("") + rest;
+                    });
+                    step++;
+                }, 1000);
 
-        } else {
-            // Stop animation and restore original
-            clearInterval(animationInterval);
-            animationInterval = null;
-
-            Object.entries(originalGridWords).forEach(([id, original]) => {
-                const el = document.getElementById(id);
-                el.textContent = original;
-            });
-
-            button.textContent = "Animate";
-            isAnimating = false;
-        }
-    }
-
-    function findRemovedChar(x, y) {
-        // Strip the first character of y ('?')
-        const numLetters = y.length - 1; // everything after the ?
-        
-        // Sort the characters from y
-        let sortedY = y.slice(-numLetters).split('').sort().join('');
-
-        // Iterate over each character in x and remove it
-        for (let i = 0; i < x.length; i++) {
-            // Remove the i-th character from x
-            let xModified = x.slice(0, i) + x.slice(i + 1);
-
-            // Sort the remaining characters of x
-            let sortedX = xModified.split('').sort().join('');
-
-            // If the sorted characters match, return the removed character
-            if (sortedX === sortedY) {
-                return x[i];
+                button.textContent = "Stop Animation";
+                button.style.background = "var(--danger)";
+                isAnimating = true;
+            } else {
+                clearInterval(animationInterval);
+                Object.entries(originalGridWords).forEach(([id, original]) => {
+                    const el = document.getElementById(id);
+                    if (el && !el.classList.contains("cleared")) {
+                        // Restore structure safely when animation stops
+                        let [word, nums] = original.trim().split(" ");
+                        el.innerHTML = `<span>${word}</span> <span>${nums}</span>`;
+                    }
+                });
+                button.textContent = "Animate Blanks";
+                button.style.background = "var(--text-main)";
+                isAnimating = false;
             }
         }
 
-        // If no match is found, return null
-        return null;
-    }
-    const numInput = document.getElementById('numInput');
+        function findRemovedChar(fullWord, wildcardAlphagram) {
+            const base = wildcardAlphagram.replace('?', '').split('').sort().join('');
+            for (let i = 0; i < fullWord.length; i++) {
+                if ((fullWord.slice(0, i) + fullWord.slice(i + 1)).split('').sort().join('') === base) return fullWord[i];
+            }
+            return null;
+        }
 
-    numInput.addEventListener('input', () => {
-        hintLength = parseInt(numInput.value, 10);
-        //console.log("Selected value:", value);
-        // You can do more with the value here
-    });
-</script>
+        document.getElementById('numInput').addEventListener('input', (e) => {
+            hintLength = parseInt(e.target.value, 10);
+        });
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            if (localStorage.getItem('blankBingosWordList')) {
+                const startBtn = document.getElementById('startButton');
+                startBtn.textContent = "Start Game (Using Saved List)";
+                startBtn.style.backgroundColor = "var(--success)";
+            }
+        });
+    </script>
 </body>
 
 </html>
