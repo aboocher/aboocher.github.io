@@ -689,12 +689,8 @@
 
                 if (!inputWord || enteredWords.has(inputWord)) return;
 
-                // 1. IS IT A VALID WORD IN THE DICTIONARY?
-                // We check if the word's alphagram exists in our masterData keys
-                const inputAlphagram = inputWord.split('').sort().join('');
+                // STEP 1: IS IT A REAL WORD AT ALL?
                 let isRealWord = false;
-
-                // Check every wildcard entry in masterData to see if this word is a valid bingo
                 for (let key in masterData) {
                     if (masterData[key].includes(inputWord)) {
                         isRealWord = true;
@@ -702,13 +698,13 @@
                     }
                 }
 
+                // If it's NOT a real word, it goes to the Wrong Box immediately.
                 if (!isRealWord) {
-                    // It's not in the dictionary at all. STRAIGHT TO WRONG BOX.
                     addWordToWrongBox(inputWord);
-                    return; // Stop here, don't check the grid
+                    return;
                 }
 
-                // 2. IT IS A REAL WORD. Now check if it matches any tiles on the grid.
+                // STEP 2: IT IS A REAL WORD. Now, is it on our current grid?
                 let matchedAnyTile = false;
                 Object.keys(wordCounts).forEach(modifiedWord => {
                     if (wordCounts[modifiedWord].words.includes(inputWord)) {
@@ -746,11 +742,16 @@
                     }
                 });
 
-                // 3. FINAL VERDICT FOR REAL WORDS
-                enteredWords.add(inputWord);
-                addWordToWordBox(inputWord); // All real words go to the "Correct/Found" list
+                // STEP 3: FINAL VERDICT
                 if (matchedAnyTile) {
+                    // It's a real word AND it was on the grid. Success!
+                    enteredWords.add(inputWord);
+                    addWordToWordBox(inputWord);
                     updateScores();
+                } else {
+                    // It's a real word, but NOT on this grid. 
+                    // We do nothing! It doesn't go in "Correct" and it doesn't go in "Wrong."
+                    // (Or you can console.log("Bonus word found") if you want to track them).
                 }
             }
         });
