@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words With Hints</title>
+    <link rel="stylesheet" href="../../common.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 56px 20px 20px;
+        }
+
+        .app-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .setup-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .radio-group label {
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-group input[type="number"] {
+            width: 70px;
+        }
+
+        .score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .score p {
+            margin: 0;
+            color: white;
+            opacity: 0.9;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 220px);
+            min-height: 600px;
+        }
+
+        .left-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .grid-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            position: relative;
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+        }
+
+        .grid-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('doggoscrabble.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: var(--dog-opacity, 0);
+            z-index: -1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 2px;
+        }
+
+        .grid div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--tile-bg);
+            border: 2px solid var(--tile-border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--tile-text);
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .input-area input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-sizing: border-box;
+        }
+
+        .list-card {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .wordbox-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wordbox {
+            overflow-y: auto;
+            flex-grow: 1;
+            font-family: monospace;
+            font-size: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .wordbox div,
+        #hintBox div {
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .wordbox div:hover,
+        #hintBox div:hover {
+            background: #e2e8f0;
+        }
+
+        #cheat-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--tile-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+        }
+
+        #cheat-controls input[type="number"] {
+            width: 50px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .cleared {
+            animation: popAndVanish 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes popAndVanish {
+            0% {
+                transform: scale(1);
+                background-color: var(--primary);
+                opacity: 1;
+            }
+
+            40% {
+                transform: scale(1.1);
+                background-color: var(--success);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .partial {
+            background-color: #fef3c7 !important;
+            border-color: var(--warning) !important;
+            color: #b45309 !important;
+        }
+
+        .tile-pulse {
+            animation: popAndReset 0.5s ease forwards;
+        }
+
+        @keyframes popAndReset {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            40% {
+                transform: scale(1.1);
+                background-color: var(--success);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="site-nav" style="position:fixed; top:0; left:0; right:0; z-index:5;">&larr; All games</a>
+    <div class="app-wrapper">
+
+        <div class="card" id="info">
+            <h1>Words With Hints</h1>
+            <p>Solve 7-letter anagrams. Each tile is a jumbled rack with 9 or fewer valid words; type any solution you
+                find and press Enter. Words from your chosen "known" pool show in
+                <span style="color: var(--primary); font-weight: bold;">blue</span> once solved.</p>
+
+            <div class="setup-bar">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" id="presetMode" name="wordSource" value="preset" checked>
+                        Use a preset list, limited to the top
+                        <input type="number" id="probLimit" value="1000" min="1" max="20353">
+                        most common racks
+                    </label>
+                    <label>
+                        <input type="radio" id="uploadMode" name="wordSource" value="upload">
+                        Upload my own word list
+                    </label>
+                </div>
+                <input type="file" id="fileInput" class="hidden">
+                <button id="startButton" class="btn">Start Game</button>
+            </div>
+        </div>
+
+        <div class="score hidden" id="scoreBox">
+            <p>🎯 SCORE</p>
+            <p id="score1"></p>
+        </div>
+
+        <div class="main-layout hidden" id="maincont">
+            <div class="left-panel">
+                <div class="card grid-container">
+                    <div class="grid" id="grid"></div>
+                </div>
+
+                <div class="input-area card">
+                    <input type="text" id="wordInput" placeholder="TYPE GUESS AND PRESS ENTER..." autocomplete="off">
+                </div>
+
+                <button id="cheat" class="btn-muted" style="align-self: flex-start;">Activate Help Tools</button>
+
+                <div id="cheat-controls" class="hidden">
+                    <span style="font-size: 14px; font-weight: 500; color: var(--text-muted);">Click a tile for:</span>
+                    <label><input type="radio" name="cheatMode" value="hint" checked> First few letters</label>
+                    <input type="number" id="numInput" min="1" max="10" value="1">
+                    <label><input type="radio" name="cheatMode" value="answer"> Full answers</label>
+                    <button id="clearHints" class="btn-muted" style="margin-left: auto;">Clear</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="card list-card">
+                    <div class="wordbox-title">✅ Words Found</div>
+                    <div class="wordbox" id="wordBox"></div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="wordbox-title">💡 Hints</div>
+                    <div class="wordbox" id="hintBox"></div>
+                </div>
+
+                <div class="card list-card">
+                    <div class="wordbox-title">❌ Wrong Guesses</div>
+                    <div class="wordbox" id="wrongBox"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---- Game state ---------------------------------------------------
+        let userWords = new Set();     // The "known" word pool (preset-by-rank, or uploaded)
+        let masterData = {};           // alphagram -> full list of valid 7-letter words
+        let wordCounts = {};           // alphagram-on-grid -> { n: known count, m: remaining count, words: [...] }
+        let enteredWords = new Set();
+        let hintLength = 1;
+        let score = 0;
+        let total = 0;
+
+        document.getElementById("startButton").addEventListener("click", startGame);
+        document.getElementById("cheat").addEventListener("click", enableCheatMode);
+
+        function isKnownWord(word) {
+            return userWords.has(word);
+        }
+
+        function updateScores() {
+            const pct = total > 0 ? ((score / total) * 100).toFixed(1) : 0;
+            document.getElementById("score1").textContent = `Known: ${score}/${total} (${pct}%)`;
+
+            const progress = total > 0 ? Math.min(score / total, 1) : 0;
+            const gridContainer = document.querySelector('.grid-container');
+            if (gridContainer) gridContainer.style.setProperty('--dog-opacity', progress);
+        }
+
+        async function loadMasterData() {
+            try {
+                const response = await fetch("master7s.txt");
+                const text = await response.text();
+                text.split('\n').forEach(line => {
+                    const parts = line.trim().split(' ');
+                    if (parts.length > 1) masterData[parts[0]] = parts.slice(1);
+                });
+            } catch (e) {
+                console.warn("Could not load master7s.txt", e);
+            }
+        }
+
+        async function loadWordPool() {
+            const fileInput = document.getElementById('fileInput');
+            const usePreset = document.getElementById('presetMode').checked;
+
+            if (!usePreset && fileInput.files.length > 0) {
+                const text = await fileInput.files[0].text();
+                return text.split(/\r?\n/).map(w => w.trim().toUpperCase()).filter(Boolean);
+            }
+
+            const limit = parseInt(document.getElementById('probLimit').value, 10) || 1000;
+            const response = await fetch("master7sByProb.txt");
+            const text = await response.text();
+            return text.split('\n').slice(0, limit).map(w => w.trim().toUpperCase()).filter(Boolean);
+        }
+
+        async function startGame() {
+            await loadMasterData();
+            const words = await loadWordPool();
+            userWords = new Set(words);
+
+            document.getElementById("info").classList.add("hidden");
+            document.getElementById("scoreBox").classList.remove("hidden");
+            document.getElementById("maincont").classList.remove("hidden");
+
+            buildGrid();
+            setTimeout(() => document.getElementById("wordInput").focus(), 100);
+        }
+
+        function buildGrid() {
+            score = 0;
+            total = 0;
+            wordCounts = {};
+            let gridHtml = "";
+            const candidates = [];
+            const seenAlphagrams = new Set();
+
+            for (const word of userWords) {
+                const alphagram = word.split('').sort().join('');
+                if (seenAlphagrams.has(alphagram)) continue;
+                seenAlphagrams.add(alphagram);
+
+                const validWords = masterData[alphagram];
+                if (validWords && validWords.length <= 9) {
+                    const n = validWords.filter(isKnownWord).length;
+                    candidates.push({ alphagram, n, m: validWords.length, words: validWords });
+                }
+            }
+
+            candidates.sort(() => Math.random() - 0.5);
+
+            for (const { alphagram, n, m, words } of candidates.slice(0, 50)) {
+                wordCounts[alphagram] = { n, m, words: [...words] };
+                total += n;
+                gridHtml += `<div id='${alphagram}'><span>${alphagram}</span> <span>${n}|${m}</span></div>`;
+            }
+
+            document.getElementById("grid").innerHTML = gridHtml;
+            updateScores();
+        }
+
+        document.getElementById("wordInput").addEventListener("keypress", function (event) {
+            if (event.key !== "Enter") return;
+
+            const inputWord = event.target.value.trim().toUpperCase();
+            event.target.value = "";
+            if (!inputWord || enteredWords.has(inputWord)) return;
+
+            const inputAlphagram = inputWord.split('').sort().join('');
+            const gridEntry = wordCounts[inputAlphagram];
+
+            // Right letters, wrong tile on the grid (matches an alphagram not in play).
+            if (!gridEntry) {
+                addWordToWrongBox(inputWord);
+                return;
+            }
+
+            if (!gridEntry.words.includes(inputWord)) {
+                addWordToWrongBox(inputWord);
+                return;
+            }
+
+            enteredWords.add(inputWord);
+            gridEntry.words = gridEntry.words.filter(w => w !== inputWord);
+            gridEntry.m--;
+            if (isKnownWord(inputWord)) {
+                gridEntry.n--;
+                score++;
+            }
+
+            addWordToWordBox(inputWord);
+            updateScores();
+
+            const gridCell = document.getElementById(inputAlphagram);
+            if (!gridCell) return;
+
+            gridCell.classList.remove("tile-pulse");
+            void gridCell.offsetWidth;
+
+            if (gridEntry.m > 0) {
+                gridCell.classList.add("tile-pulse");
+                if (gridEntry.n === 0) gridCell.classList.add("partial");
+                gridCell.innerHTML = `<span>${inputAlphagram}</span> <span>${gridEntry.n}|${gridEntry.m}</span>`;
+            } else {
+                gridCell.classList.remove("partial", "tile-pulse");
+                gridCell.classList.add("cleared");
+                gridCell.innerHTML = "";
+            }
+        });
+
+        function addWordToWrongBox(word) {
+            const wordBox = document.getElementById("wrongBox");
+            const div = document.createElement("div");
+            div.textContent = word;
+            div.style.color = "var(--danger)";
+            div.style.fontWeight = "bold";
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function addWordToWordBox(word) {
+            const wordBox = document.getElementById("wordBox");
+            const div = document.createElement("div");
+            div.textContent = word;
+            const known = isKnownWord(word);
+            div.style.color = known ? "var(--primary)" : "var(--text-main)";
+            div.style.fontWeight = known ? "bold" : "normal";
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        function enableCheatMode() {
+            document.getElementById("cheat").classList.add("hidden");
+            document.getElementById("cheat-controls").classList.remove("hidden");
+            document.getElementById("wordInput").focus();
+
+            for (const alphagram in wordCounts) {
+                const element = document.getElementById(alphagram);
+                if (!element) continue;
+
+                element.addEventListener("click", function () {
+                    document.getElementById("wordInput").focus();
+                    const cheatMode = document.querySelector('input[name="cheatMode"]:checked').value;
+
+                    for (const word of wordCounts[alphagram].words) {
+                        const known = isKnownWord(word);
+                        const bg = known ? "#e0e7ff" : "transparent";
+                        const textColor = known ? "var(--primary)" : "inherit";
+
+                        if (cheatMode === "hint") {
+                            addCheatItemToBox(word.slice(0, hintLength), bg, textColor);
+                        } else {
+                            addCheatItemToBox(word, bg, textColor);
+                        }
+                    }
+                });
+            }
+        }
+
+        document.getElementById("clearHints").addEventListener("click", function () {
+            document.getElementById("hintBox").innerHTML = "";
+            document.getElementById("wordInput").focus();
+        });
+
+        function addCheatItemToBox(text, bgColor, textColor) {
+            const wordBox = document.getElementById("hintBox");
+            const div = document.createElement("div");
+            div.style.backgroundColor = bgColor;
+            div.style.color = textColor;
+            div.style.fontWeight = textColor !== "inherit" ? "bold" : "normal";
+            div.textContent = text;
+            wordBox.appendChild(div);
+            wordBox.scrollTop = wordBox.scrollHeight;
+        }
+
+        document.getElementById('numInput').addEventListener('input', (e) => {
+            hintLength = parseInt(e.target.value, 10) || 1;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hooks Game</title>
+    <link rel="stylesheet" href="../../common.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 12px 0 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            gap: 12px 20px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .controls .field-label {
+            font-weight: 600;
+            text-align: right;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .controls .radio-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .probability-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .probability-inputs input {
+            width: 60px;
+            text-align: center;
+        }
+
+        #grid-container {
+            display: grid;
+            gap: 6px;
+            margin: 12px auto;
+            max-width: 90vw;
+        }
+
+        .grid-cell {
+            background-color: var(--tile-bg);
+            border: 1px solid var(--tile-border);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .grid-cell.green {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Result colors, applied after "Check" */
+        .grid-cell.correct-hook {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .grid-cell.missed-hook {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .grid-cell.wrong-guess {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .grid-cell.correct-skip {
+            background-color: var(--tile-border);
+            color: var(--text-muted);
+        }
+
+        #check-button,
+        #next-round-button {
+            margin-top: 20px;
+        }
+
+        #track {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(30, 41, 59, 0.85);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="site-nav" style="align-self:stretch;">&larr; All games</a>
+    <main>
+        <h1 id="titletext">Hooks Game</h1>
+        <div class="controls" id="controls">
+            <span class="field-label">Dictionary</span>
+            <div class="radio-row">
+                <label><input type="radio" name="dictionary" value="nwl" checked> NWL</label>
+                <label><input type="radio" name="dictionary" value="csw"> CSW</label>
+            </div>
+
+            <span class="field-label">Hook type</span>
+            <div class="radio-row">
+                <label><input type="radio" name="front-back" value="Front" checked> Front</label>
+                <label><input type="radio" name="front-back" value="Back"> Back</label>
+            </div>
+
+            <span class="field-label">Letter</span>
+            <select id="letter-select"></select>
+
+            <span class="field-label">Grid size</span>
+            <select id="size-select"></select>
+
+            <span class="field-label">Hook density</span>
+            <div class="probability-inputs">
+                <input type="number" id="probability-min" min="0" max="100" value="20"> to
+                <input type="number" id="probability-max" min="0" max="100" value="40">%
+            </div>
+        </div>
+        <button id="start-button">Start</button>
+        <div id="grid-container"></div>
+        <button id="check-button" class="hidden">Check</button>
+        <button id="next-round-button" class="hidden">Next Round</button>
+        <div id="track" class="hidden"></div>
+    </main>
+
+    <script>
+        // ---- Game state -------------------------------------------------
+        const wordLists = {
+            W: [],      // Main word list (words NOT taking the hook)
+            Front: [],  // Front hook lists, indexed A-Z
+            Back: []    // Back hook lists, indexed A-Z
+        };
+        let currentDictionary = "nwl";
+        let shuffledFillerWords = [];
+        let shuffledHookWords = [];
+        let hookWordsRemaining = 0;
+
+        async function loadTextFile(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to load ${url}`);
+            const text = await response.text();
+            return text.split('\n').map(word => word.trim()).filter(Boolean);
+        }
+
+        // Loads every word list for the currently selected dictionary.
+        async function loadWordLists() {
+            const base = `data/${currentDictionary}`;
+            try {
+                wordLists.W = await loadTextFile(`${base}/W.txt`);
+                wordLists.Front = [];
+                wordLists.Back = [];
+                for (let i = 0; i < 26; i++) {
+                    wordLists.Front[i] = await loadTextFile(`${base}/F_${i}.txt`);
+                    wordLists.Back[i] = await loadTextFile(`${base}/B_${i}.txt`);
+                }
+            } catch (error) {
+                console.error('Error loading word lists:', error);
+            }
+        }
+
+        function updateRemainingCounter() {
+            document.getElementById("track").textContent = `Remaining after this round: ${hookWordsRemaining}`;
+        }
+
+        function initializeControls() {
+            const letterSelect = document.getElementById('letter-select');
+            for (let i = 0; i < 26; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = String.fromCharCode(65 + i);
+                letterSelect.appendChild(option);
+            }
+
+            const sizeSelect = document.getElementById('size-select');
+            for (let i = 4; i <= 10; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i}x${i}`;
+                sizeSelect.appendChild(option);
+            }
+            sizeSelect.value = 5;
+
+            document.getElementById('start-button').addEventListener('click', startGame);
+            document.getElementById('check-button').addEventListener('click', checkAnswers);
+            document.getElementById('next-round-button').addEventListener('click', nextRound);
+        }
+
+        function currentHookList() {
+            const frontOrBack = document.querySelector('input[name="front-back"]:checked').value;
+            const letterIndex = parseInt(document.getElementById('letter-select').value, 10);
+            return frontOrBack === 'Front' ? wordLists.Front[letterIndex] : wordLists.Back[letterIndex];
+        }
+
+        async function startGame() {
+            currentDictionary = document.querySelector('input[name="dictionary"]:checked').value;
+            await loadWordLists();
+
+            const frontOrBack = document.querySelector('input[name="front-back"]:checked').value;
+            const letterIndex = parseInt(document.getElementById('letter-select').value, 10);
+            const letter = String.fromCharCode(65 + letterIndex);
+
+            const hooks = currentHookList();
+            shuffledFillerWords = shuffleArray([...wordLists.W]).filter(word => !hooks.includes(word));
+            shuffledHookWords = shuffleArray([...hooks]);
+            hookWordsRemaining = shuffledHookWords.length;
+
+            document.getElementById('titletext').textContent =
+                `${frontOrBack} ${letter} Hooks (${currentDictionary.toUpperCase()})`;
+
+            document.getElementById('controls').classList.add('hidden');
+            document.getElementById('start-button').classList.add('hidden');
+            document.getElementById('track').classList.remove('hidden');
+
+            nextRound();
+        }
+
+        function nextRound() {
+            const size = parseInt(document.getElementById('size-select').value, 10);
+            const probabilityMin = parseInt(document.getElementById('probability-min').value, 10);
+            const probabilityMax = parseInt(document.getElementById('probability-max').value, 10);
+
+            const density = Math.random() * (probabilityMax - probabilityMin) + probabilityMin;
+            const totalCells = size * size;
+            const hookCellCount = Math.min(
+                shuffledHookWords.length,
+                Math.floor(totalCells * (density / 100))
+            );
+
+            const roundHookWords = shuffledHookWords.splice(0, hookCellCount);
+            const roundFillerWords = shuffledFillerWords.splice(0, totalCells - hookCellCount);
+            const roundWords = shuffleArray([...roundHookWords, ...roundFillerWords]);
+
+            hookWordsRemaining -= roundHookWords.length;
+            updateRemainingCounter();
+            renderGrid(size, roundWords);
+
+            document.getElementById('check-button').classList.remove('hidden');
+            document.getElementById('next-round-button').classList.add('hidden');
+        }
+
+        function renderGrid(size, words) {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            words.forEach(word => {
+                const cell = document.createElement('div');
+                cell.classList.add('grid-cell');
+                cell.textContent = word;
+                cell.addEventListener('click', () => cell.classList.toggle('green'));
+                gridContainer.appendChild(cell);
+            });
+        }
+
+        function checkAnswers() {
+            const hooks = currentHookList();
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                const word = cell.textContent;
+                const isHook = hooks.includes(word);
+                const isSelected = cell.classList.contains('green');
+                cell.classList.remove('green');
+
+                if (isHook && isSelected) {
+                    cell.classList.add('correct-hook');
+                } else if (isHook && !isSelected) {
+                    cell.classList.add('missed-hook');
+                    cell.innerHTML += '<br>missed hook';
+                } else if (!isHook && isSelected) {
+                    cell.classList.add('wrong-guess');
+                    cell.innerHTML += '<br>not a hook';
+                } else {
+                    cell.classList.add('correct-skip');
+                }
+            });
+
+            document.getElementById('check-button').classList.add('hidden');
+            document.getElementById('next-round-button').classList.remove('hidden');
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        initializeControls();
+    </script>
+</body>
+
+</html>

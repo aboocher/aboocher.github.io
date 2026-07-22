@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stem Recognition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../common.css">
+    <style>
+        body {
+            text-align: center;
+            padding: 56px 10px 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        #setup {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        #setup textarea {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #gameArea {
+            display: none;
+        }
+
+        #rack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+            overflow: hidden;
+            gap: 4px;
+            width: 100%;
+            max-width: 500px;
+            margin: 12px auto;
+            transition: background-color 0.3s;
+        }
+
+        .cell {
+            flex: 1 1 0;
+            aspect-ratio: 1 / 1;
+            max-width: 60px;
+            min-width: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(16px, 6vw, 32px);
+            font-weight: bold;
+            border: 2px solid var(--tile-border);
+            border-radius: 8px;
+            background: var(--tile-bg);
+        }
+
+        #guessInput {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #answersFoundContainer {
+            margin: 10px auto;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 10px;
+            text-align: left;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .answer,
+        .validanswer {
+            display: inline-block;
+            margin: 3px;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .answer {
+            color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .validanswer {
+            color: var(--primary);
+            background: #e0e7ff;
+        }
+
+        hr {
+            border: 1px solid var(--border-color);
+            margin: 8px 0;
+        }
+
+        @media (max-width: 600px) {
+            button {
+                display: block;
+                width: 90%;
+                margin: 6px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="site-nav" style="position:fixed; top:0; left:0; right:0; z-index:5;">&larr; All games</a>
+    <h1>Stem Recognition</h1>
+
+    <!-- Setup Screen -->
+    <div id="setup">
+        <p>Paste a list of stems (one per line), or load a preset list, then extend each one letter longer.</p>
+        <label>How many rounds? <input type="number" id="roundsInput" value="20" min="1"></label><br><br>
+        <textarea id="wordList" rows="10" cols="40" placeholder="Enter words, one per line"></textarea><br><br>
+        <button id="all7Btn">All 6s &rarr; 7s</button>
+        <button id="all8Btn">All 7s &rarr; 8s</button>
+        <button id="all78Btn">Both</button><br><br>
+        <button id="startBtn">Start Game</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameArea">
+        <div>Round <span id="roundNum"></span> / <span id="totalRounds"></span></div>
+        <div id="rack"></div>
+        <div>Words remaining: <span id="remaining"></span></div>
+        <input type="text" id="guessInput" placeholder="Type your guess">
+        <button id="guessBtn">Guess</button>
+        <button id="giveUpBtn" class="btn-muted">Give up [ESC]</button>
+
+        <div id="answersFoundContainer">
+            <div id="answersFound"></div>
+        </div>
+    </div>
+
+    <script>
+        let data = [];
+        let totalRounds = 20;
+        let currentRound = 0;
+        let answers = [];
+        let found = [];
+        let rack = "";
+        let lookupSet = new Set();
+
+        // Utility: check if `word`'s letters are all present in `rack` (with multiplicity).
+        function isSubset(word, rack) {
+            const rackCounts = {};
+            for (const c of rack) rackCounts[c] = (rackCounts[c] || 0) + 1;
+            for (const c of word) {
+                if (!rackCounts[c]) return false;
+                rackCounts[c]--;
+            }
+            return true;
+        }
+
+        function shuffleString(str) {
+            const arr = str.split("");
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join("");
+        }
+
+        function renderRack(rack) {
+            const rackDiv = document.getElementById("rack");
+            rackDiv.innerHTML = "";
+            rackDiv.style.background = "none";
+            for (const c of rack) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                cell.textContent = c;
+                rackDiv.appendChild(cell);
+            }
+        }
+
+        function startGame() {
+            totalRounds = parseInt(document.getElementById("roundsInput").value, 10) || 20;
+            data = document.getElementById("wordList").value.trim()
+                .split(/\n+/).map(w => w.toUpperCase()).filter(w => w.length > 0);
+
+            if (data.length === 0) {
+                alert("Add some stems first (paste your own, or click one of the preset buttons).");
+                return;
+            }
+
+            currentRound = 0;
+            document.getElementById("setup").style.display = "none";
+            document.getElementById("gameArea").style.display = "block";
+            document.getElementById("totalRounds").textContent = totalRounds;
+            nextRound();
+            document.getElementById("guessInput").focus();
+        }
+
+        function nextRound() {
+            if (currentRound >= totalRounds) {
+                location.reload();
+                return;
+            }
+            currentRound++;
+            document.getElementById("roundNum").textContent = currentRound;
+            found = [];
+
+            const w = data[Math.floor(Math.random() * data.length)];
+            const extra = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            rack = shuffleString(w + extra);
+
+            answers = data.filter(p => isSubset(p, rack) && p.length === rack.length - 1);
+            renderRack(rack);
+            document.getElementById("remaining").textContent = answers.length;
+
+            if (currentRound > 1) {
+                document.getElementById("answersFound").innerHTML += "<hr>";
+            }
+            document.getElementById("guessInput").focus();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById("answersFoundContainer");
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Returns the leftover letters of `rack` after removing one of each letter in `guess`.
+        function stringDifference(rack, guess) {
+            const rackArr = rack.split("");
+            for (const c of guess) {
+                const index = rackArr.indexOf(c);
+                if (index !== -1) rackArr.splice(index, 1);
+            }
+            return rackArr.join("");
+        }
+
+        function isValidLongerWord(alphagram) {
+            return lookupSet.has(alphagram.toUpperCase());
+        }
+
+        function recordAnswer(guess) {
+            const suffix = stringDifference(rack, guess);
+            const potentialWord = (suffix + guess).split("").sort().join("");
+            if (isValidLongerWord(potentialWord)) {
+                document.getElementById("answersFound").innerHTML += `<div class="validanswer">${guess}+${suffix}</div>`;
+                return "validation-success";
+            }
+            document.getElementById("answersFound").innerHTML += `<div class="answer">${guess}+${suffix}</div>`;
+            return "validation-fail";
+        }
+
+        function flashRackAndAdvance() {
+            setTimeout(() => nextRound(), 1000);
+        }
+
+        function makeGuess() {
+            const guess = document.getElementById("guessInput").value.toUpperCase().trim();
+            document.getElementById("guessInput").value = "";
+
+            if (answers.includes(guess) && !found.includes(guess)) {
+                found.push(guess);
+                const outcome = recordAnswer(guess);
+                document.getElementById("remaining").textContent = answers.length - found.length;
+
+                const rackEl = document.getElementById("rack");
+                rackEl.style.background = outcome === "validation-success" ? "#c9d6ff" : "#ffd7d7";
+                scrollToBottom();
+
+                if (found.length === answers.length) {
+                    flashRackAndAdvance();
+                }
+            }
+            document.getElementById("guessInput").focus();
+        }
+
+        function giveUp() {
+            const missing = answers.filter(a => !found.includes(a));
+            missing.forEach(guess => recordAnswer(guess));
+
+            const rackEl = document.getElementById("rack");
+            rackEl.style.background = missing.length > 0 ? "#ffd7d7" : "#c9d6ff";
+            scrollToBottom();
+            flashRackAndAdvance();
+        }
+
+        async function loadWordFile(filename) {
+            try {
+                const response = await fetch(filename);
+                return await response.text();
+            } catch (err) {
+                console.error(`Failed to load ${filename}:`, err);
+                return "";
+            }
+        }
+
+        document.getElementById("all7Btn").addEventListener("click", async () => {
+            document.getElementById("wordList").value = await loadWordFile("stems7s.txt");
+        });
+
+        document.getElementById("all8Btn").addEventListener("click", async () => {
+            document.getElementById("wordList").value = await loadWordFile("stems8s.txt");
+        });
+
+        document.getElementById("all78Btn").addEventListener("click", async () => {
+            const sevens = await loadWordFile("stems7s.txt");
+            const eights = await loadWordFile("stems8s.txt");
+            document.getElementById("wordList").value = sevens.trim() + "\n" + eights.trim();
+        });
+
+        document.getElementById("startBtn").addEventListener("click", startGame);
+        document.getElementById("guessBtn").addEventListener("click", makeGuess);
+        document.getElementById("giveUpBtn").addEventListener("click", giveUp);
+        document.getElementById("guessInput").addEventListener("keypress", e => {
+            if (e.key === "Enter") makeGuess();
+        });
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape" && document.getElementById("gameArea").style.display === "block") {
+                giveUp();
+            }
+        });
+
+        async function loadLookup() {
+            const text = await loadWordFile("lookup.txt");
+            text.split(/\r?\n/).forEach(line => {
+                const w = line.split(",")[0].trim();
+                if (w) lookupSet.add(w.toUpperCase());
+            });
+        }
+        loadLookup();
+    </script>
+</body>
+
+</html>

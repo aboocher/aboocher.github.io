@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Word Value Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../common.css">
+    <style>
+        body {
+            padding: 56px 20px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        #wordsInput {
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        #relativeContainer {
+            margin-top: 14px;
+            display: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 16px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        th {
+            background: var(--tile-bg);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="site-nav" style="position:fixed; top:0; left:0; right:0;">&larr; All games</a>
+    <main>
+        <h1>How Likely Is Each Word to Be Drawn?</h1>
+
+        <p>Compare two or more words, e.g. <code>GREENLET GREENLIT</code>, and the table shows the number of ways to
+            draw each rack from a full bag with 0, 1, or 2 blanks. The totals row shows the full number of ways to draw
+            the tiles. Click "relative" to normalize so the least likely word becomes 100%, making it easy to compare
+            the others against it.</p>
+
+        <p>Try comparing <code>ANEROID</code> and <code>TRAINEE</code> — with no blanks TRAINEE is more likely, but
+            once blanks are possible ANEROID wins. Or try <code>ISOLATE</code> and <code>INERTIA</code>: they're very
+            close with blanks but about 10% apart with none.</p>
+
+        <input id="wordsInput" placeholder="e.g. CAT DOG MOUSE" />
+        <button id="calcBtn">Calculate</button>
+
+        <div id="relativeContainer">
+            <label>
+                <input type="checkbox" id="relativeToggle" /> Relative
+            </label>
+        </div>
+
+        <div id="tableContainer"></div>
+    </main>
+
+    <script>
+        // Standard Scrabble (NWL/CSW English) tile distribution, blanks excluded.
+        const TILE_SUPPLY = {
+            A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1,
+            K: 1, L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R: 6, S: 4, T: 6,
+            U: 4, V: 2, W: 2, X: 1, Y: 2, Z: 1
+        };
+
+        function combinations(n, r) {
+            if (r > n) return 0n;
+            if (r === 0 || r === n) return 1n;
+            r = Math.min(r, n - r);
+            let numerator = 1n, denominator = 1n;
+            for (let i = 0; i < r; i++) numerator *= BigInt(n - i);
+            for (let i = 1; i <= r; i++) denominator *= BigInt(i);
+            return numerator / denominator;
+        }
+
+        function removeFirstOccurrence(s, ch) {
+            const idx = s.indexOf(ch);
+            if (idx === -1) return s;
+            return s.slice(0, idx) + s.slice(idx + 1);
+        }
+
+        // Number of ways to draw the letters of `s` from the bag, using exactly `blanks` blanks.
+        function waysToDraw(s, blanks = 0) {
+            s = s.toUpperCase().replace(/[^A-Z]/g, '');
+            if (s.length === 0) return 0n;
+
+            if (blanks === 0) {
+                const counts = {};
+                for (const ch of s) counts[ch] = (counts[ch] || 0) + 1;
+                let product = 1n;
+                for (const ch in counts) {
+                    const supply = TILE_SUPPLY[ch] ?? 0;
+                    product *= combinations(supply, counts[ch]);
+                }
+                return product;
+            }
+
+            if (blanks === 1) {
+                const uniqueChars = Array.from(new Set(s.split('')));
+                let total = 0n;
+                for (const x of uniqueChars) {
+                    const remaining = removeFirstOccurrence(s, x);
+                    total += 2n * waysToDraw(remaining, 0); // 2 blanks available, either could stand in
+                }
+                return total;
+            }
+
+            if (blanks === 2) {
+                const chars = s.split('');
+                const pairKeys = new Set();
+                for (let i = 0; i < chars.length; i++) {
+                    for (let j = i + 1; j < chars.length; j++) {
+                        const a = chars[i], b = chars[j];
+                        pairKeys.add(a <= b ? `${a}|${b}` : `${b}|${a}`);
+                    }
+                }
+                let total = 0n;
+                for (const key of pairKeys) {
+                    const [x, y] = key.split('|');
+                    const afterX = removeFirstOccurrence(s, x);
+                    const afterXY = removeFirstOccurrence(afterX, y);
+                    total += waysToDraw(afterXY, 0);
+                }
+                return total;
+            }
+
+            return 0n;
+        }
+
+        let tableValues = []; // tableValues[blankCount][wordIndex] -> BigInt
+        let wordHeaders = [];
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+        }
+
+        function calculateTable() {
+            const raw = document.getElementById('wordsInput').value;
+            const tableContainer = document.getElementById('tableContainer');
+
+            if (!raw.trim()) {
+                tableContainer.innerHTML = '<p>No words entered.</p>';
+                document.getElementById('relativeContainer').style.display = 'none';
+                return;
+            }
+
+            const rawWords = raw.split(/[\s,]+/).filter(w => w.length > 0);
+            wordHeaders = rawWords.map(w => ({ display: w, compute: w.toUpperCase().replace(/[^A-Z]/g, '') }));
+
+            tableValues = [];
+            for (let blanks = 0; blanks <= 2; blanks++) {
+                tableValues.push(wordHeaders.map(w => waysToDraw(w.compute, blanks)));
+            }
+            const totals = wordHeaders.map((_, col) => tableValues.reduce((sum, row) => sum + row[col], 0n));
+            tableValues.push(totals);
+
+            renderTable();
+            document.getElementById('relativeContainer').style.display = 'inline-block';
+        }
+
+        function renderTable() {
+            const relative = document.getElementById('relativeToggle').checked;
+            const TOTALS_ROW = 3;
+
+            let baseline = null;
+            if (relative) {
+                baseline = tableValues[TOTALS_ROW].reduce((min, val) => (min === null || val < min) ? val : min, null);
+                if (baseline === 0n) baseline = 1n; // avoid divide-by-zero
+            }
+
+            let html = '<table><tr><th>Blanks &darr; / Words &rarr;</th>';
+            for (const w of wordHeaders) html += `<th>${escapeHtml(w.display)}</th>`;
+            html += '</tr>';
+
+            for (let row = 0; row < tableValues.length; row++) {
+                const rowLabel = row < TOTALS_ROW ? `${row} blank${row === 1 ? '' : 's'}` : 'Total (all blanks)';
+                html += `<tr><th>${rowLabel}</th>`;
+                for (let col = 0; col < wordHeaders.length; col++) {
+                    const val = tableValues[row][col];
+                    if (relative && baseline !== null) {
+                        const normalized = (Number(val) / Number(baseline)).toFixed(3);
+                        html += `<td><b>${normalized}</b></td>`;
+                    } else {
+                        html += `<td>${val.toString()}</td>`;
+                    }
+                }
+                html += '</tr>';
+            }
+
+            document.getElementById('tableContainer').innerHTML = html;
+        }
+
+        document.getElementById('calcBtn').addEventListener('click', calculateTable);
+        document.getElementById('wordsInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') calculateTable();
+        });
+        document.getElementById('relativeToggle').addEventListener('change', renderTable);
+    </script>
+</body>
+
+</html>

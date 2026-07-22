@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Lookup</title>
+    <link rel="stylesheet" href="../../common.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            padding: 24px;
+        }
+
+        h1 {
+            font-size: 1.4em;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+            min-height: 1.4em;
+        }
+
+        .result.error {
+            color: var(--danger);
+        }
+
+        .result.success {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html" class="site-nav" style="position:fixed; top:0; left:0; right:0;">&larr; All games</a>
+    <div class="container card">
+        <h1>Probability Lookup</h1>
+        <p>Type a 7- or 8-letter NWL word to see its rarity rank among all racks of that length (1 = most
+            common draw).</p>
+        <input type="text" id="letterInput" placeholder="Enter a word" maxlength="8">
+        <button id="lookupButton">Look Up</button>
+        <p id="result" class="result"></p>
+    </div>
+
+    <script>
+        let rankByAlphagram = null; // populated on first lookup, then cached
+
+        async function loadProbabilityData() {
+            const response = await fetch("probability.txt");
+            const text = await response.text();
+            const map = new Map();
+            for (const line of text.trim().split("\n")) {
+                const [alphagram, rank] = line.split(",");
+                map.set(alphagram, rank);
+            }
+            return map;
+        }
+
+        async function lookup() {
+            const input = document.getElementById("letterInput").value.trim();
+            const result = document.getElementById("result");
+
+            if (!input) {
+                result.textContent = "Type a word first.";
+                result.className = "result error";
+                return;
+            }
+            if (input.length !== 7 && input.length !== 8) {
+                result.textContent = "Word must be 7 or 8 letters.";
+                result.className = "result error";
+                return;
+            }
+
+            if (!rankByAlphagram) {
+                result.textContent = "Loading data…";
+                result.className = "result";
+                rankByAlphagram = await loadProbabilityData();
+            }
+
+            const alphagram = input.toUpperCase().split('').sort().join('');
+            const rank = rankByAlphagram.get(alphagram);
+
+            if (rank !== undefined) {
+                result.textContent = `Rank: ${rank}`;
+                result.className = "result success";
+            } else {
+                result.textContent = "No match found.";
+                result.className = "result error";
+            }
+        }
+
+        document.getElementById("lookupButton").addEventListener("click", lookup);
+        document.getElementById("letterInput").addEventListener("keypress", (event) => {
+            if (event.key === "Enter") lookup();
+        });
+    </script>
+</body>
+
+</html>

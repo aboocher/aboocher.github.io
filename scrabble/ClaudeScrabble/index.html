@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrabble Practice Games</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .wrapper {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .game-card .emoji {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .game-card h2 {
+            font-size: 18px;
+            margin: 0 0 8px;
+            color: var(--text-main);
+        }
+
+        .game-card p {
+            font-size: 14px;
+            margin: 0;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>🀄 Scrabble Practice Games</h1>
+            <p>A collection of tools for drilling word knowledge — hooks, bingos, stems, and probability.</p>
+        </header>
+
+        <div class="grid">
+            <a class="game-card card" href="games/blank-bingos/index.html">
+                <div class="emoji">🎯</div>
+                <h2>Blank Bingos</h2>
+                <p>Find every bingo hiding behind a blank tile, from your own word list or a preset one.</p>
+            </a>
+
+            <a class="game-card card" href="games/words-with-hints/index.html">
+                <div class="emoji">💡</div>
+                <h2>Words With Hints</h2>
+                <p>Solve 7-letter anagrams with a hint system, ordered by how common each rack is.</p>
+            </a>
+
+            <a class="game-card card" href="games/hooks/index.html">
+                <div class="emoji">🪝</div>
+                <h2>Hooks</h2>
+                <p>Spot which words take a front or back hook for a chosen letter — NWL or CSW.</p>
+            </a>
+
+            <a class="game-card card" href="games/stem-practice/index.html">
+                <div class="emoji">🌱</div>
+                <h2>Stem Recognition</h2>
+                <p>Extend 6- and 7-letter stems to all their valid 7s and 8s.</p>
+            </a>
+
+            <a class="game-card card" href="games/ing-practice/index.html">
+                <div class="emoji">🔤</div>
+                <h2>-ING / -Y Practice</h2>
+                <p>Pick out which words also take an S after -ING, or an EY after -Y.</p>
+            </a>
+
+            <a class="game-card card" href="games/probability-lookup/index.html">
+                <div class="emoji">🔍</div>
+                <h2>Probability Lookup</h2>
+                <p>Look up any 7- or 8-letter word's rarity rank among all possible racks.</p>
+            </a>
+
+            <a class="game-card card" href="games/word-value-table/index.html">
+                <div class="emoji">📊</div>
+                <h2>Word Value Table</h2>
+                <p>Compare exact draw probabilities between words, with 0, 1, or 2 blanks.</p>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

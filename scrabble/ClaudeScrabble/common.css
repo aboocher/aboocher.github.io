@@ -1,0 +1,154 @@
+/* ============================================================
+   Scrabble Practice — shared design tokens & base styles
+   Included by every game page for a consistent look.
+   ============================================================ */
+
+:root {
+    --bg-color: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --border-color: #e2e8f0;
+    --tile-bg: #f8fafc;
+    --tile-border: #cbd5e1;
+    --tile-text: #334155;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+}
+
+h1, h2, h3 {
+    color: var(--text-main);
+    letter-spacing: -0.3px;
+}
+
+a {
+    color: var(--primary);
+}
+
+p {
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border: 1px solid var(--border-color);
+}
+
+button,
+.btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+button:hover,
+.btn:hover {
+    background-color: var(--primary-hover);
+}
+
+button:disabled {
+    background-color: var(--tile-border);
+    cursor: not-allowed;
+}
+
+.btn-muted {
+    background-color: var(--text-muted);
+}
+
+.btn-muted:hover {
+    background-color: #52627a;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: inherit;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Back-to-hub link shown at the top of every game */
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.site-nav a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.site-nav a:hover {
+    text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
