@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard G2 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>G2: Linear Equations — Slope, Intercepts &amp; Graphing</h1>
+  </header>
+
+  <div class="intro">
+    <p>23 practice problems, roughly ordered from warm-up to challenge within each topic. Work the problems first, then check the Solutions section below.</p>
+    <ul>
+      <li>Convert to slope-intercept form ($y = mx + b$) to read off the slope and $y$-intercept directly.</li>
+      <li>To find intercepts algebraically: set $y=0$ to find the $x$-intercept, and set $x=0$ to find the $y$-intercept.</li>
+      <li>Parallel lines have the <b>same</b> slope. Perpendicular lines have slopes that are negative reciprocals (they multiply to $-1$).</li>
+      <li>When you have a point and a slope, use point-slope form: $y - y_1 = m(x - x_1)$.</li>
+      <li>Vertical lines ($x = a$) and horizontal lines ($y = b$) are special cases — don't forget them.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Slope &amp; Intercepts from an Equation</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">State the slope and $y$-intercept of $y = 3x - 5$.</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">State the slope and $y$-intercept of $2x + y = 8$.</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">State the slope and $y$-intercept of $y - 4 = 2(x-1)$.</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">State the slope and $y$-intercept of $3x - 6y = 12$.</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">State the slope and $y$-intercept of $y + 2 = -\frac{3}{4}(x-8)$.</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">Find the $x$-intercept and $y$-intercept of $4x - 3y = 9$.</div><a class="jump" href="#s6">↓ solution</a></div>
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">State the slope and $y$-intercept of $\frac{2}{3}x + \frac{1}{2}y = 4$.</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">Find the $x$-intercept and $y$-intercept of $y - 5 = \frac{2}{5}(x+10)$.</div><a class="jump" href="#s8">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Writing Equations of Lines</h3>
+  <div class="item-list">
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">Find the equation of the line through $(1, 2)$ and $(3, 8)$.</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">Find the equation of the line through $(-2, 5)$ and $(4, 5)$.</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">Find the equation of the line through $(0, -3)$ and $(5, 7)$.</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">Find the equation of the line through $(-3, 4)$ and $(1, -8)$.</div><a class="jump" href="#s12">↓ solution</a></div>
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">Find the equation of the line perpendicular to $y = \frac{1}{3}x - 2$ that passes through $(2, -1)$.</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">Find the equation of the line parallel to $2x - y = 4$ that passes through $(-1, 3)$.</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">Find the equation of the line perpendicular to $x - 2y = 6$ that passes through $(3, 4)$.</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">Find the equation of the vertical line through $(5, -2)$, and the equation of the horizontal line through $(5, -2)$.</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">Determine whether the lines $y = \frac{2}{3}x - 1$ and $3x + 2y = 8$ are parallel, perpendicular, or neither. Justify your answer.</div><a class="jump" href="#s17">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Applications of Linear Functions</h3>
+  <div class="item-list">
+    <div class="item" id="p18">
+      <span class="num">18.</span>
+      <div class="body-text">
+        <p>A candle is initially 20 cm tall and burns at a constant rate of 2.5 cm per hour.</p>
+        <p class="ask">Write a linear equation for the height $h$ as a function of time $t$ (in hours), state what the slope means in this context, and find the candle's height after 6 hours.</p>
+      </div>
+      <a class="jump" href="#s18">↓ solution</a>
+    </div>
+    <div class="item" id="p19">
+      <span class="num">19.</span>
+      <div class="body-text">
+        <p>A rideshare company charges a \$3 base fee plus \$1.75 per mile.</p>
+        <p class="ask">Write a linear equation for the total cost $C$ as a function of miles driven $m$, and find the cost of an 8-mile ride.</p>
+      </div>
+      <a class="jump" href="#s19">↓ solution</a>
+    </div>
+    <div class="item" id="p20">
+      <span class="num">20.</span>
+      <div class="body-text">
+        <p>A gym charges a one-time \$60 sign-up fee, then \$25 per month.</p>
+        <p class="ask">Write a linear equation for the total cost after $t$ months, and determine how many months of membership would total \$310.</p>
+      </div>
+      <a class="jump" href="#s20">↓ solution</a>
+    </div>
+    <div class="item" id="p21">
+      <span class="num">21.</span>
+      <div class="body-text">
+        <p>A phone plan costs a flat \$20/month plus \$0.10 per text message sent beyond the free monthly allotment. A customer's bill one month was \$35.50.</p>
+        <p class="ask">Write a linear equation relating the bill to the number of extra texts $x$, and determine how many extra texts were sent.</p>
+      </div>
+      <a class="jump" href="#s21">↓ solution</a>
+    </div>
+    <div class="item" id="p22">
+      <span class="num">22.</span>
+      <div class="body-text">
+        <p>Water drains from a 500-gallon tank at a constant rate. After 2 hours, 380 gallons remain; after 5 hours, 200 gallons remain.</p>
+        <p class="ask">Find a linear equation for the gallons remaining $g$ as a function of time $t$ (in hours), and determine how long it takes for the tank to empty completely.</p>
+      </div>
+      <a class="jump" href="#s22">↓ solution</a>
+    </div>
+    <div class="item" id="p23">
+      <span class="num">23.</span>
+      <div class="body-text">
+        <p>A printer's value decreases linearly over time. It was worth \$450 when purchased new, and \$270 after 3 years.</p>
+        <p class="ask">Find a linear equation for the printer's value $V$ as a function of years owned $t$, and use it to find its value after 5 years.</p>
+      </div>
+      <a class="jump" href="#s23">↓ solution</a>
+    </div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Slope &amp; Intercepts from an Equation</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>Already in slope-intercept form.</p><p>$m = 3$, $y$-intercept $= (0, -5)$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>Solve for $y$: $y = -2x + 8$.</p><p>$m = -2$, $y$-intercept $= (0, 8)$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>Distribute: $y - 4 = 2x - 2$, so $y = 2x + 2$.</p><p>$m = 2$, $y$-intercept $= (0, 2)$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>Solve for $y$: $-6y = -3x + 12$, so $y = \frac{1}{2}x - 2$.</p><p>$m = \frac{1}{2}$, $y$-intercept $= (0, -2)$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>Distribute: $y + 2 = -\frac{3}{4}x + 6$, so $y = -\frac{3}{4}x + 4$.</p><p>$m = -\frac{3}{4}$, $y$-intercept $= (0, 4)$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>Set $y=0$: $4x = 9 \Rightarrow x = \frac{9}{4}$.</p><p>Set $x=0$: $-3y = 9 \Rightarrow y = -3$.</p><p>$x$-intercept $= \left(\frac{9}{4}, 0\right)$, $y$-intercept $= (0, -3)$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>Clear fractions by multiplying by 6: $4x + 3y = 24$.</p><p>Solve for $y$: $3y = -4x + 24 \Rightarrow y = -\frac{4}{3}x + 8$.</p><p>$m = -\frac{4}{3}$, $y$-intercept $= (0, 8)$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>Distribute: $y - 5 = \frac{2}{5}x + 4$, so $y = \frac{2}{5}x + 9$.</p><p>$y$-intercept $= (0, 9)$.</p><p>Set $y=0$: $0 = \frac{2}{5}x + 9 \Rightarrow x = -\frac{45}{2}$.</p><p>$x$-intercept $= \left(-\frac{45}{2}, 0\right)$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Writing Equations of Lines</h3>
+  <div class="item-list">
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>Slope: $m = \dfrac{8-2}{3-1} = \dfrac{6}{2} = 3$.</p><p>Using $(1,2)$: $y - 2 = 3(x-1) \Rightarrow y = 3x - 1$.</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>Slope: $m = \dfrac{5-5}{4-(-2)} = \dfrac{0}{6} = 0$.</p><p>A slope of $0$ is a horizontal line through $y=5$: $y = 5$.</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Slope: $m = \dfrac{7-(-3)}{5-0} = \dfrac{10}{5} = 2$.</p><p>$(0,-3)$ is already the $y$-intercept: $y = 2x - 3$.</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>Slope: $m = \dfrac{-8-4}{1-(-3)} = \dfrac{-12}{4} = -3$.</p><p>Using $(1,-8)$: $y + 8 = -3(x-1) \Rightarrow y = -3x - 5$.</p></div><a class="jump" href="#p12">↑ problem</a></div>
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>The given slope is $\frac{1}{3}$, so the perpendicular slope is $-3$.</p><p>Using $(2,-1)$: $y + 1 = -3(x-2) \Rightarrow y = -3x + 5$.</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Rewrite $2x - y = 4$ as $y = 2x - 4$, so the slope is $2$. Parallel lines share this slope.</p><p>Using $(-1,3)$: $y - 3 = 2(x+1) \Rightarrow y = 2x + 5$.</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>Rewrite $x - 2y = 6$ as $y = \frac{1}{2}x - 3$, so the slope is $\frac{1}{2}$. The perpendicular slope is $-2$.</p><p>Using $(3,4)$: $y - 4 = -2(x-3) \Rightarrow y = -2x + 10$.</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>A vertical line has equation $x = a$ where $a$ is the shared $x$-coordinate: $x = 5$.</p><p>A horizontal line has equation $y = b$ where $b$ is the shared $y$-coordinate: $y = -2$.</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>First line's slope: $\frac{2}{3}$.</p><p>Rewrite the second: $2y = -3x + 8 \Rightarrow y = -\frac{3}{2}x + 4$, slope $-\frac{3}{2}$.</p><p>$\frac{2}{3} \cdot \left(-\frac{3}{2}\right) = -1$, so the lines are <b>perpendicular</b>.</p></div><a class="jump" href="#p17">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Applications of Linear Functions</h3>
+  <div class="item-list">
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>The candle starts at 20 cm ($y$-intercept) and loses 2.5 cm per hour (slope): $h(t) = 20 - 2.5t$.</p><p>The slope $-2.5$ means the height decreases by 2.5 cm every hour.</p><p>$h(6) = 20 - 2.5(6) = 20 - 15 = 5$ cm</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>Base fee is the $y$-intercept, per-mile rate is the slope: $C(m) = 1.75m + 3$.</p><p>$C(8) = 1.75(8) + 3 = 14 + 3 = 17$ — the ride costs $\$17$.</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>$C(t) = 25t + 60$.</p><p>Set $C(t) = 310$: $25t + 60 = 310 \Rightarrow 25t = 250 \Rightarrow t = 10$ months.</p></div><a class="jump" href="#p20">↑ problem</a></div>
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>$C(x) = 0.10x + 20$.</p><p>Set $C(x) = 35.50$: $0.10x + 20 = 35.50 \Rightarrow 0.10x = 15.50 \Rightarrow x = 155$ extra texts.</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>Slope: $m = \dfrac{200 - 380}{5 - 2} = \dfrac{-180}{3} = -60$ gallons/hour.</p><p>Using $(2, 380)$: $g - 380 = -60(t - 2) \Rightarrow g = -60t + 500$.</p><p>(Check: at $t=0$, $g=500$ — matches the tank's full capacity.)</p><p>Empty when $g = 0$: $-60t + 500 = 0 \Rightarrow t = \dfrac{500}{60} = \dfrac{25}{3} \approx 8.33$ hours.</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>Slope: $m = \dfrac{270 - 450}{3 - 0} = \dfrac{-180}{3} = -60$ dollars/year.</p><p>$(0, 450)$ is the $y$-intercept: $V(t) = 450 - 60t$.</p><p>$V(5) = 450 - 60(5) = 450 - 300 = 150$ — worth $\$150$ after 5 years.</p></div><a class="jump" href="#p23">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

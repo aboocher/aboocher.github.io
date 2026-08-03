@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math 150 — Course Guide & Standards Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fff8ee;
+    --bg-surface: #fff1de;
+    --card: #ffffff;
+    --card-hover: #fff4e6;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --core-dim: rgba(201,69,31,0.12);
+    --optional: #16816f;
+    --optional-dim: rgba(22,129,111,0.12);
+    --grade-a: #2f9e44;
+    --grade-b: #c98a00;
+    --grade-c: #d9691f;
+    --grade-d: #cf4a29;
+    --grade-f: #cc3333;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(720px 420px at 8% -6%, rgba(255,183,3,0.14), transparent 60%),
+      radial-gradient(680px 420px at 96% 8%, rgba(31,154,143,0.12), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px;}
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    color:var(--ink);
+  }
+
+  /* ---- Nav ---- */
+  nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(255,248,238,0.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px;
+  }
+  .brand{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand-badge{
+    background:var(--core-dim); color:var(--core); border:1px solid var(--core);
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; padding:2px 6px; border-radius:4px;
+  }
+  nav .links{display:flex; gap:18px; font-size:0.85rem;}
+  nav a{color:var(--ink-dim); text-decoration:none; transition:color 0.15s;}
+  nav a:hover{color:var(--ink);}
+
+  /* ---- Header ---- */
+  header{padding:48px 0 28px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem;
+    color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.12em;
+    margin-bottom:10px;
+  }
+  h1{font-size:2.2rem; line-height:1.15;}
+  .subtitle{color:var(--ink-dim); font-size:1rem; margin-top:10px; max-width:640px;}
+
+  /* ---- Estimator ---- */
+  .calc-box{
+    background:var(--bg-surface);
+    border:1px solid var(--line-strong);
+    border-radius:14px;
+    padding:24px;
+    margin:24px 0 20px;
+    box-shadow: 0 10px 30px rgba(51,41,68,0.08);
+  }
+  .calc-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap:20px;
+    align-items:end;
+  }
+  .control-group label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+    text-transform:uppercase;
+  }
+  .control-group input[type="number"]{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    color:var(--ink);
+    padding:10px 12px;
+    border-radius:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1rem;
+  }
+  .control-group.checkbox-group{
+    display:flex; align-items:center; gap:10px; height:42px; cursor:pointer;
+  }
+  .control-group.checkbox-group input{ width:18px; height:18px; accent-color:var(--optional); cursor:pointer; }
+  
+  .result-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .grade-display{
+    font-family:'Fraunces', serif;
+    font-size:2rem;
+    font-weight:700;
+    line-height:1;
+  }
+  .grade-A{color:var(--grade-a);}
+  .grade-B{color:var(--grade-b);}
+  .grade-C{color:var(--grade-c);}
+  .grade-D{color:var(--grade-d);}
+  .grade-F{color:var(--grade-f);}
+
+  /* ---- Matrix Banner ---- */
+  .matrix-banner{
+    background:var(--card);
+    border:1px dashed var(--line-strong);
+    border-radius:10px;
+    padding:14px 20px;
+    margin-bottom:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .matrix-banner p{margin:0; font-size:0.9rem; color:var(--ink-dim);}
+  .btn-matrix{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    color:var(--core);
+    background:var(--core-dim);
+    border:1px solid var(--core);
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  .btn-matrix:hover{background:var(--core-soft); color:var(--ink); border-color:var(--core-soft);}
+
+  /* ---- Sections ---- */
+  section{padding:36px 0; border-top:1px solid var(--line);}
+  .section-head{margin-bottom:20px;}
+  .section-head h2{font-size:1.5rem;}
+  .section-head p{color:var(--ink-dim); font-size:0.92rem; margin-top:4px;}
+
+  /* ---- Grade Threshold Cards ---- */
+  .rubric-cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap:12px;
+    margin-bottom:20px;
+  }
+  .r-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+  }
+  .r-card .badge{
+    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; display:block; margin-bottom:4px;
+  }
+  .r-card .req{font-size:0.8rem; color:var(--ink-dim); line-height:1.3;}
+
+  /* ---- Collapsible Accordion Units ---- */
+  .unit-block{
+    margin-bottom:16px;
+    border:1px solid var(--line-strong);
+    border-radius:12px;
+    background:var(--bg-surface);
+    overflow:hidden;
+  }
+  .unit-header-btn{
+    width:100%;
+    background:none;
+    border:none;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--ink);
+    cursor:pointer;
+    text-align:left;
+    transition:background 0.15s;
+  }
+  .unit-header-btn:hover{background:var(--card-hover);}
+  .unit-header-title{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .chevron{font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--ink-faint); transition:transform 0.2s;}
+  .unit-block.open .chevron{transform:rotate(90deg);}
+  .unit-count{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--ink-faint);}
+  .unit-content{display:none; padding:0 20px 16px; border-top:1px solid var(--line); background:rgba(51,41,68,0.03);}
+  .unit-block.open .unit-content{display:block;}
+
+  .std-row{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 16px;
+    margin-top:10px;
+    display:grid;
+    grid-template-columns: 48px 1fr auto;
+    gap:14px;
+    align-items:center;
+  }
+  .std-code{font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:0.85rem; color:var(--core);}
+  .std-row.optional .std-code{color:var(--optional);}
+  .std-desc{font-size:0.9rem; color:var(--ink-dim);}
+  .btn-practice{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    color:var(--ink);
+    background:var(--bg-surface);
+    border:1px solid var(--line-strong);
+    padding:6px 12px;
+    border-radius:5px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:all 0.15s;
+  }
+  .btn-practice:hover{border-color:var(--core); color:var(--core);}
+
+  /* ---- FAQ Section ---- */
+  .faq-grid{display:grid; gap:12px;}
+  .faq-item{
+    background:var(--bg-surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 20px;
+  }
+  .faq-item h3{font-size:1.05rem; color:var(--ink); margin-bottom:6px;}
+  .faq-item p{color:var(--ink-dim); font-size:0.9rem; margin:0;}
+
+  footer{padding:40px 0; text-align:center; color:var(--ink-faint); font-size:0.8rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Math 150 <span class="brand-badge">Calculus I</span></div>
+    <div class="links">
+      <a href="#calculator">Grade Estimator</a>
+      <a href="#scale">Grade Scale</a>
+      <a href="#standards">Standards Directory</a>
+      <a href="#faq">Retake Policy</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Course Hub & Standards Directory</div>
+    <h1>Mastery-Based Calculus</h1>
+    <p class="subtitle">Track your progress, estimate your grade, and select any standard to open its practice page.</p>
+  </header>
+
+  <!-- Interactive Estimator -->
+  <div class="calc-box" id="calculator">
+    <div class="eyebrow" style="color:var(--core);">Interactive Estimator</div>
+    <h3 style="margin-bottom:16px;">Check Your Projected Grade</h3>
+    <div class="calc-grid">
+      <div class="control-group">
+        <label for="calcPct">Course Grade (%)</label>
+        <input type="number" id="calcPct" min="0" max="100" value="88">
+      </div>
+      <div class="control-group">
+        <label for="calcCore">Core Passed (Max 26)</label>
+        <input type="number" id="calcCore" min="0" max="26" value="23">
+      </div>
+      <div class="control-group">
+        <label class="checkbox-group" title="Optional standards: E1, E2, E3, E6.">
+          <input type="checkbox" id="calcOpt">
+          <span style="font-size:0.85rem; color:var(--ink-dim);">Passed 3+ Optional Topics</span>
+        </label>
+      </div>
+      <div class="result-card">
+        <div>
+          <div style="font-size:0.7rem; font-family:'IBM Plex Mono', monospace; color:var(--ink-faint); text-transform:uppercase;">Estimated Grade</div>
+          <div id="gradeStatus" style="font-size:0.75rem; color:var(--ink-dim);">On track</div>
+        </div>
+        <div class="grade-display grade-A" id="gradeOutput">A</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Matrix Link Banner -->
+  <div class="matrix-banner">
+    <p>Need to review the comprehensive grading matrix and rubrics?</p>
+    <a href="full-matrix.html" class="btn-matrix">📄 View Full Matrix Page</a>
+  </div>
+
+  <!-- Grade Scale Summary -->
+  <section id="scale">
+    <div class="section-head">
+      <div class="eyebrow">Course Requirements</div>
+      <h2>Grade Thresholds</h2>
+      <p>Your overall grade combines your course percentage with the total number of core standards mastered.</p>
+    </div>
+    <div class="rubric-cards">
+      <div class="r-card">
+        <span class="badge grade-A">A</span>
+        <div class="req"><b>90%+</b> (or 85%+ w/ 3 optionals)<br>&amp; <b>23+</b> Core Passed</div>
+      </div>
+      <div class="r-card">
+        <span class="badge grade-B">B</span>
+        <div class="req"><b>80%+</b> Course Percentage<br>&amp; <b>21+</b> Core Passed</div>
+      </div>
+      <div class="r-card">
+        <span class="badge grade-C">C</span>
+        <div class="req"><b>70%+</b> Course Percentage<br>&amp; <b>19+</b> Core Passed</div>
+      </div>
+      <div class="r-card">
+        <span class="badge grade-D">D</span>
+        <div class="req"><b>60%+</b> Course Percentage<br>&amp; <b>17+</b> Core Passed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collapsible Standards List -->
+  <section id="standards">
+    <div class="section-head">
+      <div class="eyebrow">Learning Directory</div>
+      <h2>Standards Directory</h2>
+      <p>Click a standard to open its practice problem bank page (20–30 questions each).</p>
+    </div>
+
+    <!-- Gateway -->
+    <div class="unit-block open">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Gateway Topics</span>
+        <span class="unit-count">4 Standards</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row"><div class="std-code">G1</div><div class="std-desc">Function notation, composition/decomposition, and algebraic simplification.</div><a href="standards/G1.html" class="btn-practice">✏️ Practice G1</a></div>
+        <div class="std-row"><div class="std-code">G2</div><div class="std-desc">Linear equations: properties, graphing, and finding equations.</div><a href="standards/G2.html" class="btn-practice">✏️ Practice G2</a></div>
+        <div class="std-row"><div class="std-code">G3</div><div class="std-desc">Right triangle trigonometry fundamentals.</div><a href="standards/G3.html" class="btn-practice">✏️ Practice G3</a></div>
+        <div class="std-row"><div class="std-code">G4</div><div class="std-desc">Unit circle trigonometry (special triangles, quadrant placement).</div><a href="standards/G4.html" class="btn-practice">✏️ Practice G4</a></div>
+      </div>
+    </div>
+
+    <!-- Limits -->
+    <div class="unit-block">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Limits</span>
+        <span class="unit-count">4 Standards</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row"><div class="std-code">L1</div><div class="std-desc">Evaluating limits graphically.</div><a href="standards/L1.html" class="btn-practice">✏️ Practice L1</a></div>
+        <div class="std-row"><div class="std-code">L3</div><div class="std-desc">Evaluating algebraic limits — Level 1.</div><a href="standards/L3.html" class="btn-practice">✏️ Practice L3</a></div>
+        <div class="std-row"><div class="std-code">L4</div><div class="std-desc">Evaluating algebraic limits — Level 2.</div><a href="standards/L4.html" class="btn-practice">✏️ Practice L4</a></div>
+        <div class="std-row"><div class="std-code">L5</div><div class="std-desc">Evaluating limits involving infinity (without L'Hôpital's Rule).</div><a href="standards/L5.html" class="btn-practice">✏️ Practice L5</a></div>
+      </div>
+    </div>
+
+    <!-- Derivatives -->
+    <div class="unit-block">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Derivatives</span>
+        <span class="unit-count">7 Standards</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row"><div class="std-code">D1</div><div class="std-desc">Derivative definition, interpretation as rate of change, and assigning units.</div><a href="standards/D1.html" class="btn-practice">✏️ Practice D1</a></div>
+        <div class="std-row"><div class="std-code">D2</div><div class="std-desc">Relationships between f, f′, and f″ (slopes, concavity, increasing/decreasing).</div><a href="standards/D2.html" class="btn-practice">✏️ Practice D2</a></div>
+        <div class="std-row"><div class="std-code">D3</div><div class="std-desc">Continuity and differentiability (graphical and algebraic).</div><a href="standards/D3.html" class="btn-practice">✏️ Practice D3</a></div>
+        <div class="std-row"><div class="std-code">D4</div><div class="std-desc">Basic derivative rules and tangent line equations.</div><a href="standards/D4.html" class="btn-practice">✏️ Practice D4</a></div>
+        <div class="std-row"><div class="std-code">D5</div><div class="std-desc">Derivatives of trig, inverse trig, exponential, and logarithmic functions.</div><a href="standards/D5.html" class="btn-practice">✏️ Practice D5</a></div>
+        <div class="std-row"><div class="std-code">D6</div><div class="std-desc">Product and Quotient Rules.</div><a href="standards/D6.html" class="btn-practice">✏️ Practice D6</a></div>
+        <div class="std-row"><div class="std-code">D7</div><div class="std-desc">Chain Rule.</div><a href="standards/D7.html" class="btn-practice">✏️ Practice D7</a></div>
+      </div>
+    </div>
+
+    <!-- Applications -->
+    <div class="unit-block">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Applications of Derivatives</span>
+        <span class="unit-count">4 Standards</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row"><div class="std-code">A1</div><div class="std-desc">L'Hôpital's Rule with written justifications.</div><a href="standards/A1.html" class="btn-practice">✏️ Practice A1</a></div>
+        <div class="std-row"><div class="std-code">A2</div><div class="std-desc">Implicit differentiation and tangent lines.</div><a href="standards/A2.html" class="btn-practice">✏️ Practice A2</a></div>
+        <div class="std-row"><div class="std-code">A3</div><div class="std-desc">Applied Optimization — Level 1.</div><a href="standards/A3.html" class="btn-practice">✏️ Practice A3</a></div>
+        <div class="std-row"><div class="std-code">A4</div><div class="std-desc">Critical numbers, relative extrema, and absolute extrema.</div><a href="standards/A4.html" class="btn-practice">✏️ Practice A4</a></div>
+      </div>
+    </div>
+
+    <!-- Integration -->
+    <div class="unit-block">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Integration</span>
+        <span class="unit-count">7 Standards</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row"><div class="std-code">I1</div><div class="std-desc">Basic antiderivatives (direct rules).</div><a href="standards/I1.html" class="btn-practice">✏️ Practice I1</a></div>
+        <div class="std-row"><div class="std-code">I2</div><div class="std-desc">Antiderivatives requiring algebraic rewriting or geometry.</div><a href="standards/I2.html" class="btn-practice">✏️ Practice I2</a></div>
+        <div class="std-row"><div class="std-code">I3</div><div class="std-desc">Riemann sums and rectangular approximations.</div><a href="standards/I3.html" class="btn-practice">✏️ Practice I3</a></div>
+        <div class="std-row"><div class="std-code">I4</div><div class="std-desc">Particle motion, displacement, and total distance traveled.</div><a href="standards/I4.html" class="btn-practice">✏️ Practice I4</a></div>
+        <div class="std-row"><div class="std-code">I5</div><div class="std-desc">Definite integrals using geometric area formulas.</div><a href="standards/I5.html" class="btn-practice">✏️ Practice I5</a></div>
+        <div class="std-row"><div class="std-code">I6</div><div class="std-desc">Fundamental Theorem of Calculus.</div><a href="standards/I6.html" class="btn-practice">✏️ Practice I6</a></div>
+        <div class="std-row"><div class="std-code">I7</div><div class="std-desc">Integration by u-substitution.</div><a href="standards/I7.html" class="btn-practice">✏️ Practice I7</a></div>
+      </div>
+    </div>
+
+    <!-- Additional & Advanced Topics (Optional) -->
+    <div class="unit-block">
+      <button class="unit-header-btn" onclick="toggleUnit(this)">
+        <span class="unit-header-title"><span class="chevron">▶</span> Additional &amp; Advanced Topics</span>
+        <span class="unit-count">4 Optional</span>
+      </button>
+      <div class="unit-content">
+        <div class="std-row optional"><div class="std-code">E1</div><div class="std-desc">I can solve related rates problems.</div><a href="standards/E1.html" class="btn-practice">✏️ Practice E1</a></div>
+        <div class="std-row optional"><div class="std-code">E2</div><div class="std-desc">I can set up a limit of a Riemann sum as a definite integral.</div><a href="standards/E2.html" class="btn-practice">✏️ Practice E2</a></div>
+        <div class="std-row optional"><div class="std-code">E3</div><div class="std-desc">I can solve harder L'Hôpital's Rule problems.</div><a href="standards/E3.html" class="btn-practice">✏️ Practice E3</a></div>
+        <div class="std-row optional"><div class="std-code">E6</div><div class="std-desc">I can derive the formulas for the derivatives of inverse trig functions and natural logarithm.</div><a href="standards/E6.html" class="btn-practice">✏️ Practice E6</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Retake Policy / FAQ -->
+  <section id="faq">
+    <div class="section-head">
+      <div class="eyebrow">Common Questions</div>
+      <h2>Retake Policy & FAQ</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>How do retakes work for missed standards?</h3>
+        <p>Every time we have a scheduled midterm exam, you will have an explicit opportunity to retry any core or optional standards you have not yet passed, as well as during subsequent retake opportunities (e.g., office hours / designated retake sessions).</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I retake Capstones?</h3>
+        <p>No. Capstones are evaluated like traditional midterms and factored directly into your course percentage grade. Standard retake opportunities apply strictly to core and optional outcomes.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Math 150 · Calculus 1 Learning Outcomes & Assessment Hub
+  </footer>
+</div>
+
+<script>
+  function toggleUnit(btn) {
+    btn.parentElement.classList.toggle('open');
+  }
+
+  function calculateGrade() {
+    const pct = parseFloat(document.getElementById('calcPct').value) || 0;
+    const core = parseInt(document.getElementById('calcCore').value) || 0;
+    const opt = document.getElementById('calcOpt').checked;
+
+    const reqA_pct = opt ? 85 : 90;
+    let grade = 'F';
+    let status = 'Needs Improvement';
+
+    if (pct >= reqA_pct && core >= 23) { grade = 'A'; status = opt ? 'Qualifies for A (Boosted)' : 'Qualifies for A'; }
+    else if (pct >= 80 && core >= 21) { grade = 'B'; status = 'Qualifies for B'; }
+    else if (pct >= 70 && core >= 19) { grade = 'C'; status = 'Qualifies for C'; }
+    else if (pct >= 60 && core >= 17) { grade = 'D'; status = 'Qualifies for D'; }
+
+    const outputEl = document.getElementById('gradeOutput');
+    outputEl.textContent = grade;
+    outputEl.className = 'grade-display grade-' + grade;
+    document.getElementById('gradeStatus').textContent = status;
+  }
+
+  document.getElementById('calcPct').addEventListener('input', calculateGrade);
+  document.getElementById('calcCore').addEventListener('input', calculateGrade);
+  document.getElementById('calcOpt').addEventListener('change', calculateGrade);
+  calculateGrade();
+</script>
+
+</body>
+</html>

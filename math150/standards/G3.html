@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard G3 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+
+  .fig-wrap{ display:flex; justify-content:center; margin:14px 0 2px; }
+  .fig-wrap svg{ max-width:100%; height:auto; }
+  .fig-row{ display:flex; justify-content:center; align-items:flex-start; gap:20px; flex-wrap:wrap; margin:14px 0 2px; }
+  .fig-row svg{ max-width:100%; height:auto; }
+  .fig-cap{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--ink-faint); margin-top:2px; }
+  .tri-edge{ stroke:var(--ink); stroke-width:2; fill:none; stroke-linejoin:round; stroke-linecap:round; }
+  .tri-edge-accent{ stroke:var(--teal); stroke-width:2.5; fill:none; stroke-linecap:round; }
+  .tri-mark{ stroke:var(--ink-faint); stroke-width:1.4; fill:none; }
+  .tri-mark-dash{ stroke:var(--ink-faint); stroke-width:1.2; fill:none; stroke-dasharray:3 3; }
+  .tri-arc{ stroke:var(--core); stroke-width:1.5; fill:none; }
+  .tri-theta{ fill:var(--core); font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; }
+  .tri-lbl{ fill:var(--ink); font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600; }
+  .tri-lbl-dim{ fill:var(--ink-faint); font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600; }
+  .tri-cap{ fill:var(--ink-faint); font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.04em; }
+  .kite-fill{ fill:var(--core-soft); stroke:var(--ink); stroke-width:1.5; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>G3: Right Triangle Trigonometry</h1>
+  </header>
+
+  <div class="intro">
+    <p>30 practice problems, roughly ordered from warm-up to challenge within each topic. Work the problems first, then check the Solutions section below.</p>
+    <ul>
+      <li>SOH-CAH-TOA, relative to the reference angle $\theta$: $\sin\theta = \dfrac{\text{opp}}{\text{hyp}}$, $\cos\theta = \dfrac{\text{adj}}{\text{hyp}}$, $\tan\theta = \dfrac{\text{opp}}{\text{adj}}$.</li>
+      <li>Use the Pythagorean theorem ($a^2+b^2=c^2$) to find a missing side once you know the other two.</li>
+      <li>A $45$-$45$-$90$ triangle has side ratio $1 : 1 : \sqrt2$ (leg : leg : hypotenuse).</li>
+      <li>A $30$-$60$-$90$ triangle has side ratio $1 : \sqrt3 : 2$ (short leg : long leg : hypotenuse).</li>
+      <li>Exact values must be left as fractions/radicals — never round to a decimal.</li>
+      <li>Rationalize denominators that contain a radical, e.g. write $\dfrac{1}{\sqrt3}$ as $\dfrac{\sqrt3}{3}$.</li>
+    </ul>
+  </div>
+
+  <div class="fig-wrap">
+    <svg viewBox="0 0 260 150" width="260" height="150" role="img" aria-label="A right triangle labeled with angle theta at the bottom-left vertex, the adjacent leg along the bottom, the opposite leg on the right, and the hypotenuse connecting the two non-right-angle vertices">
+      <path class="tri-edge" d="M25,125 L205,125 L205,25 Z"/>
+      <path class="tri-mark" d="M205,113 L193,113 L193,125"/>
+      <path class="tri-arc" d="M52,125 A27,27 0 0 0 48.5,99.5"/>
+      <text class="tri-theta" x="56" y="112">θ</text>
+      <text class="tri-cap" x="115" y="142" text-anchor="middle">adjacent</text>
+      <text class="tri-cap" x="248" y="78" text-anchor="middle">opposite</text>
+      <text class="tri-cap" x="95" y="65" text-anchor="middle">hypotenuse</text>
+    </svg>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Trig Ratios from a Right Triangle</h3>
+  <div class="item-list">
+    <div class="item" id="p1">
+      <span class="num">1.</span>
+      <div class="body-text">
+        <p>A right triangle has legs $3$ and $4$ and hypotenuse $5$. Let $\theta$ be the angle opposite the side of length $3$. Find $\sin\theta$, $\cos\theta$, and $\tan\theta$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 4, opposite leg 3, hypotenuse 5, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">4</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">3</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">5</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s1">↓ solution</a>
+    </div>
+    <div class="item" id="p2">
+      <span class="num">2.</span>
+      <div class="body-text">
+        <p>A right triangle has legs $5$ and $12$ and hypotenuse $13$. Let $\theta$ be the angle opposite the side of length $12$. Find $\sin\theta$, $\cos\theta$, and $\tan\theta$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 5, opposite leg 12, hypotenuse 13, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">5</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">12</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">13</text>
+          </svg>
+        </div>
+        <div class="fig-cap">not drawn to scale</div>
+      </div>
+      <a class="jump" href="#s2">↓ solution</a>
+    </div>
+    <div class="item" id="p3">
+      <span class="num">3.</span>
+      <div class="body-text">
+        <p>A right triangle has legs $8$ and $15$ and hypotenuse $17$. Let $\theta$ be the angle opposite the side of length $15$. Find $\sin\theta$, $\cos\theta$, and $\tan\theta$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 8, opposite leg 15, hypotenuse 17, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">8</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">15</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">17</text>
+          </svg>
+        </div>
+        <div class="fig-cap">not drawn to scale</div>
+      </div>
+      <a class="jump" href="#s3">↓ solution</a>
+    </div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\theta$ is an acute angle in a right triangle with $\sin\theta = \dfrac{5}{13}$. Find $\cos\theta$ and $\tan\theta$.</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\theta$ is an acute angle in a right triangle with $\cos\theta = \dfrac{7}{25}$. Find $\sin\theta$ and $\tan\theta$.</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\theta$ is an acute angle in a right triangle with $\tan\theta = \dfrac{3}{4}$. Find $\sin\theta$ and $\cos\theta$.</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Sketching a Triangle from a Given Ratio</h3>
+  <div class="item-list">
+    <div class="item" id="p7">
+      <span class="num">7.</span>
+      <div class="body-text">
+        <p>Find a set of integer side lengths for a right triangle in which $\sin\theta = \dfrac{4}{5}$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle outline with angle theta marked at bottom left; the three side lengths are unlabeled for you to determine">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl-dim" x="105" y="142" text-anchor="middle">?</text>
+            <text class="tri-lbl-dim" x="207" y="79" text-anchor="start">?</text>
+            <text class="tri-lbl-dim" x="95" y="65" text-anchor="middle">?</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s7">↓ solution</a>
+    </div>
+    <div class="item" id="p8">
+      <span class="num">8.</span>
+      <div class="body-text">
+        <p>Find a set of integer side lengths for a right triangle in which $\tan\theta = \dfrac{5}{12}$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle outline with angle theta marked at bottom left; the three side lengths are unlabeled for you to determine">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl-dim" x="105" y="142" text-anchor="middle">?</text>
+            <text class="tri-lbl-dim" x="207" y="79" text-anchor="start">?</text>
+            <text class="tri-lbl-dim" x="95" y="65" text-anchor="middle">?</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s8">↓ solution</a>
+    </div>
+    <div class="item" id="p9">
+      <span class="num">9.</span>
+      <div class="body-text">
+        <p>Find a set of integer side lengths for a right triangle in which $\cos\theta = \dfrac{8}{17}$.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle outline with angle theta marked at bottom left; the three side lengths are unlabeled for you to determine">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl-dim" x="105" y="142" text-anchor="middle">?</text>
+            <text class="tri-lbl-dim" x="207" y="79" text-anchor="start">?</text>
+            <text class="tri-lbl-dim" x="95" y="65" text-anchor="middle">?</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s9">↓ solution</a>
+    </div>
+  </div>
+
+  <h3 class="group-label">Special Right Triangles</h3>
+  <div class="fig-row">
+    <div>
+      <svg viewBox="0 0 170 150" width="170" height="150" role="img" aria-label="45-45-90 triangle with both legs equal to 1 and hypotenuse root 2">
+        <path class="tri-edge" d="M20,125 L140,125 L140,15 Z"/>
+        <path class="tri-mark" d="M140,113 L128,113 L128,125"/>
+        <text class="tri-lbl-dim" x="34" y="114">45°</text>
+        <text class="tri-lbl-dim" x="112" y="28">45°</text>
+        <text class="tri-lbl" x="80" y="142" text-anchor="middle">1</text>
+        <text class="tri-lbl" x="152" y="72" text-anchor="start">1</text>
+        <text class="tri-lbl" x="62" y="60" text-anchor="middle">√2</text>
+      </svg>
+      <div class="fig-cap">45-45-90</div>
+    </div>
+    <div>
+      <svg viewBox="0 0 210 150" width="210" height="150" role="img" aria-label="30-60-90 triangle with short leg 1, long leg root 3, hypotenuse 2">
+        <path class="tri-edge" d="M20,125 L170,125 L170,55 Z"/>
+        <path class="tri-mark" d="M170,113 L158,113 L158,125"/>
+        <path class="tri-arc" d="M45,125 A25,25 0 0 0 42.7,109.5"/>
+        <text class="tri-theta" x="48" y="118" font-size="11">30°</text>
+        <text class="tri-lbl-dim" x="140" y="70">60°</text>
+        <text class="tri-lbl" x="95" y="142" text-anchor="middle">√3</text>
+        <text class="tri-lbl" x="182" y="93" text-anchor="start">1</text>
+        <text class="tri-lbl" x="82" y="82" text-anchor="middle">2</text>
+      </svg>
+      <div class="fig-cap">30-60-90</div>
+    </div>
+  </div>
+  <div class="item-list">
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">A $45$-$45$-$90$ triangle has one leg equal to $6$. Find the other leg and the hypotenuse.</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">A $45$-$45$-$90$ triangle has hypotenuse $10$. Find the length of each leg.</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">A $30$-$60$-$90$ triangle has its shortest side (opposite the $30°$ angle) equal to $7$. Find the other leg and the hypotenuse.</div><a class="jump" href="#s12">↓ solution</a></div>
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">A $30$-$60$-$90$ triangle has hypotenuse $20$. Find both legs.</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">A $30$-$60$-$90$ triangle has its longer leg (opposite the $60°$ angle) equal to $9$. Find the shorter leg and the hypotenuse.</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15">
+      <span class="num">15.</span>
+      <div class="body-text">
+        <p>Three right triangles all have hypotenuse $12$, but different reference angles $\theta$: (a) $\theta = \frac{\pi}{6}$, (b) $\theta = \frac{\pi}{4}$, (c) $\theta = \frac{\pi}{3}$.</p>
+        <p class="ask">For each triangle, find the lengths of both legs.</p>
+        <div class="fig-row">
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12 and reference angle pi over 6; legs unlabeled">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl-dim" x="65" y="115" text-anchor="middle">?</text>
+              <text class="tri-lbl-dim" x="122" y="60" text-anchor="start">?</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/6</div>
+          </div>
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12 and reference angle pi over 4; legs unlabeled">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl-dim" x="65" y="115" text-anchor="middle">?</text>
+              <text class="tri-lbl-dim" x="122" y="60" text-anchor="start">?</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/4</div>
+          </div>
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12 and reference angle pi over 3; legs unlabeled">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl-dim" x="65" y="115" text-anchor="middle">?</text>
+              <text class="tri-lbl-dim" x="122" y="60" text-anchor="start">?</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/3</div>
+          </div>
+        </div>
+      </div>
+      <a class="jump" href="#s15">↓ solution</a>
+    </div>
+  </div>
+
+  <h3 class="group-label">Exact Values of Special Angles</h3>
+  <div class="item-list">
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">Find the exact value of $\sin\left(\dfrac{\pi}{6}\right)$.</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">Find the exact value of $\cos\left(\dfrac{\pi}{6}\right)$.</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">Find the exact value of $\tan\left(\dfrac{\pi}{6}\right)$.</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">Find the exact value of $\sin\left(\dfrac{\pi}{4}\right)$.</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">Find the exact value of $\cos\left(\dfrac{\pi}{4}\right)$.</div><a class="jump" href="#s20">↓ solution</a></div>
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">Find the exact value of $\tan\left(\dfrac{\pi}{4}\right)$.</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">Find the exact value of $\sin\left(\dfrac{\pi}{3}\right)$.</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">Find the exact value of $\cos\left(\dfrac{\pi}{3}\right)$.</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">Find the exact value of $\tan\left(\dfrac{\pi}{3}\right)$.</div><a class="jump" href="#s24">↓ solution</a></div>
+    <div class="item" id="p25"><span class="num">25.</span><div class="body-text">Evaluate $\cos\left(\dfrac{\pi}{6}\right) + \sin\left(\dfrac{\pi}{3}\right)$.</div><a class="jump" href="#s25">↓ solution</a></div>
+    <div class="item" id="p26"><span class="num">26.</span><div class="body-text">Evaluate $\tan\left(\dfrac{\pi}{4}\right)\cdot\cos\left(\dfrac{\pi}{3}\right) - \sin\left(\dfrac{\pi}{6}\right)$.</div><a class="jump" href="#s26">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Applications</h3>
+  <div class="item-list">
+    <div class="item" id="p27">
+      <span class="num">27.</span>
+      <div class="body-text">
+        <p>A $10$-ft ladder leans against a wall, making a $60°$ angle with the ground.</p>
+        <p class="ask">How high up the wall does it reach, and how far is its base from the wall?</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 130" width="220" height="130" role="img" aria-label="A ladder leaning against a wall, making a 60 degree angle with the ground">
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="200" y1="110" x2="200" y2="15"/>
+            <line class="tri-edge-accent" x1="60" y1="110" x2="200" y2="30"/>
+            <path class="tri-arc" d="M90,110 A30,30 0 0 0 76,84"/>
+            <text class="tri-theta" x="82" y="102" font-size="11">60°</text>
+            <text class="tri-lbl" x="118" y="60" text-anchor="middle">10 ft</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s27">↓ solution</a>
+    </div>
+    <div class="item" id="p28">
+      <span class="num">28.</span>
+      <div class="body-text">
+        <p>A kite string is $40$ m long and makes a $60°$ angle with the ground.</p>
+        <p class="ask">Find the kite's height above the ground and its horizontal distance from the person holding the string.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="A kite string rising from the ground at a 60 degree angle, with dashed guide lines showing the kite's height and horizontal distance">
+            <line class="tri-mark" x1="10" y1="130" x2="210" y2="130"/>
+            <line class="tri-edge-accent" x1="55" y1="130" x2="165" y2="30"/>
+            <path class="tri-arc" d="M85,130 A30,30 0 0 0 71,104"/>
+            <text class="tri-theta" x="78" y="122" font-size="11">60°</text>
+            <path class="kite-fill" d="M165,20 L175,30 L165,40 L155,30 Z"/>
+            <line class="tri-mark-dash" x1="165" y1="30" x2="165" y2="130"/>
+            <line class="tri-mark-dash" x1="55" y1="130" x2="165" y2="130"/>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s28">↓ solution</a>
+    </div>
+    <div class="item" id="p29">
+      <span class="num">29.</span>
+      <div class="body-text">
+        <p>From a point on the ground $20$ m from the base of a tree, the angle of elevation to the top of the tree is $45°$.</p>
+        <p class="ask">Find the height of the tree.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 140" width="220" height="140" role="img" aria-label="A 45 degree angle of elevation from a point on the ground to the top of a tree, 20 meters from the tree's base">
+            <line class="tri-mark" x1="10" y1="120" x2="210" y2="120"/>
+            <line class="tri-edge-accent" x1="170" y1="120" x2="170" y2="25"/>
+            <circle class="kite-fill" cx="170" cy="20" r="10"/>
+            <line class="tri-mark-dash" x1="40" y1="120" x2="170" y2="25"/>
+            <path class="tri-arc" d="M70,120 A30,30 0 0 0 58,93"/>
+            <text class="tri-theta" x="64" y="112" font-size="11">45°</text>
+            <text class="tri-lbl" x="105" y="134" text-anchor="middle">20 m</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s29">↓ solution</a>
+    </div>
+    <div class="item" id="p30">
+      <span class="num">30.</span>
+      <div class="body-text">
+        <p>A wheelchair ramp rises at a $30°$ angle and covers a horizontal distance of $18$ ft.</p>
+        <p class="ask">Find the length of the ramp and its vertical rise.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 120" width="220" height="120" role="img" aria-label="A wheelchair ramp rising from the ground at a 30 degree angle over an 18-foot horizontal distance">
+            <line class="tri-mark" x1="10" y1="105" x2="210" y2="105"/>
+            <line class="tri-edge-accent" x1="30" y1="105" x2="190" y2="45"/>
+            <line class="tri-mark-dash" x1="30" y1="105" x2="190" y2="105"/>
+            <path class="tri-arc" d="M60,105 A30,30 0 0 0 47,79.5"/>
+            <text class="tri-theta" x="54" y="97" font-size="11">30°</text>
+            <text class="tri-lbl" x="110" y="118" text-anchor="middle">18 ft</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#s30">↓ solution</a>
+    </div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Trig Ratios from a Right Triangle</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>Relative to $\theta$: opposite $= 3$, adjacent $= 4$, hypotenuse $= 5$.</p><p>$\sin\theta = \frac{3}{5}$, $\cos\theta = \frac{4}{5}$, $\tan\theta = \frac{3}{4}$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>Relative to $\theta$: opposite $= 12$, adjacent $= 5$, hypotenuse $= 13$.</p><p>$\sin\theta = \frac{12}{13}$, $\cos\theta = \frac{5}{13}$, $\tan\theta = \frac{12}{5}$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>Relative to $\theta$: opposite $= 15$, adjacent $= 8$, hypotenuse $= 17$.</p><p>$\sin\theta = \frac{15}{17}$, $\cos\theta = \frac{8}{17}$, $\tan\theta = \frac{15}{8}$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$\sin\theta = \frac{5}{13}$ means opposite $=5$, hypotenuse $=13$. The missing leg is $\sqrt{13^2-5^2} = \sqrt{169-25}=\sqrt{144}=12$.</p><p>$\cos\theta = \frac{12}{13}$, $\tan\theta = \frac{5}{12}$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>$\cos\theta = \frac{7}{25}$ means adjacent $=7$, hypotenuse $=25$. The missing leg is $\sqrt{25^2-7^2} = \sqrt{625-49}=\sqrt{576}=24$.</p><p>$\sin\theta = \frac{24}{25}$, $\tan\theta = \frac{24}{7}$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$\tan\theta = \frac{3}{4}$ means opposite $=3$, adjacent $=4$. The hypotenuse is $\sqrt{3^2+4^2} = \sqrt{25} = 5$.</p><p>$\sin\theta = \frac{3}{5}$, $\cos\theta = \frac{4}{5}$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Sketching a Triangle from a Given Ratio</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7">
+      <span class="num">7.</span>
+      <div class="body-text">
+        <p>$\sin\theta = \frac{4}{5}$ means opposite $=4$, hypotenuse $=5$. The adjacent side is $\sqrt{5^2-4^2}=\sqrt9=3$.</p>
+        <p>Sides: $3, 4, 5$ (opposite $4$, adjacent $3$, hypotenuse $5$)</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 3, opposite leg 4, hypotenuse 5, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">3</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">4</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">5</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#p7">↑ problem</a>
+    </div>
+    <div class="item sol" id="s8">
+      <span class="num">8.</span>
+      <div class="body-text">
+        <p>$\tan\theta = \frac{5}{12}$ means opposite $=5$, adjacent $=12$. The hypotenuse is $\sqrt{5^2+12^2}=\sqrt{169}=13$.</p>
+        <p>Sides: $5, 12, 13$</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 12, opposite leg 5, hypotenuse 13, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">12</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">5</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">13</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#p8">↑ problem</a>
+    </div>
+    <div class="item sol" id="s9">
+      <span class="num">9.</span>
+      <div class="body-text">
+        <p>$\cos\theta = \frac{8}{17}$ means adjacent $=8$, hypotenuse $=17$. The opposite side is $\sqrt{17^2-8^2}=\sqrt{225}=15$.</p>
+        <p>Sides: $8, 15, 17$ (adjacent $8$, opposite $15$, hypotenuse $17$)</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 150" width="220" height="150" role="img" aria-label="Right triangle with adjacent leg 8, opposite leg 15, hypotenuse 17, angle theta at bottom left">
+            <path class="tri-edge" d="M25,125 L195,125 L195,25 Z"/>
+            <path class="tri-mark" d="M195,113 L183,113 L183,125"/>
+            <path class="tri-arc" d="M47,125 A22,22 0 0 0 44,103"/>
+            <text class="tri-theta" x="50" y="112">θ</text>
+            <text class="tri-lbl" x="105" y="142" text-anchor="middle">8</text>
+            <text class="tri-lbl" x="207" y="79" text-anchor="start">15</text>
+            <text class="tri-lbl" x="95" y="65" text-anchor="middle">17</text>
+          </svg>
+        </div>
+      </div>
+      <a class="jump" href="#p9">↑ problem</a>
+    </div>
+  </div>
+
+  <h3 class="group-label">Special Right Triangles</h3>
+  <div class="item-list">
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>In a $45$-$45$-$90$ triangle the legs are equal.</p><p>Other leg $= 6$. Hypotenuse $= 6\sqrt2$.</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Leg $= \dfrac{\text{hyp}}{\sqrt2} = \dfrac{10}{\sqrt2} = \dfrac{10\sqrt2}{2} = 5\sqrt2$.</p><p>Each leg $= 5\sqrt2$.</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>Short leg $=7$. Using the ratio $1:\sqrt3:2$: long leg $= 7\sqrt3$, hypotenuse $= 2(7) = 14$.</p></div><a class="jump" href="#p12">↑ problem</a></div>
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Hypotenuse $=20$, so short leg $= \dfrac{20}{2} = 10$, and long leg $= 10\sqrt3$.</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Long leg $= 9 = \text{short leg}\cdot\sqrt3$, so short leg $= \dfrac{9}{\sqrt3} = \dfrac{9\sqrt3}{3} = 3\sqrt3$.</p><p>Hypotenuse $= 2(3\sqrt3) = 6\sqrt3$.</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15">
+      <span class="num">15.</span>
+      <div class="body-text">
+        <p>(a) $\theta=\frac{\pi}{6}$: opposite $= 12\sin\frac{\pi}{6} = 12\cdot\frac12 = 6$; adjacent $= 12\cos\frac{\pi}{6} = 12\cdot\frac{\sqrt3}{2}=6\sqrt3$.</p>
+        <p>(b) $\theta=\frac{\pi}{4}$: both legs $= 12\sin\frac{\pi}{4} = 12\cdot\frac{\sqrt2}{2} = 6\sqrt2$.</p>
+        <p>(c) $\theta=\frac{\pi}{3}$: opposite $= 12\sin\frac{\pi}{3} = 12\cdot\frac{\sqrt3}{2}=6\sqrt3$; adjacent $= 12\cos\frac{\pi}{3} = 12\cdot\frac12 = 6$.</p>
+        <div class="fig-row">
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12, reference angle pi over 6, adjacent leg 6 root 3, opposite leg 6">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl" x="65" y="115" text-anchor="middle">6√3</text>
+              <text class="tri-lbl" x="122" y="60" text-anchor="start">6</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/6</div>
+          </div>
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12, reference angle pi over 4, both legs 6 root 2">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl" x="65" y="115" text-anchor="middle">6√2</text>
+              <text class="tri-lbl" x="122" y="60" text-anchor="start">6√2</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/4</div>
+          </div>
+          <div>
+            <svg viewBox="0 0 140 120" width="140" height="120" role="img" aria-label="Right triangle with hypotenuse 12, reference angle pi over 3, adjacent leg 6, opposite leg 6 root 3">
+              <path class="tri-edge" d="M15,100 L115,100 L115,15 Z"/>
+              <path class="tri-mark" d="M115,88 L103,88 L103,100"/>
+              <path class="tri-arc" d="M35,100 A18,18 0 0 0 32.8,88.5"/>
+              <text class="tri-theta" x="37" y="90" font-size="10">θ</text>
+              <text class="tri-lbl" x="65" y="115" text-anchor="middle">6</text>
+              <text class="tri-lbl" x="122" y="60" text-anchor="start">6√3</text>
+              <text class="tri-lbl" x="55" y="52" text-anchor="middle">12</text>
+            </svg>
+            <div class="fig-cap">θ = π/3</div>
+          </div>
+        </div>
+      </div>
+      <a class="jump" href="#p15">↑ problem</a>
+    </div>
+  </div>
+
+  <h3 class="group-label">Exact Values of Special Angles</h3>
+  <div class="item-list">
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>$\sin\left(\frac{\pi}{6}\right) = \dfrac{1}{2}$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>$\cos\left(\frac{\pi}{6}\right) = \dfrac{\sqrt3}{2}$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>$\tan\left(\frac{\pi}{6}\right) = \dfrac{1}{\sqrt3} = \dfrac{\sqrt3}{3}$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>$\sin\left(\frac{\pi}{4}\right) = \dfrac{\sqrt2}{2}$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>$\cos\left(\frac{\pi}{4}\right) = \dfrac{\sqrt2}{2}$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>$\tan\left(\frac{\pi}{4}\right) = 1$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>$\sin\left(\frac{\pi}{3}\right) = \dfrac{\sqrt3}{2}$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>$\cos\left(\frac{\pi}{3}\right) = \dfrac{1}{2}$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>$\tan\left(\frac{\pi}{3}\right) = \sqrt3$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+    <div class="item sol" id="s25"><span class="num">25.</span><div class="body-text"><p>$\cos\left(\frac{\pi}{6}\right) + \sin\left(\frac{\pi}{3}\right) = \dfrac{\sqrt3}{2} + \dfrac{\sqrt3}{2} = \sqrt3$</p></div><a class="jump" href="#p25">↑ problem</a></div>
+    <div class="item sol" id="s26"><span class="num">26.</span><div class="body-text"><p>$\tan\left(\frac{\pi}{4}\right)\cdot\cos\left(\frac{\pi}{3}\right) - \sin\left(\frac{\pi}{6}\right) = 1\cdot\dfrac{1}{2} - \dfrac{1}{2} = 0$</p></div><a class="jump" href="#p26">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Applications</h3>
+  <div class="item-list">
+    <div class="item sol" id="s27"><span class="num">27.</span><div class="body-text"><p>Height up the wall (opposite) $= 10\sin(60°) = 10\cdot\dfrac{\sqrt3}{2} = 5\sqrt3$ ft.</p><p>Distance from wall (adjacent) $= 10\cos(60°) = 10\cdot\dfrac12 = 5$ ft.</p></div><a class="jump" href="#p27">↑ problem</a></div>
+    <div class="item sol" id="s28"><span class="num">28.</span><div class="body-text"><p>Height (opposite) $= 40\sin(60°) = 40\cdot\dfrac{\sqrt3}{2} = 20\sqrt3$ m.</p><p>Horizontal distance (adjacent) $= 40\cos(60°) = 40\cdot\dfrac12 = 20$ m.</p></div><a class="jump" href="#p28">↑ problem</a></div>
+    <div class="item sol" id="s29"><span class="num">29.</span><div class="body-text"><p>The $20$ m distance is adjacent to the $45°$ angle of elevation; the height is opposite.</p><p>Height $= 20\tan(45°) = 20(1) = 20$ m.</p></div><a class="jump" href="#p29">↑ problem</a></div>
+    <div class="item sol" id="s30"><span class="num">30.</span><div class="body-text"><p>The $18$ ft distance is adjacent to the $30°$ angle; the rise is opposite, and the ramp length is the hypotenuse.</p><p>Rise $= 18\tan(30°) = 18\cdot\dfrac{\sqrt3}{3} = 6\sqrt3$ ft.</p><p>Ramp length $= \dfrac{18}{\cos(30°)} = \dfrac{18}{\frac{\sqrt3}{2}} = \dfrac{36}{\sqrt3} = 12\sqrt3$ ft.</p></div><a class="jump" href="#p30">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

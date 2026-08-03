@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Grading Matrix — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fff8ee;
+    --bg-surface: #fff1de;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --core-dim: rgba(201,69,31,0.12);
+    --optional: #16816f;
+    --optional-dim: rgba(22,129,111,0.12);
+    --grade-a: #2f9e44;
+    --grade-b: #c98a00;
+    --grade-c: #d9691f;
+    --grade-d: #cf4a29;
+    --grade-f: #cc3333;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(720px 420px at 8% -6%, rgba(255,183,3,0.14), transparent 60%),
+      radial-gradient(680px 420px at 96% 8%, rgba(31,154,143,0.12), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    line-height:1.55;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px 80px;}
+
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; margin:0; color:var(--ink); }
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin:24px 0 0;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{padding:20px 0 28px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem;
+    color:var(--core); text-transform:uppercase; letter-spacing:0.12em;
+    margin-bottom:10px;
+  }
+  h1{font-size:2rem; line-height:1.15;}
+  .subtitle{color:var(--ink-dim); font-size:1rem; margin-top:10px; max-width:640px;}
+
+  section{padding:32px 0; border-top:1px solid var(--line);}
+  section:first-of-type{border-top:none;}
+  .section-head{margin-bottom:18px;}
+  .section-head h2{font-size:1.4rem;}
+  .section-head p{color:var(--ink-dim); font-size:0.92rem; margin-top:4px; max-width:640px;}
+
+  /* ---- Rule recap cards (kept identical to homepage thresholds) ---- */
+  .rubric-cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap:12px;
+    margin-bottom:8px;
+  }
+  .r-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+  }
+  .r-card .badge{
+    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; display:block; margin-bottom:4px;
+  }
+  .r-card .req{font-size:0.8rem; color:var(--ink-dim); line-height:1.3;}
+  .grade-a{color:var(--grade-a);} .grade-b{color:var(--grade-b);} .grade-c{color:var(--grade-c);}
+  .grade-d{color:var(--grade-d);} .grade-f{color:var(--grade-f);}
+
+  /* ---- Matrix table ---- */
+  .matrix-scroll{ overflow-x:auto; }
+  table.matrix{
+    border-collapse:collapse;
+    width:100%;
+    min-width:560px;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  table.matrix th, table.matrix td{
+    border:1px solid var(--line);
+    padding:12px 10px;
+    text-align:center;
+    font-size:0.88rem;
+  }
+  table.matrix thead th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  table.matrix tbody th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  table.matrix .corner{ background:var(--bg-surface); }
+  .cell-grade{
+    font-family:'Fraunces', serif; font-weight:700; font-size:1.15rem;
+  }
+  .cell-A{ background:rgba(47,158,68,0.10); color:var(--grade-a); }
+  .cell-B{ background:rgba(201,138,0,0.10); color:var(--grade-b); }
+  .cell-C{ background:rgba(217,105,31,0.10); color:var(--grade-c); }
+  .cell-D{ background:rgba(207,74,41,0.10); color:var(--grade-d); }
+  .cell-F{ background:rgba(204,51,51,0.10); color:var(--grade-f); }
+
+  .axis-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.08em; margin:14px 0 6px;
+  }
+
+  .note{
+    background:var(--bg-surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--optional);
+    border-radius:8px;
+    padding:12px 16px;
+    font-size:0.88rem;
+    color:var(--ink-dim);
+    margin-top:16px;
+  }
+  .note b{color:var(--ink);}
+
+  /* ---- Unit breakdown table ---- */
+  table.units{
+    border-collapse:collapse;
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  table.units th, table.units td{
+    border-bottom:1px solid var(--line);
+    padding:10px 14px;
+    text-align:left;
+    font-size:0.9rem;
+  }
+  table.units th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  table.units td.num, table.units th.num{ text-align:center; }
+  table.units tr:last-child td{ border-bottom:none; }
+  table.units tr.total td{ font-weight:600; background:var(--bg-surface); }
+  .tag-core{ color:var(--core); font-family:'IBM Plex Mono', monospace; font-size:0.75rem; }
+  .tag-opt{ color:var(--optional); font-family:'IBM Plex Mono', monospace; font-size:0.75rem; }
+
+  footer{padding:40px 0 0; text-align:center; color:var(--ink-faint); font-size:0.8rem;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="math150-standards-ledger.html" class="back-link">← Back to Course Hub</a>
+
+  <header>
+    <div class="eyebrow">Grading Reference</div>
+    <h1>Full Grading Matrix</h1>
+    <p class="subtitle">Your letter grade is determined by two independent measures — your overall course percentage, and how many of the 26 core standards you've passed. This page derives the exact same rule the grade estimator on the course hub uses, laid out in full.</p>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--core);">The Rule</div>
+      <h2>How Your Grade Is Set</h2>
+      <p>You must clear <b>both</b> the course-percentage bar and the core-standards bar for a given letter grade — whichever of the two is weaker caps your grade. Concretely: compute a grade from your percentage alone, compute a grade from your core count alone, and take the <b>lower</b> of the two.</p>
+    </div>
+    <div class="rubric-cards">
+      <div class="r-card"><span class="badge grade-a">A</span><div class="req"><b>90%+</b> (or 85%+ w/ 3 optionals)<br>&amp; <b>23+</b> of 26 core</div></div>
+      <div class="r-card"><span class="badge grade-b">B</span><div class="req"><b>80%+</b> Course %<br>&amp; <b>21+</b> of 26 core</div></div>
+      <div class="r-card"><span class="badge grade-c">C</span><div class="req"><b>70%+</b> Course %<br>&amp; <b>19+</b> of 26 core</div></div>
+      <div class="r-card"><span class="badge grade-d">D</span><div class="req"><b>60%+</b> Course %<br>&amp; <b>17+</b> of 26 core</div></div>
+      <div class="r-card"><span class="badge grade-f">F</span><div class="req">Below the <b>D</b> row on either measure</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--core);">Cross-Reference</div>
+      <h2>Grade Determination Matrix</h2>
+      <p>Find your course-percentage column and your core-standards row — the cell where they intersect is your letter grade. This is exactly the estimator's logic, just spelled out for every combination instead of one at a time.</p>
+    </div>
+    <div class="matrix-scroll">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="corner">Core Passed ↓ / Course % →</th>
+            <th>90–100%</th>
+            <th>80–89%</th>
+            <th>70–79%</th>
+            <th>60–69%</th>
+            <th>0–59%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>23–26</th>
+            <td class="cell-A"><span class="cell-grade">A</span></td>
+            <td class="cell-B"><span class="cell-grade">B</span></td>
+            <td class="cell-C"><span class="cell-grade">C</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+          </tr>
+          <tr>
+            <th>21–22</th>
+            <td class="cell-B"><span class="cell-grade">B</span></td>
+            <td class="cell-B"><span class="cell-grade">B</span></td>
+            <td class="cell-C"><span class="cell-grade">C</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+          </tr>
+          <tr>
+            <th>19–20</th>
+            <td class="cell-C"><span class="cell-grade">C</span></td>
+            <td class="cell-C"><span class="cell-grade">C</span></td>
+            <td class="cell-C"><span class="cell-grade">C</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+          </tr>
+          <tr>
+            <th>17–18</th>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-D"><span class="cell-grade">D</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+          </tr>
+          <tr>
+            <th>0–16</th>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+            <td class="cell-F"><span class="cell-grade">F</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>Optional-topics boost:</b> if you've passed <b>3 or more</b> of the four optional standards (E1, E2, E3, E6), the course-percentage bar for an A drops from 90% to <b>85%</b>. This only changes the top-left cell's column boundary — within the 80–89% column, 85–89% becomes an A (instead of B) when the boost applies and you still have 23+ core standards; 80–84% stays a B either way. It has no effect on the B/C/D rows.
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--core);">Rubric</div>
+      <h2>Core Standards by Unit</h2>
+      <p>The 26 core standards behind the "Core Passed" axis above, grouped by unit as they appear in the Standards Directory. Optional standards are tracked separately and never count toward the 26.</p>
+    </div>
+    <table class="units">
+      <thead>
+        <tr><th>Unit</th><th>Standards</th><th class="num">Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Gateway Topics</td><td><span class="tag-core">G1 · G2 · G3 · G4</span></td><td class="num">4</td></tr>
+        <tr><td>Limits</td><td><span class="tag-core">L1 · L3 · L4 · L5</span></td><td class="num">4</td></tr>
+        <tr><td>Derivatives</td><td><span class="tag-core">D1 · D2 · D3 · D4 · D5 · D6 · D7</span></td><td class="num">7</td></tr>
+        <tr><td>Applications of Derivatives</td><td><span class="tag-core">A1 · A2 · A3 · A4</span></td><td class="num">4</td></tr>
+        <tr><td>Integration</td><td><span class="tag-core">I1 · I2 · I3 · I4 · I5 · I6 · I7</span></td><td class="num">7</td></tr>
+        <tr class="total"><td>Core Total</td><td>—</td><td class="num">26</td></tr>
+        <tr><td>Additional &amp; Advanced (optional)</td><td><span class="tag-opt">E1 · E2 · E3 · E6</span></td><td class="num">4</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    Math 150 · Calculus 1 Learning Outcomes &amp; Assessment Hub
+  </footer>
+</div>
+</body>
+</html>

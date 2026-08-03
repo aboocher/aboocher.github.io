@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard G4 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+
+  .fig-wrap{ display:flex; justify-content:center; margin:14px 0 2px; }
+  .fig-wrap svg{ max-width:100%; height:auto; }
+  .fig-row{ display:flex; justify-content:center; align-items:flex-start; gap:20px; flex-wrap:wrap; margin:14px 0 2px; }
+  .fig-row svg{ max-width:100%; height:auto; }
+  .fig-cap{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--ink-faint); margin-top:2px; }
+  .tri-edge{ stroke:var(--ink); stroke-width:2; fill:none; stroke-linejoin:round; stroke-linecap:round; }
+  .tri-edge-accent{ stroke:var(--teal); stroke-width:2.5; fill:none; stroke-linecap:round; }
+  .tri-mark{ stroke:var(--ink-faint); stroke-width:1.4; fill:none; }
+  .tri-mark-dash{ stroke:var(--ink-faint); stroke-width:1.2; fill:none; stroke-dasharray:3 3; }
+  .tri-arc{ stroke:var(--core); stroke-width:1.5; fill:none; }
+  .tri-theta{ fill:var(--core); font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; }
+  .tri-lbl{ fill:var(--ink); font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600; }
+  .tri-lbl-dim{ fill:var(--ink-faint); font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600; }
+  .tri-cap{ fill:var(--ink-faint); font-family:'IBM Plex Mono', monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.04em; }
+  .kite-fill{ fill:var(--core-soft); stroke:var(--ink); stroke-width:1.5; }
+  .ucircle-dot{ fill:var(--core-soft); stroke:var(--ink); stroke-width:1; }
+  .quad-lbl{ fill:var(--ink-faint); font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; }
+  .quad-lbl-fn{ fill:var(--teal); font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>G4: Unit Circle Trigonometry</h1>
+  </header>
+
+  <div class="intro">
+    <p>27 practice problems, roughly ordered from warm-up to challenge within each topic. Work the problems first, then check the Solutions section below.</p>
+    <ul>
+      <li>The unit circle has radius $1$. For an angle $\theta$ in standard position (vertex at the origin, initial side along the positive $x$-axis), the terminal ray meets the circle at the point $(\cos\theta, \sin\theta)$.</li>
+      <li>The <b>reference angle</b> is the acute angle between the terminal ray and the $x$-axis. Find it first, then attach the correct sign for the quadrant.</li>
+      <li><b>ASTC</b> ("All Students Take Calculus"): QI all six functions positive, QII sine (and cosecant) positive, QIII tangent (and cotangent) positive, QIV cosine (and secant) positive — everything else in each quadrant is negative.</li>
+      <li>$\sec\theta=\dfrac{1}{\cos\theta}$, $\csc\theta=\dfrac{1}{\sin\theta}$, $\cot\theta=\dfrac{1}{\tan\theta}$ — undefined wherever the denominator is $0$.</li>
+      <li>Exact values must be left as fractions/radicals with rationalized denominators — never decimals.</li>
+      <li>Two special-triangle ratios generate every coordinate on the circle: $1:1:\sqrt2$ (legs equal) and $1:\sqrt3:2$ (short leg, long leg, hypotenuse) — here scaled to hypotenuse $1$.</li>
+    </ul>
+  </div>
+
+  <div class="fig-wrap">
+    <svg viewBox="0 0 220 220" width="240" height="240" role="img" aria-label="The unit circle with sixteen special angles marked as dots, every multiple of 30 or 45 degrees, with x and y axes through the center">
+      <circle class="tri-edge" cx="110" cy="110" r="85"/>
+      <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+      <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+      <circle class="ucircle-dot" cx="195" cy="110" r="3.5"/>
+      <circle class="ucircle-dot" cx="183.6" cy="67.5" r="3.5"/>
+      <circle class="ucircle-dot" cx="170.1" cy="49.9" r="3.5"/>
+      <circle class="ucircle-dot" cx="152.5" cy="36.4" r="3.5"/>
+      <circle class="ucircle-dot" cx="110" cy="25" r="3.5"/>
+      <circle class="ucircle-dot" cx="67.5" cy="36.4" r="3.5"/>
+      <circle class="ucircle-dot" cx="49.9" cy="49.9" r="3.5"/>
+      <circle class="ucircle-dot" cx="36.4" cy="67.5" r="3.5"/>
+      <circle class="ucircle-dot" cx="25" cy="110" r="3.5"/>
+      <circle class="ucircle-dot" cx="36.4" cy="152.5" r="3.5"/>
+      <circle class="ucircle-dot" cx="49.9" cy="170.1" r="3.5"/>
+      <circle class="ucircle-dot" cx="67.5" cy="183.6" r="3.5"/>
+      <circle class="ucircle-dot" cx="110" cy="195" r="3.5"/>
+      <circle class="ucircle-dot" cx="152.5" cy="183.6" r="3.5"/>
+      <circle class="ucircle-dot" cx="170.1" cy="170.1" r="3.5"/>
+      <circle class="ucircle-dot" cx="183.6" cy="152.5" r="3.5"/>
+    </svg>
+  </div>
+  <div class="fig-cap">The unit circle — 16 special angles, every multiple of π/6 or π/4</div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Reference Angles &amp; Quadrant Signs</h3>
+  <div class="fig-wrap">
+    <svg viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="ASTC quadrant sign chart: quadrant one all functions positive, quadrant two sine and cosecant positive, quadrant three tangent and cotangent positive, quadrant four cosine and secant positive">
+      <line class="tri-mark" x1="10" y1="100" x2="190" y2="100"/>
+      <line class="tri-mark" x1="100" y1="10" x2="100" y2="190"/>
+      <text class="quad-lbl" x="150" y="45" text-anchor="middle">QI</text>
+      <text class="quad-lbl-fn" x="150" y="60" text-anchor="middle">All +</text>
+      <text class="quad-lbl" x="50" y="45" text-anchor="middle">QII</text>
+      <text class="quad-lbl-fn" x="50" y="60" text-anchor="middle">sin, csc +</text>
+      <text class="quad-lbl" x="50" y="150" text-anchor="middle">QIII</text>
+      <text class="quad-lbl-fn" x="50" y="165" text-anchor="middle">tan, cot +</text>
+      <text class="quad-lbl" x="150" y="150" text-anchor="middle">QIV</text>
+      <text class="quad-lbl-fn" x="150" y="165" text-anchor="middle">cos, sec +</text>
+    </svg>
+  </div>
+  <div class="fig-cap">ASTC sign chart</div>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">Find the reference angle for $\theta = \dfrac{5\pi}{6}$.</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">Find the reference angle for $\theta = \dfrac{7\pi}{4}$.</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">Find the reference angle for $\theta = \dfrac{4\pi}{3}$.</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">Which quadrant is $\theta = \dfrac{5\pi}{3}$ in? State the sign of $\sin\theta$ and $\cos\theta$.</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">Which quadrant is $\theta = \dfrac{2\pi}{3}$ in? State the sign of $\tan\theta$ and $\sec\theta$.</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">Without computing exact values, determine the sign of $\sin\left(\dfrac{7\pi}{6}\right)\cos\left(\dfrac{7\pi}{6}\right)$.</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Coordinates on the Unit Circle</h3>
+  <div class="fig-row">
+    <div>
+      <svg viewBox="0 0 170 150" width="170" height="150" role="img" aria-label="45-45-90 triangle with hypotenuse 1 and both legs root 2 over 2">
+        <path class="tri-edge" d="M20,125 L140,125 L140,15 Z"/>
+        <path class="tri-mark" d="M140,113 L128,113 L128,125"/>
+        <text class="tri-lbl-dim" x="34" y="114">45°</text>
+        <text class="tri-lbl-dim" x="112" y="28">45°</text>
+        <text class="tri-lbl" x="80" y="142" text-anchor="middle">√2/2</text>
+        <text class="tri-lbl" x="152" y="72" text-anchor="start">√2/2</text>
+        <text class="tri-lbl" x="62" y="60" text-anchor="middle">1</text>
+      </svg>
+      <div class="fig-cap">45-45-90, hyp = 1</div>
+    </div>
+    <div>
+      <svg viewBox="0 0 210 150" width="210" height="150" role="img" aria-label="30-60-90 triangle with hypotenuse 1, short leg 1 half, long leg root 3 over 2">
+        <path class="tri-edge" d="M20,125 L170,125 L170,55 Z"/>
+        <path class="tri-mark" d="M170,113 L158,113 L158,125"/>
+        <path class="tri-arc" d="M45,125 A25,25 0 0 0 42.7,109.5"/>
+        <text class="tri-theta" x="48" y="118" font-size="11">30°</text>
+        <text class="tri-lbl-dim" x="140" y="70">60°</text>
+        <text class="tri-lbl" x="95" y="142" text-anchor="middle">√3/2</text>
+        <text class="tri-lbl" x="182" y="93" text-anchor="start">1/2</text>
+        <text class="tri-lbl" x="82" y="82" text-anchor="middle">1</text>
+      </svg>
+      <div class="fig-cap">30-60-90, hyp = 1</div>
+    </div>
+  </div>
+  <div class="item-list">
+    <div class="item" id="p7">
+      <span class="num">7.</span>
+      <div class="body-text">
+        <p>Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{\pi}{3}$ meets the unit circle.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 60 degrees in quadrant one, a dashed drop to the x axis forming the reference triangle, and the terminal point marked with a question mark">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="152.5" y2="36.4"/>
+            <line class="tri-mark-dash" x1="152.5" y1="110" x2="152.5" y2="36.4"/>
+            <circle class="kite-fill" cx="152.5" cy="36.4" r="4"/>
+            <text class="tri-lbl-dim" x="152.5" y="26" text-anchor="middle">?</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = π/3</div>
+      </div>
+      <a class="jump" href="#s7">↓ solution</a>
+    </div>
+    <div class="item" id="p8">
+      <span class="num">8.</span>
+      <div class="body-text">
+        <p>Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{3\pi}{4}$ meets the unit circle.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 135 degrees in quadrant two, a dashed drop to the x axis forming the reference triangle, and the terminal point marked with a question mark">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="49.9" y2="49.9"/>
+            <line class="tri-mark-dash" x1="49.9" y1="110" x2="49.9" y2="49.9"/>
+            <circle class="kite-fill" cx="49.9" cy="49.9" r="4"/>
+            <text class="tri-lbl-dim" x="49.9" y="39.9" text-anchor="middle">?</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 3π/4</div>
+      </div>
+      <a class="jump" href="#s8">↓ solution</a>
+    </div>
+    <div class="item" id="p9">
+      <span class="num">9.</span>
+      <div class="body-text">
+        <p>Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{7\pi}{6}$ meets the unit circle.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 210 degrees in quadrant three, a dashed drop to the x axis forming the reference triangle, and the terminal point marked with a question mark">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="36.4" y2="152.5"/>
+            <line class="tri-mark-dash" x1="36.4" y1="110" x2="36.4" y2="152.5"/>
+            <circle class="kite-fill" cx="36.4" cy="152.5" r="4"/>
+            <text class="tri-lbl-dim" x="36.4" y="167" text-anchor="middle">?</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 7π/6</div>
+      </div>
+      <a class="jump" href="#s9">↓ solution</a>
+    </div>
+    <div class="item" id="p10">
+      <span class="num">10.</span>
+      <div class="body-text">
+        <p>Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{5\pi}{3}$ meets the unit circle.</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 300 degrees in quadrant four, a dashed drop to the x axis forming the reference triangle, and the terminal point marked with a question mark">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="152.5" y2="183.6"/>
+            <line class="tri-mark-dash" x1="152.5" y1="110" x2="152.5" y2="183.6"/>
+            <circle class="kite-fill" cx="152.5" cy="183.6" r="4"/>
+            <text class="tri-lbl-dim" x="152.5" y="198" text-anchor="middle">?</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 5π/3</div>
+      </div>
+      <a class="jump" href="#s10">↓ solution</a>
+    </div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{5\pi}{6}$ meets the unit circle.</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{5\pi}{4}$ meets the unit circle.</div><a class="jump" href="#s12">↓ solution</a></div>
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{11\pi}{6}$ meets the unit circle.</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">Find the exact coordinates of the point where the terminal side of $\theta = \dfrac{2\pi}{3}$ meets the unit circle.</div><a class="jump" href="#s14">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Evaluate All Six Trigonometric Functions</h3>
+  <div class="item-list">
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{\pi}{6}$.</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{2\pi}{3}$.</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{5\pi}{4}$.</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{11\pi}{6}$.</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \pi$. (Note: not every function is defined here.)</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{\pi}{2}$. (Note: not every function is defined here.)</div><a class="jump" href="#s20">↓ solution</a></div>
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{4\pi}{3}$.</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">Find the exact values of all six trigonometric functions at $\theta = \dfrac{7\pi}{6}$.</div><a class="jump" href="#s22">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Mixed Practice &amp; Applications</h3>
+  <div class="item-list">
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">Evaluate $\sin\left(\dfrac{\pi}{3}\right) + \cos\left(\dfrac{5\pi}{6}\right)$.</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">Evaluate $\tan\left(\dfrac{5\pi}{4}\right)\cdot\sin\left(\dfrac{\pi}{2}\right)$.</div><a class="jump" href="#s24">↓ solution</a></div>
+    <div class="item" id="p25"><span class="num">25.</span><div class="body-text">$\theta$ is an angle in quadrant III with $\sin\theta = -\dfrac12$. Find $\cos\theta$ and $\tan\theta$.</div><a class="jump" href="#s25">↓ solution</a></div>
+    <div class="item" id="p26"><span class="num">26.</span><div class="body-text">$\theta$ is an angle in quadrant IV with $\cos\theta = \dfrac{\sqrt2}{2}$. Find $\sin\theta$ and $\sec\theta$.</div><a class="jump" href="#s26">↓ solution</a></div>
+    <div class="item" id="p27">
+      <span class="num">27.</span>
+      <div class="body-text">
+        <p>A rider's height above the center of a (unit-radius) Ferris wheel is modeled by $h = \sin\theta$, where $\theta$ is the angle swept counterclockwise from the 3 o'clock position.</p>
+        <p class="ask">Find $h$ when $\theta = \dfrac{2\pi}{3}$, and state whether the rider is above or below the center at that moment.</p>
+      </div>
+      <a class="jump" href="#s27">↓ solution</a>
+    </div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Reference Angles &amp; Quadrant Signs</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>$\theta=\frac{5\pi}{6}$ is in QII, just short of $\pi=\frac{6\pi}{6}$.</p><p>Reference angle $= \pi - \frac{5\pi}{6} = \frac{\pi}{6}$.</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>$\theta=\frac{7\pi}{4}$ is in QIV, just short of $2\pi=\frac{8\pi}{4}$.</p><p>Reference angle $= 2\pi - \frac{7\pi}{4} = \frac{\pi}{4}$.</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$\theta=\frac{4\pi}{3}$ is in QIII, just past $\pi=\frac{3\pi}{3}$.</p><p>Reference angle $= \frac{4\pi}{3} - \pi = \frac{\pi}{3}$.</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$\frac{5\pi}{3} = \frac{10\pi}{6}$ lies between $\frac{3\pi}{2}=\frac{9\pi}{6}$ and $2\pi=\frac{12\pi}{6}$, so it's in QIV.</p><p>In QIV: $\sin\theta$ is negative, $\cos\theta$ is positive.</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>$\frac{2\pi}{3}$ lies between $\frac{\pi}{2}$ and $\pi$, so it's in QII.</p><p>In QII, sine is positive and cosine is negative, so $\tan\theta = \frac{\sin\theta}{\cos\theta}$ is negative. $\sec\theta = \frac{1}{\cos\theta}$ is also negative.</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$\frac{7\pi}{6}$ is in QIII, where both sine and cosine are negative.</p><p>Negative $\times$ negative $=$ positive, so $\sin\left(\frac{7\pi}{6}\right)\cos\left(\frac{7\pi}{6}\right)$ is positive.</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Coordinates on the Unit Circle</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7">
+      <span class="num">7.</span>
+      <div class="body-text">
+        <p>$\theta=\frac{\pi}{3}$ is already acute (QI), so it is its own reference angle. Using the $1:\sqrt3:2$ triangle with hypotenuse $1$: horizontal leg $=\frac12$, vertical leg $=\frac{\sqrt3}{2}$.</p>
+        <p>Point: $\left(\dfrac12, \dfrac{\sqrt3}{2}\right)$</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 60 degrees, reference triangle legs labeled one half and root 3 over 2, terminal point labeled one half comma root 3 over 2">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="152.5" y2="36.4"/>
+            <line class="tri-mark-dash" x1="152.5" y1="110" x2="152.5" y2="36.4"/>
+            <circle class="kite-fill" cx="152.5" cy="36.4" r="4"/>
+            <text class="tri-lbl" x="131" y="125" text-anchor="middle">1/2</text>
+            <text class="tri-lbl" x="163" y="75" text-anchor="start">√3/2</text>
+            <text class="tri-lbl" x="152.5" y="26" text-anchor="middle">(1/2, √3/2)</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = π/3</div>
+      </div>
+      <a class="jump" href="#p7">↑ problem</a>
+    </div>
+    <div class="item sol" id="s8">
+      <span class="num">8.</span>
+      <div class="body-text">
+        <p>Reference angle for $\frac{3\pi}{4}$ (QII) is $\pi - \frac{3\pi}{4}=\frac{\pi}{4}$. The $1:1:\sqrt2$ triangle gives legs $\frac{\sqrt2}{2}$ each. In QII, $x<0$ and $y>0$.</p>
+        <p>Point: $\left(-\dfrac{\sqrt2}{2}, \dfrac{\sqrt2}{2}\right)$</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 135 degrees, reference triangle legs labeled root 2 over 2, terminal point labeled negative root 2 over 2 comma root 2 over 2">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="49.9" y2="49.9"/>
+            <line class="tri-mark-dash" x1="49.9" y1="110" x2="49.9" y2="49.9"/>
+            <circle class="kite-fill" cx="49.9" cy="49.9" r="4"/>
+            <text class="tri-lbl" x="80" y="125" text-anchor="middle">√2/2</text>
+            <text class="tri-lbl" x="60" y="82" text-anchor="start">√2/2</text>
+            <text class="tri-lbl" x="49.9" y="39.9" text-anchor="middle">(-√2/2, √2/2)</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 3π/4</div>
+      </div>
+      <a class="jump" href="#p8">↑ problem</a>
+    </div>
+    <div class="item sol" id="s9">
+      <span class="num">9.</span>
+      <div class="body-text">
+        <p>Reference angle for $\frac{7\pi}{6}$ (QIII) is $\frac{7\pi}{6}-\pi=\frac{\pi}{6}$. The $1:\sqrt3:2$ triangle gives legs $\frac12$ and $\frac{\sqrt3}{2}$. In QIII, both coordinates are negative.</p>
+        <p>Point: $\left(-\dfrac{\sqrt3}{2}, -\dfrac12\right)$</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 210 degrees, reference triangle legs labeled root 3 over 2 and one half, terminal point labeled negative root 3 over 2 comma negative one half">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="36.4" y2="152.5"/>
+            <line class="tri-mark-dash" x1="36.4" y1="110" x2="36.4" y2="152.5"/>
+            <circle class="kite-fill" cx="36.4" cy="152.5" r="4"/>
+            <text class="tri-lbl" x="70" y="125" text-anchor="middle">√3/2</text>
+            <text class="tri-lbl" x="46" y="135" text-anchor="start">1/2</text>
+            <text class="tri-lbl" x="36.4" y="167" text-anchor="middle">(-√3/2, -1/2)</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 7π/6</div>
+      </div>
+      <a class="jump" href="#p9">↑ problem</a>
+    </div>
+    <div class="item sol" id="s10">
+      <span class="num">10.</span>
+      <div class="body-text">
+        <p>Reference angle for $\frac{5\pi}{3}$ (QIV) is $2\pi-\frac{5\pi}{3}=\frac{\pi}{3}$. The $1:\sqrt3:2$ triangle gives legs $\frac12$ and $\frac{\sqrt3}{2}$. In QIV, $x>0$ and $y<0$.</p>
+        <p>Point: $\left(\dfrac12, -\dfrac{\sqrt3}{2}\right)$</p>
+        <div class="fig-wrap">
+          <svg viewBox="0 0 220 220" width="200" height="200" role="img" aria-label="Unit circle with a ray to 300 degrees, reference triangle legs labeled one half and root 3 over 2, terminal point labeled one half comma negative root 3 over 2">
+            <circle class="tri-edge" cx="110" cy="110" r="85"/>
+            <line class="tri-mark" x1="10" y1="110" x2="210" y2="110"/>
+            <line class="tri-mark" x1="110" y1="10" x2="110" y2="210"/>
+            <line class="tri-edge-accent" x1="110" y1="110" x2="152.5" y2="183.6"/>
+            <line class="tri-mark-dash" x1="152.5" y1="110" x2="152.5" y2="183.6"/>
+            <circle class="kite-fill" cx="152.5" cy="183.6" r="4"/>
+            <text class="tri-lbl" x="131" y="125" text-anchor="middle">1/2</text>
+            <text class="tri-lbl" x="163" y="150" text-anchor="start">√3/2</text>
+            <text class="tri-lbl" x="152.5" y="198" text-anchor="middle">(1/2, -√3/2)</text>
+          </svg>
+        </div>
+        <div class="fig-cap">θ = 5π/3</div>
+      </div>
+      <a class="jump" href="#p10">↑ problem</a>
+    </div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Reference angle for $\frac{5\pi}{6}$ (QII) is $\pi-\frac{5\pi}{6}=\frac{\pi}{6}$, giving legs $\frac12,\frac{\sqrt3}{2}$. In QII, $x<0$, $y>0$.</p><p>Point: $\left(-\dfrac{\sqrt3}{2}, \dfrac12\right)$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>Reference angle for $\frac{5\pi}{4}$ (QIII) is $\frac{5\pi}{4}-\pi=\frac{\pi}{4}$, giving legs $\frac{\sqrt2}{2}$ each. In QIII, both coordinates are negative.</p><p>Point: $\left(-\dfrac{\sqrt2}{2}, -\dfrac{\sqrt2}{2}\right)$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Reference angle for $\frac{11\pi}{6}$ (QIV) is $2\pi-\frac{11\pi}{6}=\frac{\pi}{6}$, giving legs $\frac12,\frac{\sqrt3}{2}$. In QIV, $x>0$, $y<0$.</p><p>Point: $\left(\dfrac{\sqrt3}{2}, -\dfrac12\right)$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Reference angle for $\frac{2\pi}{3}$ (QII) is $\pi-\frac{2\pi}{3}=\frac{\pi}{3}$, giving legs $\frac12,\frac{\sqrt3}{2}$. In QII, $x<0$, $y>0$.</p><p>Point: $\left(-\dfrac12, \dfrac{\sqrt3}{2}\right)$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Evaluate All Six Trigonometric Functions</h3>
+  <div class="item-list">
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>$\theta=\frac{\pi}{6}$ (QI): $(\cos\theta,\sin\theta) = \left(\frac{\sqrt3}{2}, \frac12\right)$.</p><p>$\sin\theta=\dfrac12$, $\cos\theta=\dfrac{\sqrt3}{2}$, $\tan\theta=\dfrac{\sqrt3}{3}$, $\csc\theta=2$, $\sec\theta=\dfrac{2\sqrt3}{3}$, $\cot\theta=\sqrt3$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>$\theta=\frac{2\pi}{3}$ (QII): $(\cos\theta,\sin\theta) = \left(-\frac12, \frac{\sqrt3}{2}\right)$.</p><p>$\sin\theta=\dfrac{\sqrt3}{2}$, $\cos\theta=-\dfrac12$, $\tan\theta=-\sqrt3$, $\csc\theta=\dfrac{2\sqrt3}{3}$, $\sec\theta=-2$, $\cot\theta=-\dfrac{\sqrt3}{3}$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>$\theta=\frac{5\pi}{4}$ (QIII): $(\cos\theta,\sin\theta) = \left(-\frac{\sqrt2}{2}, -\frac{\sqrt2}{2}\right)$.</p><p>$\sin\theta=-\dfrac{\sqrt2}{2}$, $\cos\theta=-\dfrac{\sqrt2}{2}$, $\tan\theta=1$, $\csc\theta=-\sqrt2$, $\sec\theta=-\sqrt2$, $\cot\theta=1$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>$\theta=\frac{11\pi}{6}$ (QIV): $(\cos\theta,\sin\theta) = \left(\frac{\sqrt3}{2}, -\frac12\right)$.</p><p>$\sin\theta=-\dfrac12$, $\cos\theta=\dfrac{\sqrt3}{2}$, $\tan\theta=-\dfrac{\sqrt3}{3}$, $\csc\theta=-2$, $\sec\theta=\dfrac{2\sqrt3}{3}$, $\cot\theta=-\sqrt3$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>$\theta=\pi$: $(\cos\theta,\sin\theta)=(-1,0)$.</p><p>$\sin\theta=0$, $\cos\theta=-1$, $\tan\theta=0$, $\csc\theta$ undefined ($\frac10$), $\sec\theta=-1$, $\cot\theta$ undefined ($\frac10$)</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>$\theta=\frac{\pi}{2}$: $(\cos\theta,\sin\theta)=(0,1)$.</p><p>$\sin\theta=1$, $\cos\theta=0$, $\tan\theta$ undefined ($\frac10$), $\csc\theta=1$, $\sec\theta$ undefined ($\frac10$), $\cot\theta=0$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>$\theta=\frac{4\pi}{3}$ (QIII): $(\cos\theta,\sin\theta) = \left(-\frac12, -\frac{\sqrt3}{2}\right)$.</p><p>$\sin\theta=-\dfrac{\sqrt3}{2}$, $\cos\theta=-\dfrac12$, $\tan\theta=\sqrt3$, $\csc\theta=-\dfrac{2\sqrt3}{3}$, $\sec\theta=-2$, $\cot\theta=\dfrac{\sqrt3}{3}$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>$\theta=\frac{7\pi}{6}$ (QIII): $(\cos\theta,\sin\theta) = \left(-\frac{\sqrt3}{2}, -\frac12\right)$.</p><p>$\sin\theta=-\dfrac12$, $\cos\theta=-\dfrac{\sqrt3}{2}$, $\tan\theta=\dfrac{\sqrt3}{3}$, $\csc\theta=-2$, $\sec\theta=-\dfrac{2\sqrt3}{3}$, $\cot\theta=\sqrt3$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Mixed Practice &amp; Applications</h3>
+  <div class="item-list">
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>$\sin\left(\frac{\pi}{3}\right)+\cos\left(\frac{5\pi}{6}\right) = \dfrac{\sqrt3}{2} + \left(-\dfrac{\sqrt3}{2}\right) = 0$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>$\tan\left(\frac{5\pi}{4}\right)\cdot\sin\left(\frac{\pi}{2}\right) = (1)(1) = 1$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+    <div class="item sol" id="s25"><span class="num">25.</span><div class="body-text"><p>$\sin^2\theta+\cos^2\theta=1 \Rightarrow \cos^2\theta = 1-\frac14=\frac34 \Rightarrow \cos\theta=\pm\dfrac{\sqrt3}{2}$. In QIII, cosine is negative, so $\cos\theta=-\dfrac{\sqrt3}{2}$.</p><p>$\tan\theta = \dfrac{\sin\theta}{\cos\theta} = \dfrac{-1/2}{-\sqrt3/2} = \dfrac{1}{\sqrt3}=\dfrac{\sqrt3}{3}$</p></div><a class="jump" href="#p25">↑ problem</a></div>
+    <div class="item sol" id="s26"><span class="num">26.</span><div class="body-text"><p>$\sin^2\theta = 1-\cos^2\theta = 1-\frac12=\frac12 \Rightarrow \sin\theta=\pm\dfrac{\sqrt2}{2}$. In QIV, sine is negative, so $\sin\theta=-\dfrac{\sqrt2}{2}$.</p><p>$\sec\theta = \dfrac{1}{\cos\theta} = \dfrac{1}{\sqrt2/2} = \dfrac{2}{\sqrt2}=\sqrt2$</p></div><a class="jump" href="#p26">↑ problem</a></div>
+    <div class="item sol" id="s27"><span class="num">27.</span><div class="body-text"><p>$h=\sin\left(\frac{2\pi}{3}\right) = \dfrac{\sqrt3}{2} \approx 0.87$.</p><p>Since $h>0$, the rider is above the center.</p></div><a class="jump" href="#p27">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>
