@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard D7 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>D7: The Chain Rule</h1>
+  </header>
+
+  <div class="intro">
+    <p>24 practice problems on the Chain Rule, building from a single "outer" wrapper around a simple "inner" function up to two or three layers stacked together.</p>
+    <ul>
+      <li><strong>Chain Rule:</strong> for $y=f(g(x))$, $\;y'=f'(g(x))\cdot g'(x)$ — derivative of the outside (leaving the inside alone), times derivative of the inside.</li>
+      <li>Identify the <strong>outer</strong> function first — the last operation that would happen if you evaluated the expression by hand (a power, a trig function, an exponential, a log) — then everything inside it is the "inner" function you multiply by the derivative of.</li>
+      <li>A power on the outside stays a power rule step: $\dfrac{d}{dx}\left[g(x)\right]^n=n\left[g(x)\right]^{n-1}\cdot g'(x)$ — the exponent drops down, but the base stays untouched.</li>
+      <li>With <strong>two or more</strong> layers, peel off one outer function at a time and keep multiplying by the derivative of whatever's left inside — don't try to do it all in your head at once.</li>
+      <li>A function like $\sin^2(x)$ is shorthand for $(\sin x)^2$ — the outer layer is the squaring, and $\sin x$ is the inner function.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Power of a Function</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$y=(3x+1)^4$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$y=(x^2-5)^3$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$y=\sqrt{x^2+1}$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$y=\dfrac{1}{(2x+3)^2}$</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$y=(4-x^3)^5$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$y=\sqrt[3]{5x-2}$</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Trig of a Function</h3>
+  <div class="item-list">
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$y=\sin(4x)$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$y=\cos(x^2)$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$y=\tan(5x)$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$y=\sin^3 x$</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$y=\sec(2x)$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$y=\cos^4 x$</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Exponential and Log of a Function</h3>
+  <div class="item-list">
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$y=e^{3x}$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$y=e^{x^2-4x}$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$y=\ln(5x+2)$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$y=\ln(x^2+1)$</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$y=2^{3x}$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$y=e^{\sin x}$</div><a class="jump" href="#s18">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Multiple Layers</h3>
+  <p class="group-note">Peel off one layer at a time — outermost function first, then work your way in.</p>
+  <div class="item-list">
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$y=\sqrt{\sin(2x)}$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$y=\sin\!\left(e^x\right)$</div><a class="jump" href="#s20">↓ solution</a></div>
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">$y=\ln(\cos x)$</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">$y=e^{\sqrt{x}}$</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">$y=(\ln x)^3$</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">$y=\sin^2(3x)$</div><a class="jump" href="#s24">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Power of a Function</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>Outer: $(\;)^4$. Inner: $3x+1$, with derivative $3$.</p><p>$y'=4(3x+1)^3\cdot 3=12(3x+1)^3$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>Outer: $(\;)^3$. Inner: $x^2-5$, with derivative $2x$.</p><p>$y'=3(x^2-5)^2\cdot 2x=6x(x^2-5)^2$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$y=(x^2+1)^{1/2}$. Outer: $(\;)^{1/2}$. Inner: $x^2+1$, with derivative $2x$.</p><p>$y'=\dfrac{1}{2}(x^2+1)^{-1/2}\cdot 2x=\dfrac{x}{\sqrt{x^2+1}}$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$y=(2x+3)^{-2}$. Outer: $(\;)^{-2}$. Inner: $2x+3$, with derivative $2$.</p><p>$y'=-2(2x+3)^{-3}\cdot 2=-\dfrac{4}{(2x+3)^3}$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>Outer: $(\;)^5$. Inner: $4-x^3$, with derivative $-3x^2$.</p><p>$y'=5(4-x^3)^4\cdot(-3x^2)=-15x^2(4-x^3)^4$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$y=(5x-2)^{1/3}$. Outer: $(\;)^{1/3}$. Inner: $5x-2$, with derivative $5$.</p><p>$y'=\dfrac{1}{3}(5x-2)^{-2/3}\cdot 5=\dfrac{5}{3(5x-2)^{2/3}}$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Trig of a Function</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>Outer: $\sin(\;)$. Inner: $4x$, with derivative $4$.</p><p>$y'=\cos(4x)\cdot 4=4\cos(4x)$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>Outer: $\cos(\;)$. Inner: $x^2$, with derivative $2x$.</p><p>$y'=-\sin(x^2)\cdot 2x=-2x\sin(x^2)$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>Outer: $\tan(\;)$. Inner: $5x$, with derivative $5$.</p><p>$y'=\sec^2(5x)\cdot 5=5\sec^2(5x)$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$y=(\sin x)^3$. Outer: $(\;)^3$. Inner: $\sin x$, with derivative $\cos x$.</p><p>$y'=3\sin^2 x\cdot\cos x=3\sin^2 x\cos x$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Outer: $\sec(\;)$. Inner: $2x$, with derivative $2$.</p><p>$y'=\sec(2x)\tan(2x)\cdot 2=2\sec(2x)\tan(2x)$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$y=(\cos x)^4$. Outer: $(\;)^4$. Inner: $\cos x$, with derivative $-\sin x$.</p><p>$y'=4\cos^3 x\cdot(-\sin x)=-4\cos^3 x\sin x$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Exponential and Log of a Function</h3>
+  <div class="item-list">
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Outer: $e^{(\;)}$. Inner: $3x$, with derivative $3$.</p><p>$y'=e^{3x}\cdot 3=3e^{3x}$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Outer: $e^{(\;)}$. Inner: $x^2-4x$, with derivative $2x-4$.</p><p>$y'=e^{x^2-4x}\cdot(2x-4)$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>Outer: $\ln(\;)$. Inner: $5x+2$, with derivative $5$.</p><p>$y'=\dfrac{1}{5x+2}\cdot 5=\dfrac{5}{5x+2}$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>Outer: $\ln(\;)$. Inner: $x^2+1$, with derivative $2x$.</p><p>$y'=\dfrac{1}{x^2+1}\cdot 2x=\dfrac{2x}{x^2+1}$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>Outer: $2^{(\;)}$, which carries a factor of $\ln 2$. Inner: $3x$, with derivative $3$.</p><p>$y'=2^{3x}\ln 2\cdot 3=3\cdot 2^{3x}\ln 2$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>Outer: $e^{(\;)}$. Inner: $\sin x$, with derivative $\cos x$.</p><p>$y'=e^{\sin x}\cdot\cos x$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Multiple Layers</h3>
+  <div class="item-list">
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>$y=\left[\sin(2x)\right]^{1/2}$. Outermost: $(\;)^{1/2}$. Middle: $\sin(\;)$. Innermost: $2x$, with derivative $2$.</p><p>$y'=\dfrac{1}{2}\left[\sin(2x)\right]^{-1/2}\cdot\cos(2x)\cdot 2=\dfrac{\cos(2x)}{\sqrt{\sin(2x)}}$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>Outer: $\sin(\;)$. Inner: $e^x$, with derivative $e^x$.</p><p>$y'=\cos\!\left(e^x\right)\cdot e^x$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>Outer: $\ln(\;)$. Inner: $\cos x$, with derivative $-\sin x$.</p><p>$y'=\dfrac{1}{\cos x}\cdot(-\sin x)=-\dfrac{\sin x}{\cos x}=-\tan x$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>Outer: $e^{(\;)}$. Inner: $\sqrt{x}=x^{1/2}$, with derivative $\dfrac{1}{2\sqrt{x}}$.</p><p>$y'=e^{\sqrt{x}}\cdot\dfrac{1}{2\sqrt{x}}$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>Outermost: $(\;)^3$. Inner: $\ln x$, with derivative $\dfrac{1}{x}$.</p><p>$y'=3(\ln x)^2\cdot\dfrac{1}{x}=\dfrac{3(\ln x)^2}{x}$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>$y=\left[\sin(3x)\right]^2$. Outermost: $(\;)^2$. Middle: $\sin(\;)$. Innermost: $3x$, with derivative $3$.</p><p>$y'=2\sin(3x)\cdot\cos(3x)\cdot 3=6\sin(3x)\cos(3x)$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

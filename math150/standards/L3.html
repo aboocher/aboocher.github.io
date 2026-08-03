@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard L3 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>L3: Evaluating Limits Algebraically (Level 1)</h1>
+  </header>
+
+  <div class="intro">
+    <p>24 practice problems on evaluating limits algebraically, grouped from straightforward factor-and-cancel work up through trig substitution and limits with a parameter.</p>
+    <ul>
+      <li>Always try <strong>direct substitution first</strong>. If plugging in $x=a$ gives a real number, you're done — that number is the limit.</li>
+      <li>If direct substitution gives $\frac{0}{0}$, that is <strong>not</strong> your answer — it's a signal that numerator and denominator share a common factor. Factor both completely and cancel before substituting again.</li>
+      <li>If a numerator isn't already in factored or fully expanded form (e.g. it's written as $x(x+3)-10$), multiply it out and combine like terms first, <em>then</em> factor.</li>
+      <li>After canceling, the simplified expression agrees with the original function everywhere except right at $x=a$ — which is all a limit ever cares about, since it never looks at $x=a$ itself.</li>
+      <li>Sine and cosine are continuous at every real number, so trig limits (even at special angles like $\pi/6,\pi/4,\pi/3,\pi/2$) are evaluated by direct substitution — no factoring needed. Know your unit-circle values cold.</li>
+      <li>Limits with a parameter like $a$ work exactly the same way — substitute $x=a$'s target value, then simplify/combine like terms in the algebra instead of arithmetic.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Difference of Squares</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$\displaystyle\lim_{x\to 3}\frac{x^2-9}{x-3}$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$\displaystyle\lim_{x\to -4}\frac{x^2-16}{x+4}$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$\displaystyle\lim_{x\to 7}\frac{x^2-49}{x(x-7)}$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\displaystyle\lim_{x\to -6}\frac{x^2-36}{x(x+6)}$</div><a class="jump" href="#s4">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Factoring Two Quadratics</h3>
+  <div class="item-list">
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\displaystyle\lim_{x\to 2}\frac{x^2-x-2}{x^2-4}$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\displaystyle\lim_{x\to -3}\frac{x^2+2x-3}{x^2-9}$</div><a class="jump" href="#s6">↓ solution</a></div>
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$\displaystyle\lim_{x\to 1}\frac{x^2-3x+2}{x^2-1}$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$\displaystyle\lim_{x\to -1}\frac{x^2+3x+2}{x^2-1}$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$\displaystyle\lim_{x\to 4}\frac{x^2-6x+8}{x^2-16}$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$\displaystyle\lim_{x\to -2}\frac{x^2+7x+10}{x^2-4}$</div><a class="jump" href="#s10">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Expand First, Then Factor</h3>
+  <p class="group-note">These numerators aren't multiplied out yet — expand and combine like terms before you try to factor.</p>
+  <div class="item-list">
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$\displaystyle\lim_{x\to 5}\frac{x(x-1)-20}{x-5}$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$\displaystyle\lim_{x\to -2}\frac{x(x+5)+6}{x+2}$</div><a class="jump" href="#s12">↓ solution</a></div>
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$\displaystyle\lim_{x\to 4}\frac{x(x+2)-24}{3x-12}$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$\displaystyle\lim_{x\to -3}\frac{x(x-1)-12}{x^2+3x}$</div><a class="jump" href="#s14">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Trig Limits at Special Angles</h3>
+  <p class="group-note">No factoring here — sine and cosine are continuous, so just substitute the special angle directly.</p>
+  <div class="item-list">
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/6} 4\sin x$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/2} 5\cos x$</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/4} 6\sin x$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/3} (3\cos x + \sin x)$</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/4} (2\sin x - \cos x)$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$\displaystyle\lim_{x\to \pi/6} (5\sin x - 2\cos x)$</div><a class="jump" href="#s20">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Polynomials with a Parameter</h3>
+  <p class="group-note">Same idea — substitute the target $x$-value, then combine like terms. Your answer will have an $a$ in it.</p>
+  <div class="item-list">
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">$\displaystyle\lim_{x\to 2}(x^2 + ax + 3a - 1)$</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">$\displaystyle\lim_{x\to -1}(x^2 + ax + a^2 + 2a)$</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">$\displaystyle\lim_{x\to 3}(x^2 - 2ax + a^2 + a)$</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">$\displaystyle\lim_{x\to 1}(x^2 + ax + a^2 - a)$</div><a class="jump" href="#s24">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Difference of Squares</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>Direct substitution gives $\frac{0}{0}$, so factor the numerator as a difference of squares.</p><p>$\displaystyle\frac{x^2-9}{x-3}=\frac{(x-3)(x+3)}{x-3}=x+3$</p><p>$\displaystyle\lim_{x\to 3}\frac{x^2-9}{x-3}=3+3=6$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>Direct substitution gives $\frac{0}{0}$. Factor and cancel the common $(x+4)$.</p><p>$\displaystyle\frac{x^2-16}{x+4}=\frac{(x-4)(x+4)}{x+4}=x-4$</p><p>$\displaystyle\lim_{x\to -4}\frac{x^2-16}{x+4}=-4-4=-8$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>Factor the numerator; the denominator is already factored as $x(x-7)$.</p><p>$\displaystyle\frac{x^2-49}{x(x-7)}=\frac{(x-7)(x+7)}{x(x-7)}=\frac{x+7}{x}$</p><p>$\displaystyle\lim_{x\to 7}\frac{x^2-49}{x(x-7)}=\frac{7+7}{7}=\frac{14}{7}=2$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>Factor the numerator and cancel the common $(x+6)$.</p><p>$\displaystyle\frac{x^2-36}{x(x+6)}=\frac{(x-6)(x+6)}{x(x+6)}=\frac{x-6}{x}$</p><p>$\displaystyle\lim_{x\to -6}\frac{x^2-36}{x(x+6)}=\frac{-6-6}{-6}=\frac{-12}{-6}=2$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Factoring Two Quadratics</h3>
+  <div class="item-list">
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>Both numerator and denominator factor; a $(x-2)$ cancels.</p><p>$\displaystyle\frac{x^2-x-2}{x^2-4}=\frac{(x-2)(x+1)}{(x-2)(x+2)}=\frac{x+1}{x+2}$</p><p>$\displaystyle\lim_{x\to 2}\frac{x^2-x-2}{x^2-4}=\frac{2+1}{2+2}=\frac{3}{4}$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>Factor both; the common factor here is $(x+3)$.</p><p>$\displaystyle\frac{x^2+2x-3}{x^2-9}=\frac{(x+3)(x-1)}{(x+3)(x-3)}=\frac{x-1}{x-3}$</p><p>$\displaystyle\lim_{x\to -3}\frac{x^2+2x-3}{x^2-9}=\frac{-3-1}{-3-3}=\frac{-4}{-6}=\frac{2}{3}$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>Factor both; cancel the common $(x-1)$.</p><p>$\displaystyle\frac{x^2-3x+2}{x^2-1}=\frac{(x-1)(x-2)}{(x-1)(x+1)}=\frac{x-2}{x+1}$</p><p>$\displaystyle\lim_{x\to 1}\frac{x^2-3x+2}{x^2-1}=\frac{1-2}{1+1}=-\frac{1}{2}$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>Factor both; cancel the common $(x+1)$.</p><p>$\displaystyle\frac{x^2+3x+2}{x^2-1}=\frac{(x+1)(x+2)}{(x+1)(x-1)}=\frac{x+2}{x-1}$</p><p>$\displaystyle\lim_{x\to -1}\frac{x^2+3x+2}{x^2-1}=\frac{-1+2}{-1-1}=\frac{1}{-2}=-\frac{1}{2}$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>Factor both; cancel the common $(x-4)$.</p><p>$\displaystyle\frac{x^2-6x+8}{x^2-16}=\frac{(x-4)(x-2)}{(x-4)(x+4)}=\frac{x-2}{x+4}$</p><p>$\displaystyle\lim_{x\to 4}\frac{x^2-6x+8}{x^2-16}=\frac{4-2}{4+4}=\frac{2}{8}=\frac{1}{4}$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>Factor both; cancel the common $(x+2)$.</p><p>$\displaystyle\frac{x^2+7x+10}{x^2-4}=\frac{(x+2)(x+5)}{(x+2)(x-2)}=\frac{x+5}{x-2}$</p><p>$\displaystyle\lim_{x\to -2}\frac{x^2+7x+10}{x^2-4}=\frac{-2+5}{-2-2}=\frac{3}{-4}=-\frac{3}{4}$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Expand First, Then Factor</h3>
+  <div class="item-list">
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Expand the numerator, then factor and cancel.</p><p>$x(x-1)-20=x^2-x-20=(x-5)(x+4)$</p><p>$\displaystyle\frac{x(x-1)-20}{x-5}=\frac{(x-5)(x+4)}{x-5}=x+4$</p><p>$\displaystyle\lim_{x\to 5}\frac{x(x-1)-20}{x-5}=5+4=9$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>Expand the numerator, then factor and cancel.</p><p>$x(x+5)+6=x^2+5x+6=(x+2)(x+3)$</p><p>$\displaystyle\frac{x(x+5)+6}{x+2}=\frac{(x+2)(x+3)}{x+2}=x+3$</p><p>$\displaystyle\lim_{x\to -2}\frac{x(x+5)+6}{x+2}=-2+3=1$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Expand the numerator and factor the denominator, then cancel the common $(x-4)$.</p><p>$x(x+2)-24=x^2+2x-24=(x-4)(x+6)$, and $3x-12=3(x-4)$</p><p>$\displaystyle\frac{x(x+2)-24}{3x-12}=\frac{(x-4)(x+6)}{3(x-4)}=\frac{x+6}{3}$</p><p>$\displaystyle\lim_{x\to 4}\frac{x(x+2)-24}{3x-12}=\frac{4+6}{3}=\frac{10}{3}$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Expand the numerator and factor the denominator, then cancel the common $(x+3)$.</p><p>$x(x-1)-12=x^2-x-12=(x-4)(x+3)$, and $x^2+3x=x(x+3)$</p><p>$\displaystyle\frac{x(x-1)-12}{x^2+3x}=\frac{(x-4)(x+3)}{x(x+3)}=\frac{x-4}{x}$</p><p>$\displaystyle\lim_{x\to -3}\frac{x(x-1)-12}{x^2+3x}=\frac{-3-4}{-3}=\frac{-7}{-3}=\frac{7}{3}$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Trig Limits at Special Angles</h3>
+  <div class="item-list">
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>$\sin x$ is continuous, so substitute directly. $\sin(\pi/6)=\frac{1}{2}$.</p><p>$\displaystyle\lim_{x\to \pi/6} 4\sin x = 4\cdot\frac{1}{2}=2$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>$\cos(\pi/2)=0$.</p><p>$\displaystyle\lim_{x\to \pi/2} 5\cos x = 5\cdot 0=0$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>$\sin(\pi/4)=\frac{\sqrt2}{2}$.</p><p>$\displaystyle\lim_{x\to \pi/4} 6\sin x = 6\cdot\frac{\sqrt2}{2}=3\sqrt2$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>$\cos(\pi/3)=\frac{1}{2}$ and $\sin(\pi/3)=\frac{\sqrt3}{2}$.</p><p>$\displaystyle\lim_{x\to \pi/3} (3\cos x + \sin x) = 3\cdot\frac{1}{2}+\frac{\sqrt3}{2}=\frac{3}{2}+\frac{\sqrt3}{2}=\frac{3+\sqrt3}{2}$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>$\sin(\pi/4)=\cos(\pi/4)=\frac{\sqrt2}{2}$.</p><p>$\displaystyle\lim_{x\to \pi/4} (2\sin x - \cos x) = 2\cdot\frac{\sqrt2}{2}-\frac{\sqrt2}{2}=\sqrt2-\frac{\sqrt2}{2}=\frac{\sqrt2}{2}$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>$\sin(\pi/6)=\frac{1}{2}$ and $\cos(\pi/6)=\frac{\sqrt3}{2}$.</p><p>$\displaystyle\lim_{x\to \pi/6} (5\sin x - 2\cos x) = 5\cdot\frac{1}{2}-2\cdot\frac{\sqrt3}{2}=\frac{5}{2}-\sqrt3=\frac{5-2\sqrt3}{2}$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Polynomials with a Parameter</h3>
+  <div class="item-list">
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>Substitute $x=2$ and combine like terms in $a$.</p><p>$2^2+a(2)+3a-1=4+2a+3a-1$</p><p>$\displaystyle\lim_{x\to 2}(x^2+ax+3a-1)=5a+3$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>Substitute $x=-1$ and combine like terms.</p><p>$(-1)^2+a(-1)+a^2+2a=1-a+a^2+2a$</p><p>$\displaystyle\lim_{x\to -1}(x^2+ax+a^2+2a)=a^2+a+1$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>Substitute $x=3$ and combine like terms.</p><p>$3^2-2a(3)+a^2+a=9-6a+a^2+a$</p><p>$\displaystyle\lim_{x\to 3}(x^2-2ax+a^2+a)=a^2-5a+9$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>Substitute $x=1$ and combine like terms — watch closely, the linear $a$-terms cancel.</p><p>$1^2+a(1)+a^2-a=1+a+a^2-a$</p><p>$\displaystyle\lim_{x\to 1}(x^2+ax+a^2-a)=a^2+1$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

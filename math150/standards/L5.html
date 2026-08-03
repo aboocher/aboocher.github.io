@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard L5 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>L5: Limits Involving Infinity</h1>
+  </header>
+
+  <div class="intro">
+    <p>24 practice problems on limits involving infinity: infinite limits near a vertical asymptote, and limits as $x\to\pm\infty$ of rational functions. For every problem, state whether the answer is a real number, $\infty$, $-\infty$, or DNE.</p>
+    <ul>
+      <li><strong>Infinite limits near a point:</strong> if direct substitution gives a nonzero number over $0$, the limit is infinite — you just need the <em>sign</em>. Plug in a value extremely close to $a$ on the correct side and track the sign of numerator and denominator separately.</li>
+      <li>A denominator raised to an <strong>even power</strong> is positive on both sides of $a$, so the two one-sided limits agree — the two-sided limit is $\infty$ or $-\infty$.</li>
+      <li>A denominator raised to an <strong>odd power</strong> (including power $1$) changes sign across $a$, so the one-sided limits disagree — the two-sided limit <strong>does not exist (DNE)</strong>, even though each side individually is infinite.</li>
+      <li><strong>Limits at infinity of rational functions:</strong> compare the degree of the numerator and denominator. Same degree → the limit is the ratio of the leading coefficients. Numerator's degree is smaller → the limit is $0$. Numerator's degree is larger → the limit is $\infty$ or $-\infty$, found from the leading term.</li>
+      <li>When the numerator's degree is larger and $x\to-\infty$, check whether the <em>difference</em> in degrees is odd or even: an odd difference flips the sign from the $x\to\infty$ answer (like an odd power of a negative number), an even difference keeps the same sign.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">One-Sided Infinite Limits</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+}\frac{3}{x}$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$\displaystyle\lim_{x\to 0^-}\frac{5}{x}$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$\displaystyle\lim_{x\to 2^+}\frac{x+4}{x-2}$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\displaystyle\lim_{x\to 2^-}\frac{x+4}{x-2}$</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\displaystyle\lim_{x\to -3^+}\frac{-2}{x+3}$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\displaystyle\lim_{x\to -3^-}\frac{-2}{x+3}$</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Two-Sided Infinite Limits — Even-Power Denominators</h3>
+  <div class="item-list">
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$\displaystyle\lim_{x\to -2}\frac{5}{(x+2)^2}$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$\displaystyle\lim_{x\to 3}\frac{-4}{(x-3)^2}$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$\displaystyle\lim_{x\to 1}\frac{2}{(x-1)^4}$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$\displaystyle\lim_{x\to -5}\frac{-7}{(x+5)^2}$</div><a class="jump" href="#s10">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Two-Sided Limits That Don't Exist — Signs Disagree</h3>
+  <p class="group-note">Work out both one-sided limits. If they disagree, the two-sided limit is DNE — don't average them or guess.</p>
+  <div class="item-list">
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{6}{x^3}$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$\displaystyle\lim_{x\to 4}\frac{-3}{x-4}$</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Same Degree</h3>
+  <div class="item-list">
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{4x^2-3}{2x^2+5}$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{4x^2-3}{2x^2+5}$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{7x^3+2x}{3x^3-x^2}$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{-5x^2+x}{x^2+4}$</div><a class="jump" href="#s16">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Numerator Degree Less</h3>
+  <div class="item-list">
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{5x+1}{x^2-3}$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{5x+1}{x^2-3}$</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{3x^2-4}{x^3+2}$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{2x-7}{x^4+1}$</div><a class="jump" href="#s20">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Numerator Degree Greater</h3>
+  <div class="item-list">
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{2x^3-1}{x^2+3}$</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{2x^3-1}{x^2+3}$</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{-3x^4+2}{x^2+1}$</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">$\displaystyle\lim_{x\to -\infty}\frac{-3x^4+2}{x^2+1}$</div><a class="jump" href="#s24">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">One-Sided Infinite Limits</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>As $x\to 0^+$, $x$ is a tiny positive number, so $\frac{3}{x}$ is a huge positive number.</p><p>$\displaystyle\lim_{x\to 0^+}\frac{3}{x}=\infty$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>As $x\to 0^-$, $x$ is a tiny negative number, so $\frac{5}{x}$ is a huge negative number.</p><p>$\displaystyle\lim_{x\to 0^-}\frac{5}{x}=-\infty$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>The numerator at $x=2$ is $2+4=6$, a positive number, so it doesn't affect the sign analysis. As $x\to 2^+$, $x-2$ is a tiny positive number.</p><p>positive $\div$ tiny positive $=$ huge positive</p><p>$\displaystyle\lim_{x\to 2^+}\frac{x+4}{x-2}=\infty$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>Same numerator sign as Problem 3, but now $x\to 2^-$ makes $x-2$ a tiny negative number.</p><p>positive $\div$ tiny negative $=$ huge negative</p><p>$\displaystyle\lim_{x\to 2^-}\frac{x+4}{x-2}=-\infty$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>The numerator $-2$ is negative. As $x\to -3^+$, $x+3$ is a tiny positive number.</p><p>negative $\div$ tiny positive $=$ huge negative</p><p>$\displaystyle\lim_{x\to -3^+}\frac{-2}{x+3}=-\infty$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>Same negative numerator, but $x\to -3^-$ makes $x+3$ a tiny negative number.</p><p>negative $\div$ tiny negative $=$ huge positive</p><p>$\displaystyle\lim_{x\to -3^-}\frac{-2}{x+3}=\infty$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Two-Sided Infinite Limits — Even-Power Denominators</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>$(x+2)^2$ is positive whether $x$ approaches $-2$ from the left or the right, so both one-sided limits agree. The numerator $5$ is positive.</p><p>$\displaystyle\lim_{x\to -2}\frac{5}{(x+2)^2}=\infty$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>$(x-3)^2$ is positive from both sides. The numerator $-4$ is negative, so the whole expression is negative near $x=3$.</p><p>$\displaystyle\lim_{x\to 3}\frac{-4}{(x-3)^2}=-\infty$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>$(x-1)^4$ is positive from both sides (any even power is). The numerator $2$ is positive.</p><p>$\displaystyle\lim_{x\to 1}\frac{2}{(x-1)^4}=\infty$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$(x+5)^2$ is positive from both sides. The numerator $-7$ is negative.</p><p>$\displaystyle\lim_{x\to -5}\frac{-7}{(x+5)^2}=-\infty$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Two-Sided Limits That Don't Exist — Signs Disagree</h3>
+  <div class="item-list">
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>$x^3$ is an odd power, so it changes sign across $x=0$.</p><p>As $x\to 0^+$: tiny positive cubed is tiny positive, so $\frac{6}{x^3}\to\infty$.</p><p>As $x\to 0^-$: tiny negative cubed is tiny negative, so $\frac{6}{x^3}\to-\infty$.</p><p>The one-sided limits disagree, so $\displaystyle\lim_{x\to 0}\frac{6}{x^3}=\text{DNE}$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$(x-4)^1$ changes sign across $x=4$, and the numerator $-3$ is negative.</p><p>As $x\to 4^+$: negative $\div$ tiny positive $=-\infty$.</p><p>As $x\to 4^-$: negative $\div$ tiny negative $=\infty$.</p><p>The one-sided limits disagree, so $\displaystyle\lim_{x\to 4}\frac{-3}{x-4}=\text{DNE}$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Same Degree</h3>
+  <div class="item-list">
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Numerator and denominator are both degree $2$. The limit is the ratio of the leading coefficients.</p><p>$\displaystyle\lim_{x\to \infty}\frac{4x^2-3}{2x^2+5}=\frac{4}{2}=2$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Same degree ($2$ and $2$), and $x\to-\infty$ doesn't change anything here since the highest power is even.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{4x^2-3}{2x^2+5}=\frac{4}{2}=2$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>Both degree $3$. The limit is the ratio of leading coefficients.</p><p>$\displaystyle\lim_{x\to \infty}\frac{7x^3+2x}{3x^3-x^2}=\frac{7}{3}$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>Both degree $2$ (an even power), so the ratio of leading coefficients holds regardless of direction.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{-5x^2+x}{x^2+4}=\frac{-5}{1}=-5$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Numerator Degree Less</h3>
+  <div class="item-list">
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>Numerator degree $1$ is smaller than denominator degree $2$, so the denominator grows faster and the fraction shrinks to $0$.</p><p>$\displaystyle\lim_{x\to \infty}\frac{5x+1}{x^2-3}=0$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>Same degree comparison ($1<2$); the direction doesn't matter when the limit is already $0$.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{5x+1}{x^2-3}=0$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>Numerator degree $2$ is smaller than denominator degree $3$.</p><p>$\displaystyle\lim_{x\to \infty}\frac{3x^2-4}{x^3+2}=0$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>Numerator degree $1$ is smaller than denominator degree $4$ — the fraction still shrinks to $0$ regardless of direction.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{2x-7}{x^4+1}=0$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Limits at Infinity — Numerator Degree Greater</h3>
+  <div class="item-list">
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>Numerator degree $3$ beats denominator degree $2$. The leading term behaves like $\frac{2x^3}{x^2}=2x$, which grows without bound.</p><p>$\displaystyle\lim_{x\to \infty}\frac{2x^3-1}{x^2+3}=\infty$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>Same leading behavior $\frac{2x^3}{x^2}=2x$, but now $x\to-\infty$. The degree difference ($3-2=1$) is odd, so the sign flips from Problem 21's answer.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{2x^3-1}{x^2+3}=-\infty$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>Numerator degree $4$ beats denominator degree $2$. The leading term behaves like $\frac{-3x^4}{x^2}=-3x^2$, which is negative and grows without bound.</p><p>$\displaystyle\lim_{x\to \infty}\frac{-3x^4+2}{x^2+1}=-\infty$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>Same leading behavior $-3x^2$, but now $x\to-\infty$. The degree difference ($4-2=2$) is even, so the sign stays the same as Problem 23's answer — $x^2$ is positive either way.</p><p>$\displaystyle\lim_{x\to -\infty}\frac{-3x^4+2}{x^2+1}=-\infty$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

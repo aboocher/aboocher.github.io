@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard D6 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>D6: Product and Quotient Rules</h1>
+  </header>
+
+  <div class="intro">
+    <p>20 practice problems on the Product and Quotient Rules. Every function here is built from pieces you already know how to differentiate (power, trig, exponential, log, inverse trig) — you don't need to simplify the final answer.</p>
+    <ul>
+      <li><strong>Product Rule:</strong> for $y=u(x)\cdot v(x)$, $\;y'=u'v+uv'$ — derivative of the first times the second, plus the first times derivative of the second.</li>
+      <li><strong>Quotient Rule:</strong> for $y=\dfrac{u(x)}{v(x)}$, $\;y'=\dfrac{u'v-uv'}{v^2}$ — order matters here (unlike the product rule), and the denominator gets squared.</li>
+      <li>Identify $u$ and $v$ first, write down $u'$ and $v'$ separately, <em>then</em> assemble the formula — trying to do it all in one step is where sign errors creep in.</li>
+      <li>Quotient rule numerators often simplify a lot after expanding — don't panic if the answer collapses to something short like a constant over a square.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Product Rule</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$y=x^3\sin x$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$y=x^2e^x$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$y=\sqrt{x}\cos x$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$y=x^4\ln x$</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$y=e^x\tan x$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$y=\ln x\cdot\arctan x$</div><a class="jump" href="#s6">↓ solution</a></div>
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$y=x\sec x$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$y=3^x\cos x$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$y=x^5\arcsin x$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$y=\csc x\cdot e^x$</div><a class="jump" href="#s10">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Quotient Rule</h3>
+  <div class="item-list">
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$f(x)=\dfrac{2x+1}{x^2+3}$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$f(x)=\dfrac{\sin x}{x}$</div><a class="jump" href="#s12">↓ solution</a></div>
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$f(x)=\dfrac{x^2}{e^x}$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$f(x)=\dfrac{\ln x}{x^3}$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$f(x)=\dfrac{\cos x}{x+2}$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$f(x)=\dfrac{e^x}{x^2+1}$</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$f(x)=\dfrac{x^3}{\tan x}$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$f(x)=\dfrac{\arctan x}{x}$</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$f(x)=\dfrac{5x-2}{3x+4}$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$f(x)=\dfrac{\sec x}{x^2}$</div><a class="jump" href="#s20">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Product Rule</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>$u=x^3,\;v=\sin x \;\Rightarrow\; u'=3x^2,\;v'=\cos x$</p><p>$y'=3x^2\sin x+x^3\cos x$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>$u=x^2,\;v=e^x \;\Rightarrow\; u'=2x,\;v'=e^x$</p><p>$y'=2xe^x+x^2e^x$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$u=\sqrt{x}=x^{1/2},\;v=\cos x \;\Rightarrow\; u'=\dfrac{1}{2\sqrt{x}},\;v'=-\sin x$</p><p>$y'=\dfrac{\cos x}{2\sqrt{x}}-\sqrt{x}\sin x$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$u=x^4,\;v=\ln x \;\Rightarrow\; u'=4x^3,\;v'=\dfrac{1}{x}$</p><p>$y'=4x^3\ln x+x^4\cdot\dfrac{1}{x}=4x^3\ln x+x^3$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>$u=e^x,\;v=\tan x \;\Rightarrow\; u'=e^x,\;v'=\sec^2 x$</p><p>$y'=e^x\tan x+e^x\sec^2 x$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$u=\ln x,\;v=\arctan x \;\Rightarrow\; u'=\dfrac{1}{x},\;v'=\dfrac{1}{1+x^2}$</p><p>$y'=\dfrac{\arctan x}{x}+\dfrac{\ln x}{1+x^2}$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>$u=x,\;v=\sec x \;\Rightarrow\; u'=1,\;v'=\sec x\tan x$</p><p>$y'=\sec x+x\sec x\tan x$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>$u=3^x,\;v=\cos x \;\Rightarrow\; u'=3^x\ln 3,\;v'=-\sin x$</p><p>$y'=3^x\ln 3\cos x-3^x\sin x$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>$u=x^5,\;v=\arcsin x \;\Rightarrow\; u'=5x^4,\;v'=\dfrac{1}{\sqrt{1-x^2}}$</p><p>$y'=5x^4\arcsin x+\dfrac{x^5}{\sqrt{1-x^2}}$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$u=\csc x,\;v=e^x \;\Rightarrow\; u'=-\csc x\cot x,\;v'=e^x$</p><p>$y'=-\csc x\cot x\,e^x+\csc x\,e^x$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Quotient Rule</h3>
+  <div class="item-list">
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>$u=2x+1,\;v=x^2+3 \;\Rightarrow\; u'=2,\;v'=2x$</p><p>$f'(x)=\dfrac{2(x^2+3)-(2x+1)(2x)}{(x^2+3)^2}=\dfrac{2x^2+6-4x^2-2x}{(x^2+3)^2}=\dfrac{-2x^2-2x+6}{(x^2+3)^2}$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$u=\sin x,\;v=x \;\Rightarrow\; u'=\cos x,\;v'=1$</p><p>$f'(x)=\dfrac{x\cos x-\sin x}{x^2}$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>$u=x^2,\;v=e^x \;\Rightarrow\; u'=2x,\;v'=e^x$</p><p>$f'(x)=\dfrac{2xe^x-x^2e^x}{(e^x)^2}=\dfrac{e^x(2x-x^2)}{e^{2x}}=\dfrac{2x-x^2}{e^x}$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>$u=\ln x,\;v=x^3 \;\Rightarrow\; u'=\dfrac{1}{x},\;v'=3x^2$</p><p>$f'(x)=\dfrac{\frac{1}{x}x^3-\ln x\cdot 3x^2}{x^6}=\dfrac{x^2-3x^2\ln x}{x^6}=\dfrac{1-3\ln x}{x^4}$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>$u=\cos x,\;v=x+2 \;\Rightarrow\; u'=-\sin x,\;v'=1$</p><p>$f'(x)=\dfrac{-\sin x\,(x+2)-\cos x}{(x+2)^2}$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>$u=e^x,\;v=x^2+1 \;\Rightarrow\; u'=e^x,\;v'=2x$</p><p>$f'(x)=\dfrac{e^x(x^2+1)-e^x(2x)}{(x^2+1)^2}=\dfrac{e^x(x^2-2x+1)}{(x^2+1)^2}=\dfrac{e^x(x-1)^2}{(x^2+1)^2}$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>$u=x^3,\;v=\tan x \;\Rightarrow\; u'=3x^2,\;v'=\sec^2 x$</p><p>$f'(x)=\dfrac{3x^2\tan x-x^3\sec^2 x}{\tan^2 x}$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>$u=\arctan x,\;v=x \;\Rightarrow\; u'=\dfrac{1}{1+x^2},\;v'=1$</p><p>$f'(x)=\dfrac{\frac{x}{1+x^2}-\arctan x}{x^2}$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>$u=5x-2,\;v=3x+4 \;\Rightarrow\; u'=5,\;v'=3$</p><p>$f'(x)=\dfrac{5(3x+4)-(5x-2)(3)}{(3x+4)^2}=\dfrac{15x+20-15x+6}{(3x+4)^2}=\dfrac{26}{(3x+4)^2}$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>$u=\sec x,\;v=x^2 \;\Rightarrow\; u'=\sec x\tan x,\;v'=2x$</p><p>$f'(x)=\dfrac{x^2\sec x\tan x-2x\sec x}{x^4}=\dfrac{x\sec x\tan x-2\sec x}{x^3}$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard I7 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>I7: Integration by u-Substitution</h1>
+  </header>
+
+  <div class="intro">
+    <p>24 practice problems on u-substitution — recognizing an integrand as $f(g(x))\cdot g'(x)$, then integrating in terms of $u$.</p>
+    <ul>
+      <li><strong>The pattern:</strong> if you can spot an "inner function" $g(x)$ and its derivative $g'(x)$ sitting right next to it (up to a constant multiple), let $u=g(x)$, $du=g'(x)\,dx$, and rewrite the whole integral in terms of $u$.</li>
+      <li>After integrating in terms of $u$, always substitute back so the final answer is in terms of $x$ — except in the bounds trick below.</li>
+      <li><strong>Definite integrals:</strong> you can change the bounds to $u$-values right when you substitute (evaluate $g$ at the old limits), and then skip converting back to $x$ at the end.</li>
+      <li>If your candidate $du$ is off by a constant factor from what's in the integral, that's fine — solve for $dx$ in terms of $du$ and pull the constant out front.</li>
+      <li>Always check your work by differentiating your final antiderivative — the chain rule should hand you back the original integrand.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Polynomial Power u-Substitution</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$\displaystyle\int 4x^3(x^4+1)^5\,dx$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$\displaystyle\int 2x(x^2-3)^4\,dx$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$\displaystyle\int 6x^2(x^3+5)^3\,dx$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\displaystyle\int 5x^4(x^5-2)^2\,dx$</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\displaystyle\int (2x+3)(x^2+3x)^4\,dx$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\displaystyle\int 3x^2\sqrt{x^3+1}\,dx$</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Trigonometric u-Substitution</h3>
+  <div class="item-list">
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$\displaystyle\int \sin^2(x)\cos(x)\,dx$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$\displaystyle\int \cos^2(x)\sin(x)\,dx$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$\displaystyle\int \sec^2(x)\tan^3(x)\,dx$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$\displaystyle\int \sin(3x)\,dx$</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$\displaystyle\int x\sin(x^2)\,dx$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$\displaystyle\int \cos(4x)\,dx$</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Exponential and Logarithmic u-Substitution</h3>
+  <div class="item-list">
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$\displaystyle\int xe^{x^2}\,dx$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$\displaystyle\int e^{3x}\,dx$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$\displaystyle\int \frac{(\ln x)^2}{x}\,dx$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$\displaystyle\int \frac{1}{x\ln x}\,dx$</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$\displaystyle\int x^2e^{x^3}\,dx$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$\displaystyle\int \frac{e^x}{1+e^x}\,dx$</div><a class="jump" href="#s18">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Definite Integrals — Changing the Bounds</h3>
+  <p class="group-note">Substitute the old $x$-bounds into $u=g(x)$ to get new $u$-bounds, then evaluate directly in terms of $u$ — no need to substitute back.</p>
+  <div class="item-list">
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$\displaystyle\int_0^{\pi/2} \sin^2(x)\cos(x)\,dx$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$\displaystyle\int_0^1 x(x^2+1)^3\,dx$</div><a class="jump" href="#s20">↓ solution</a></div>
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">$\displaystyle\int_0^{\ln 2} \frac{e^x}{1+e^x}\,dx$</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">$\displaystyle\int_1^{e} \frac{\ln x}{x}\,dx$</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">$\displaystyle\int_0^{\pi/4} \sec^2(x)\tan(x)\,dx$</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">$\displaystyle\int_0^1 x^2(x^3+1)^2\,dx$</div><a class="jump" href="#s24">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Polynomial Power u-Substitution</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>Let $u=x^4+1$, so $du=4x^3\,dx$ — that's exactly what's left over.</p><p>$\displaystyle\int u^5\,du=\frac{u^6}{6}+C=\frac{(x^4+1)^6}{6}+C$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>Let $u=x^2-3$, so $du=2x\,dx$.</p><p>$\displaystyle\int u^4\,du=\frac{u^5}{5}+C=\frac{(x^2-3)^5}{5}+C$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>Let $u=x^3+5$, so $du=3x^2\,dx$, meaning $6x^2\,dx=2\,du$.</p><p>$\displaystyle\int 2u^3\,du=\frac{2u^4}{4}+C=\frac{(x^3+5)^4}{2}+C$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>Let $u=x^5-2$, so $du=5x^4\,dx$.</p><p>$\displaystyle\int u^2\,du=\frac{u^3}{3}+C=\frac{(x^5-2)^3}{3}+C$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>Let $u=x^2+3x$, so $du=(2x+3)\,dx$ — the whole first factor.</p><p>$\displaystyle\int u^4\,du=\frac{u^5}{5}+C=\frac{(x^2+3x)^5}{5}+C$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>Let $u=x^3+1$, so $du=3x^2\,dx$. Write $\sqrt{x^3+1}=u^{1/2}$.</p><p>$\displaystyle\int u^{1/2}\,du=\frac{2}{3}u^{3/2}+C=\frac{2}{3}(x^3+1)^{3/2}+C$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Trigonometric u-Substitution</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>Let $u=\sin x$, so $du=\cos x\,dx$.</p><p>$\displaystyle\int u^2\,du=\frac{u^3}{3}+C=\frac{\sin^3 x}{3}+C$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>Let $u=\cos x$, so $du=-\sin x\,dx$, meaning $\sin x\,dx=-du$.</p><p>$\displaystyle\int -u^2\,du=-\frac{u^3}{3}+C=-\frac{\cos^3 x}{3}+C$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>Let $u=\tan x$, so $du=\sec^2x\,dx$.</p><p>$\displaystyle\int u^3\,du=\frac{u^4}{4}+C=\frac{\tan^4 x}{4}+C$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>Let $u=3x$, so $du=3\,dx$, meaning $dx=\frac{1}{3}du$.</p><p>$\displaystyle\frac13\int \sin u\,du=-\frac13\cos u+C=-\frac13\cos(3x)+C$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>Let $u=x^2$, so $du=2x\,dx$, meaning $x\,dx=\frac12du$.</p><p>$\displaystyle\frac12\int \sin u\,du=-\frac12\cos u+C=-\frac12\cos(x^2)+C$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>Let $u=4x$, so $du=4\,dx$, meaning $dx=\frac14du$.</p><p>$\displaystyle\frac14\int \cos u\,du=\frac14\sin u+C=\frac14\sin(4x)+C$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Exponential and Logarithmic u-Substitution</h3>
+  <div class="item-list">
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>Let $u=x^2$, so $du=2x\,dx$, meaning $x\,dx=\frac12du$.</p><p>$\displaystyle\frac12\int e^u\,du=\frac12e^u+C=\frac12e^{x^2}+C$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Let $u=3x$, so $du=3\,dx$, meaning $dx=\frac13du$.</p><p>$\displaystyle\frac13\int e^u\,du=\frac13e^u+C=\frac13e^{3x}+C$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>Let $u=\ln x$, so $du=\frac1x\,dx$ — exactly the rest of the integrand.</p><p>$\displaystyle\int u^2\,du=\frac{u^3}{3}+C=\frac{(\ln x)^3}{3}+C$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>Let $u=\ln x$, so $du=\frac1x\,dx$.</p><p>$\displaystyle\int \frac{1}{u}\,du=\ln|u|+C=\ln|\ln x|+C$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>Let $u=x^3$, so $du=3x^2\,dx$, meaning $x^2\,dx=\frac13du$.</p><p>$\displaystyle\frac13\int e^u\,du=\frac13e^u+C=\frac13e^{x^3}+C$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>Let $u=1+e^x$, so $du=e^x\,dx$ — exactly the numerator.</p><p>$\displaystyle\int \frac{1}{u}\,du=\ln|u|+C=\ln(1+e^x)+C$</p><p>(No absolute value needed — $1+e^x$ is always positive.)</p></div><a class="jump" href="#p18">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Definite Integrals — Changing the Bounds</h3>
+  <div class="item-list">
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>Let $u=\sin x$, so $du=\cos x\,dx$. When $x=0$, $u=0$; when $x=\pi/2$, $u=1$.</p><p>$\displaystyle\int_0^1 u^2\,du=\left[\frac{u^3}{3}\right]_0^1=\frac13-0=\frac13$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>Let $u=x^2+1$, so $du=2x\,dx$, meaning $x\,dx=\frac12du$. When $x=0$, $u=1$; when $x=1$, $u=2$.</p><p>$\displaystyle\frac12\int_1^2 u^3\,du=\frac12\left[\frac{u^4}{4}\right]_1^2=\frac12\left(4-\frac14\right)=\frac12\cdot\frac{15}{4}=\frac{15}{8}$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>Let $u=1+e^x$, so $du=e^x\,dx$. When $x=0$, $u=2$; when $x=\ln 2$, $u=3$.</p><p>$\displaystyle\int_2^3 \frac{1}{u}\,du=\left[\ln u\right]_2^3=\ln 3-\ln 2=\ln\frac32$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>Let $u=\ln x$, so $du=\frac1x\,dx$. When $x=1$, $u=0$; when $x=e$, $u=1$.</p><p>$\displaystyle\int_0^1 u\,du=\left[\frac{u^2}{2}\right]_0^1=\frac12-0=\frac12$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>Let $u=\tan x$, so $du=\sec^2x\,dx$. When $x=0$, $u=0$; when $x=\pi/4$, $u=1$.</p><p>$\displaystyle\int_0^1 u\,du=\left[\frac{u^2}{2}\right]_0^1=\frac12-0=\frac12$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>Let $u=x^3+1$, so $du=3x^2\,dx$, meaning $x^2\,dx=\frac13du$. When $x=0$, $u=1$; when $x=1$, $u=2$.</p><p>$\displaystyle\frac13\int_1^2 u^2\,du=\frac13\left[\frac{u^3}{3}\right]_1^2=\frac13\left(\frac83-\frac13\right)=\frac13\cdot\frac73=\frac{7}{9}$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

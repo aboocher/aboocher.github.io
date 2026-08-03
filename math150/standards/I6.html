@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard I6 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>I6: The Fundamental Theorem of Calculus</h1>
+  </header>
+
+  <div class="intro">
+    <p>18 practice problems evaluating definite integrals with the Fundamental Theorem of Calculus.</p>
+    <ul>
+      <li><strong>FTC:</strong> $\displaystyle\int_a^b f(x)\,dx=F(b)-F(a)$, where $F$ is any antiderivative of $f$. Find the antiderivative first (no $+C$ needed for a definite integral — it cancels), then evaluate at the top bound minus the bottom bound.</li>
+      <li>Notation: $\big[F(x)\big]_a^b$ means $F(b)-F(a)$ — write out both evaluations before subtracting so a sign error doesn't creep in.</li>
+      <li>If the integrand isn't already a sum of clean power/trig/exponential terms, simplify first — split a fraction into pieces, expand a product, or rewrite a root as a fractional exponent — exactly like in I2, just now with bounds attached.</li>
+      <li>A definite integral is a <em>number</em>, not a function — the final answer should have no $x$ left in it.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Power Rule Definite Integrals</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$\displaystyle\int_1^3 x^2\,dx$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$\displaystyle\int_0^2 (3x^2-2x)\,dx$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$\displaystyle\int_{-1}^2 (x^2+1)\,dx$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\displaystyle\int_1^4 \sqrt{x}\,dx$</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\displaystyle\int_0^3 (x-2)^2\,dx$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\displaystyle\int_{-2}^1 (4-x^2)\,dx$</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Trig and Exponential Definite Integrals</h3>
+  <div class="item-list">
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$\displaystyle\int_0^{\pi/4} \sec^2 x\,dx$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$\displaystyle\int_0^{\pi/2} \cos x\,dx$</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$\displaystyle\int_0^{\pi} \sin x\,dx$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$\displaystyle\int_0^1 e^x\,dx$</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$\displaystyle\int_{\pi/6}^{\pi/3} 2\cos x\,dx$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$\displaystyle\int_0^{\ln 2} e^x\,dx$</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Needing Algebraic Simplification First</h3>
+  <div class="item-list">
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$\displaystyle\int_1^4 \frac{x-1}{\sqrt{x}}\,dx$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$\displaystyle\int_1^2 \frac{3x^2+2}{x}\,dx$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$\displaystyle\int_1^4 \frac{x^2-1}{\sqrt{x}}\,dx$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$\displaystyle\int_1^2 \frac{x^3-1}{x}\,dx$</div><a class="jump" href="#s16">↓ solution</a></div>
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$\displaystyle\int_4^9 \frac{\sqrt{x}+1}{\sqrt{x}}\,dx$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$\displaystyle\int_1^3 \frac{x^2+2x}{x}\,dx$</div><a class="jump" href="#s18">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Power Rule Definite Integrals</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>$\displaystyle\int_1^3 x^2\,dx=\left[\frac{x^3}{3}\right]_1^3=\frac{27}{3}-\frac13=9-\frac13=\frac{26}{3}$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>$\displaystyle\int_0^2 (3x^2-2x)\,dx=\left[x^3-x^2\right]_0^2=(8-4)-(0-0)=4$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$\displaystyle\int_{-1}^2 (x^2+1)\,dx=\left[\frac{x^3}{3}+x\right]_{-1}^2=\left(\frac83+2\right)-\left(-\frac13-1\right)=\frac{14}{3}-\left(-\frac43\right)=\frac{18}{3}=6$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$\displaystyle\int_1^4 \sqrt{x}\,dx=\left[\frac23x^{3/2}\right]_1^4=\frac23(8)-\frac23(1)=\frac{16}{3}-\frac23=\frac{14}{3}$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>Expand first: $(x-2)^2=x^2-4x+4$.</p><p>$\displaystyle\int_0^3 (x^2-4x+4)\,dx=\left[\frac{x^3}{3}-2x^2+4x\right]_0^3=(9-18+12)-0=3$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$\displaystyle\int_{-2}^1 (4-x^2)\,dx=\left[4x-\frac{x^3}{3}\right]_{-2}^1=\left(4-\frac13\right)-\left(-8+\frac83\right)=\frac{11}{3}-\left(-\frac{16}{3}\right)=\frac{27}{3}=9$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Trig and Exponential Definite Integrals</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>$\displaystyle\int_0^{\pi/4} \sec^2 x\,dx=\big[\tan x\big]_0^{\pi/4}=\tan\frac{\pi}{4}-\tan 0=1-0=1$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>$\displaystyle\int_0^{\pi/2} \cos x\,dx=\big[\sin x\big]_0^{\pi/2}=1-0=1$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>$\displaystyle\int_0^{\pi} \sin x\,dx=\big[-\cos x\big]_0^{\pi}=(-\cos\pi)-(-\cos 0)=1-(-1)=2$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$\displaystyle\int_0^1 e^x\,dx=\big[e^x\big]_0^1=e^1-e^0=e-1$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>$\displaystyle\int_{\pi/6}^{\pi/3} 2\cos x\,dx=\big[2\sin x\big]_{\pi/6}^{\pi/3}=2\sin\frac{\pi}{3}-2\sin\frac{\pi}{6}=2\cdot\frac{\sqrt3}{2}-2\cdot\frac12=\sqrt3-1$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$\displaystyle\int_0^{\ln 2} e^x\,dx=\big[e^x\big]_0^{\ln 2}=e^{\ln 2}-e^0=2-1=1$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Needing Algebraic Simplification First</h3>
+  <div class="item-list">
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>$\displaystyle\frac{x-1}{\sqrt x}=x^{1/2}-x^{-1/2}$</p><p>$\displaystyle\int_1^4\left(x^{1/2}-x^{-1/2}\right)dx=\left[\frac23x^{3/2}-2x^{1/2}\right]_1^4=\left(\frac{16}{3}-4\right)-\left(\frac23-2\right)=\frac43-\left(-\frac43\right)=\frac83$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>$\displaystyle\frac{3x^2+2}{x}=3x+\frac2x$</p><p>$\displaystyle\int_1^2\left(3x+\frac2x\right)dx=\left[\frac32x^2+2\ln|x|\right]_1^2=(6+2\ln 2)-\left(\frac32+0\right)=\frac92+2\ln 2$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>$\displaystyle\frac{x^2-1}{\sqrt x}=x^{3/2}-x^{-1/2}$</p><p>$\displaystyle\int_1^4\left(x^{3/2}-x^{-1/2}\right)dx=\left[\frac25x^{5/2}-2x^{1/2}\right]_1^4=\left(\frac{64}{5}-4\right)-\left(\frac25-2\right)=\frac{44}{5}-\left(-\frac85\right)=\frac{52}{5}$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>$\displaystyle\frac{x^3-1}{x}=x^2-\frac1x$</p><p>$\displaystyle\int_1^2\left(x^2-\frac1x\right)dx=\left[\frac{x^3}{3}-\ln|x|\right]_1^2=\left(\frac83-\ln 2\right)-\left(\frac13-0\right)=\frac73-\ln 2$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>$\displaystyle\frac{\sqrt x+1}{\sqrt x}=1+x^{-1/2}$</p><p>$\displaystyle\int_4^9\left(1+x^{-1/2}\right)dx=\left[x+2x^{1/2}\right]_4^9=(9+6)-(4+4)=15-8=7$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>$\displaystyle\frac{x^2+2x}{x}=x+2$</p><p>$\displaystyle\int_1^3 (x+2)\,dx=\left[\frac{x^2}{2}+2x\right]_1^3=(4.5+6)-(0.5+2)=10.5-2.5=8$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

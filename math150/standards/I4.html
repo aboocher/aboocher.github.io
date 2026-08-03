@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard I4 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>I4: Projectile Motion, Displacement &amp; Total Distance</h1>
+  </header>
+
+  <div class="intro">
+    <p>9 word problems on projectile motion, built by integrating acceleration up to velocity and position. Unless stated otherwise, use $a(t)=-32\text{ ft/s}^2$ for gravity.</p>
+    <ul>
+      <li>Start from $a(t)=-32$ (constant). Integrate once: $v(t)=-32t+v_0$, where $v_0=v(0)$ is the initial velocity (positive means launched upward, negative means thrown downward, zero means dropped).</li>
+      <li>Integrate again: $s(t)=-16t^2+v_0t+s_0$, where $s_0=s(0)$ is the initial height.</li>
+      <li>The object hits the ground (or water) when $s(t)=0$ — solve that equation for $t$, then plug into $v(t)$ if you need the impact velocity.</li>
+      <li><strong>Maximum height</strong> happens when $v(t)=0$ (the instant the object stops rising and starts falling) — solve for that $t$, then plug into $s(t)$.</li>
+      <li><strong>Total distance</strong> traveled is not the same as displacement. If the object goes up before coming down, add the upward distance and the downward distance separately: $(\,\text{max height}-s_0\,)+(\,\text{max height}-0\,)$ — don't just compute $s(\text{end})-s(0)$.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Dropped Objects</h3>
+  <p class="group-note">Dropped means $v_0=0$ — no initial push in either direction.</p>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">A stone is dropped from a cliff $256$ feet above the water. Find $v(t)$ and $s(t)$, then find its velocity at the moment it hits the water.</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">A tool is dropped from a tower $400$ feet tall. Find $v(t)$ and $s(t)$, then find how long it takes to hit the ground and its impact velocity.</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">A rock is dropped down a well and is heard hitting the bottom with an impact velocity of $-192$ ft/s. Find $v(t)$ and $s(t)$, then find the depth of the well.</div><a class="jump" href="#s3">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Thrown Upward</h3>
+  <p class="group-note">A positive $v_0$ means the object is launched upward before gravity takes over.</p>
+  <div class="item-list">
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">A model rocket is launched from ground level ($s_0=0$) with initial velocity $128$ ft/s. Find the maximum height, then the total distance traveled until it crashes back to the ground.</div><a class="jump" href="#s4">↓ solution</a></div>
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">A ball is thrown upward from a $48$-foot platform with initial velocity $32$ ft/s. Find the maximum height, the time it lands on the ground below, and the total distance traveled.</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">A ball is thrown straight up from ground level with initial velocity $64$ ft/s. Find how long until it returns to the ground, and its velocity at that instant.</div><a class="jump" href="#s6">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Working Backward From Given Data</h3>
+  <p class="group-note">Same functions, but here you're given the ending condition (impact time or velocity) and need to solve for the starting height.</p>
+  <div class="item-list">
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">A stone is thrown straight down from a bridge with initial velocity $-24$ ft/s and hits the river below $2.5$ seconds later. Find $v(t)$ and $s(t)$, then find the height of the bridge.</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">(Metric: use $a(t)=-9.8\text{ m/s}^2$.) A wrench is dropped from a building and strikes the ground with velocity $-58.8$ m/s. Find $v(t)$ and $s(t)$, then find the height of the building in meters.</div><a class="jump" href="#s8">↓ solution</a></div>
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">A rocket is launched from ground level with initial velocity $160$ ft/s. Find the maximum height, the total flight time until it returns to the ground, and the total distance traveled.</div><a class="jump" href="#s9">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Dropped Objects</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>$v_0=0$, $s_0=256$. Integrating $a(t)=-32$: $v(t)=-32t$. Integrating again: $s(t)=256-16t^2$.</p><p>Hits the water when $s(t)=0$: $256-16t^2=0\Rightarrow t^2=16\Rightarrow t=4$ (taking the positive root).</p><p>Impact velocity: $v(4)=-32(4)=-128$ ft/s</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>$v_0=0$, $s_0=400$. $v(t)=-32t$, $s(t)=400-16t^2$.</p><p>$400-16t^2=0\Rightarrow t^2=25\Rightarrow t=5$ seconds.</p><p>Impact velocity: $v(5)=-32(5)=-160$ ft/s</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$v_0=0$, so $v(t)=-32t$ and $s(t)=s_0-16t^2$.</p><p>Find the time of impact from the given velocity: $-192=-32t\Rightarrow t=6$ seconds.</p><p>At impact, $s(6)=0$: $s_0-16(6)^2=0\Rightarrow s_0=16(36)=576$ feet</p></div><a class="jump" href="#p3">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Thrown Upward</h3>
+  <div class="item-list">
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$v_0=128$, $s_0=0$. $v(t)=128-32t$, $s(t)=128t-16t^2$.</p><p>Maximum height when $v(t)=0$: $128-32t=0\Rightarrow t=4$.</p><p>$s(4)=128(4)-16(16)=512-256=256$ feet — the maximum height.</p><p>Since it launches and lands at the same level ($s_0=0$), total distance is twice the max height: $2(256)=512$ feet</p></div><a class="jump" href="#p4">↑ problem</a></div>
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>$v_0=32$, $s_0=48$. $v(t)=32-32t$, $s(t)=48+32t-16t^2$.</p><p>Maximum height when $v(t)=0$: $32-32t=0\Rightarrow t=1$. $s(1)=48+32-16=64$ feet.</p><p>Lands when $s(t)=0$: $48+32t-16t^2=0$. Divide by $-16$: $t^2-2t-3=0\Rightarrow(t-3)(t+1)=0\Rightarrow t=3$ (taking the positive root).</p><p>Total distance: up from $48$ to $64$ is $16$ ft, then down from $64$ to $0$ is $64$ ft.</p><p>$16+64=80$ feet</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$v_0=64$, $s_0=0$. $v(t)=64-32t$, $s(t)=64t-16t^2$.</p><p>Returns to the ground when $s(t)=0$: $64t-16t^2=0\Rightarrow 16t(4-t)=0\Rightarrow t=4$ (taking the nonzero root).</p><p>$v(4)=64-32(4)=64-128=-64$ ft/s</p></div><a class="jump" href="#p6">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Working Backward From Given Data</h3>
+  <div class="item-list">
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>$v_0=-24$. $v(t)=-24-32t$, $s(t)=s_0-24t-16t^2$.</p><p>At $t=2.5$, $s(2.5)=0$: $s_0-24(2.5)-16(2.5)^2=0\Rightarrow s_0-60-100=0\Rightarrow s_0=160$ feet</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>Here $a(t)=-9.8$, so integrating: $v(t)=-9.8t$ (since $v_0=0$), and $s(t)=s_0-4.9t^2$.</p><p>Find the time of impact from the given velocity: $-58.8=-9.8t\Rightarrow t=6$ seconds.</p><p>At impact, $s(6)=0$: $s_0-4.9(6)^2=0\Rightarrow s_0=4.9(36)=176.4$ meters</p></div><a class="jump" href="#p8">↑ problem</a></div>
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>$v_0=160$, $s_0=0$. $v(t)=160-32t$, $s(t)=160t-16t^2$.</p><p>Maximum height when $v(t)=0$: $160-32t=0\Rightarrow t=5$. $s(5)=160(5)-16(25)=800-400=400$ feet.</p><p>Returns to the ground when $s(t)=0$: $160t-16t^2=0\Rightarrow 16t(10-t)=0\Rightarrow t=10$ seconds total flight time.</p><p>Total distance (launched and landed at the same level): $2(400)=800$ feet</p></div><a class="jump" href="#p9">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

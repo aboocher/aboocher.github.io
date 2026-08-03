@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard A1 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>A1: L'Hôpital's Rule with Justification</h1>
+  </header>
+
+  <div class="intro">
+    <p>24 practice problems evaluating limits with L'Hôpital's Rule, covering every indeterminate form the rule applies to. For each one, <strong>justify</strong> the indeterminate form before differentiating — that check is part of the answer, not just the work.</p>
+    <ul>
+      <li><strong>L'Hôpital's Rule:</strong> if $\displaystyle\lim_{x\to a}\frac{f(x)}{g(x)}$ is $\frac{0}{0}$ or $\frac{\pm\infty}{\pm\infty}$, then $\displaystyle\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$ — differentiate top and bottom <em>separately</em> (this is not the quotient rule).</li>
+      <li>Always state the indeterminate form first. If it isn't $\frac00$ or $\frac{\pm\infty}{\pm\infty}$, L'Hôpital doesn't apply and you need another method (or you're already done).</li>
+      <li>Sometimes one application isn't enough — if the new fraction is <em>still</em> indeterminate, check the form again and apply the rule again.</li>
+      <li><strong>$0\cdot\infty$ forms:</strong> rewrite the product as a fraction — send one factor to the denominator as a reciprocal — to get $\frac00$ or $\frac{\infty}{\infty}$.</li>
+      <li><strong>$\infty-\infty$ forms:</strong> combine the two pieces into a single fraction (common denominator) first — that turns it into $\frac00$.</li>
+      <li><strong>Indeterminate powers ($1^\infty$, $0^0$, $\infty^0$):</strong> let $y$ equal the expression, take $\ln$ of both sides to bring the exponent down as a product, evaluate that $0\cdot\infty$ limit with L'Hôpital, then exponentiate ($e^{}$) to undo the log at the end.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">0/0 — Direct Application</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$\displaystyle\lim_{x\to 3}\frac{x^2-9}{x^2-3x}$</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$\displaystyle\lim_{x\to 2}\frac{x^3-8}{x^2-4}$</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{e^{2x}-1}{x}$</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$\displaystyle\lim_{x\to 1}\frac{\ln x}{x-1}$</div><a class="jump" href="#s4">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">0/0 — Trig Limits (Sometimes More Than One Application)</h3>
+  <div class="item-list">
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{\sin(5x)}{3x}$</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{1-\cos x}{x^2}$</div><a class="jump" href="#s6">↓ solution</a></div>
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{\tan x-x}{x^3}$</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\frac{x-\sin x}{x^3}$</div><a class="jump" href="#s8">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">∞/∞ Forms</h3>
+  <div class="item-list">
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{\ln x}{x^2}$</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{\ln x}{\sqrt{x}}$</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{x^2}{e^x}$</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\frac{3x^2+5}{2x^2-1}$</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">0·∞ Forms</h3>
+  <p class="group-note">Rewrite as a fraction before differentiating — send one factor to the denominator as its reciprocal.</p>
+  <div class="item-list">
+    <div class="item" id="p13"><span class="num">13.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+} x\ln x$</div><a class="jump" href="#s13">↓ solution</a></div>
+    <div class="item" id="p14"><span class="num">14.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+} x^2\ln x$</div><a class="jump" href="#s14">↓ solution</a></div>
+    <div class="item" id="p15"><span class="num">15.</span><div class="body-text">$\displaystyle\lim_{x\to \infty} x\sin\!\left(\frac1x\right)$</div><a class="jump" href="#s15">↓ solution</a></div>
+    <div class="item" id="p16"><span class="num">16.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+} \sqrt{x}\,\ln x$</div><a class="jump" href="#s16">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">∞−∞ Forms</h3>
+  <p class="group-note">Combine into a single fraction with a common denominator first — that's what produces the $\frac00$.</p>
+  <div class="item-list">
+    <div class="item" id="p17"><span class="num">17.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+}\left(\frac1x-\frac{1}{\sin x}\right)$</div><a class="jump" href="#s17">↓ solution</a></div>
+    <div class="item" id="p18"><span class="num">18.</span><div class="body-text">$\displaystyle\lim_{x\to \frac{\pi}{2}^-}\left(\sec x-\tan x\right)$</div><a class="jump" href="#s18">↓ solution</a></div>
+    <div class="item" id="p19"><span class="num">19.</span><div class="body-text">$\displaystyle\lim_{x\to 0}\left(\csc x-\cot x\right)$</div><a class="jump" href="#s19">↓ solution</a></div>
+    <div class="item" id="p20"><span class="num">20.</span><div class="body-text">$\displaystyle\lim_{x\to 1}\left(\frac{1}{x-1}-\frac{1}{\ln x}\right)$</div><a class="jump" href="#s20">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Indeterminate Powers</h3>
+  <p class="group-note">Take $\ln$ of the expression to bring the exponent down, apply L'Hôpital to that limit, then exponentiate to finish.</p>
+  <div class="item-list">
+    <div class="item" id="p21"><span class="num">21.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\left(1+\frac3x\right)^x$</div><a class="jump" href="#s21">↓ solution</a></div>
+    <div class="item" id="p22"><span class="num">22.</span><div class="body-text">$\displaystyle\lim_{x\to 0^+} x^x$</div><a class="jump" href="#s22">↓ solution</a></div>
+    <div class="item" id="p23"><span class="num">23.</span><div class="body-text">$\displaystyle\lim_{x\to \infty} x^{1/x}$</div><a class="jump" href="#s23">↓ solution</a></div>
+    <div class="item" id="p24"><span class="num">24.</span><div class="body-text">$\displaystyle\lim_{x\to \infty}\left(1+\frac2x\right)^{3x}$</div><a class="jump" href="#s24">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">0/0 — Direct Application</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>At $x=3$: $\frac{9-9}{9-9}=\frac00$. L'Hôpital applies.</p><p>$\displaystyle\lim_{x\to 3}\frac{x^2-9}{x^2-3x}=\lim_{x\to 3}\frac{2x}{2x-3}=\frac{6}{3}=2$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>At $x=2$: $\frac{0}{0}$. L'Hôpital applies.</p><p>$\displaystyle\lim_{x\to 2}\frac{x^3-8}{x^2-4}=\lim_{x\to 2}\frac{3x^2}{2x}=\frac{12}{4}=3$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>At $x=0$: $\frac{1-1}{0}=\frac00$. L'Hôpital applies.</p><p>$\displaystyle\lim_{x\to 0}\frac{e^{2x}-1}{x}=\lim_{x\to 0}\frac{2e^{2x}}{1}=2e^0=2$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>At $x=1$: $\frac{\ln 1}{0}=\frac00$. L'Hôpital applies.</p><p>$\displaystyle\lim_{x\to 1}\frac{\ln x}{x-1}=\lim_{x\to 1}\frac{1/x}{1}=\frac{1}{1}=1$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">0/0 — Trig Limits (Sometimes More Than One Application)</h3>
+  <div class="item-list">
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>At $x=0$: $\frac{\sin 0}{0}=\frac00$. L'Hôpital applies.</p><p>$\displaystyle\lim_{x\to 0}\frac{\sin(5x)}{3x}=\lim_{x\to 0}\frac{5\cos(5x)}{3}=\frac{5}{3}$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>At $x=0$: $\frac{1-1}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 0}\frac{1-\cos x}{x^2}=\lim_{x\to 0}\frac{\sin x}{2x}$</p><p>Still $\frac00$ at $x=0$ — apply L'Hôpital again:</p><p>$\displaystyle=\lim_{x\to 0}\frac{\cos x}{2}=\frac{1}{2}$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>At $x=0$: $\frac{0-0}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 0}\frac{\tan x-x}{x^3}=\lim_{x\to 0}\frac{\sec^2 x-1}{3x^2}$</p><p>Still $\frac00$ — apply again:</p><p>$\displaystyle=\lim_{x\to 0}\frac{2\sec^2 x\tan x}{6x}$</p><p>Still $\frac00$ — apply a third time:</p><p>$\displaystyle=\lim_{x\to 0}\frac{2\left(2\sec^2x\tan^2x+\sec^4x\right)}{6}=\frac{2(0+1)}{6}=\frac{1}{3}$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>At $x=0$: $\frac{0-0}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 0}\frac{x-\sin x}{x^3}=\lim_{x\to 0}\frac{1-\cos x}{3x^2}$</p><p>Still $\frac00$ — apply again:</p><p>$\displaystyle=\lim_{x\to 0}\frac{\sin x}{6x}$</p><p>Still $\frac00$ — apply a third time:</p><p>$\displaystyle=\lim_{x\to 0}\frac{\cos x}{6}=\frac{1}{6}$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">∞/∞ Forms</h3>
+  <div class="item-list">
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>As $x\to\infty$, both $\ln x\to\infty$ and $x^2\to\infty$: $\frac{\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to \infty}\frac{\ln x}{x^2}=\lim_{x\to \infty}\frac{1/x}{2x}=\lim_{x\to \infty}\frac{1}{2x^2}=0$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$\frac{\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to \infty}\frac{\ln x}{\sqrt{x}}=\lim_{x\to \infty}\frac{1/x}{1/(2\sqrt{x})}=\lim_{x\to \infty}\frac{2\sqrt{x}}{x}=\lim_{x\to \infty}\frac{2}{\sqrt{x}}=0$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>$\frac{\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to \infty}\frac{x^2}{e^x}=\lim_{x\to \infty}\frac{2x}{e^x}$</p><p>Still $\frac{\infty}{\infty}$ — apply again:</p><p>$\displaystyle=\lim_{x\to \infty}\frac{2}{e^x}=0$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$\frac{\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to \infty}\frac{3x^2+5}{2x^2-1}=\lim_{x\to \infty}\frac{6x}{4x}=\frac{6}{4}=\frac{3}{2}$</p><p>(This matches the same-degree shortcut from L5 — the ratio of leading coefficients.)</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">0·∞ Forms</h3>
+  <div class="item-list">
+    <div class="item sol" id="s13"><span class="num">13.</span><div class="body-text"><p>As $x\to 0^+$: $x\to 0$ and $\ln x\to -\infty$, a $0\cdot(-\infty)$ form. Rewrite $x$ as $\dfrac{1}{1/x}$:</p><p>$\displaystyle\lim_{x\to 0^+} x\ln x=\lim_{x\to 0^+}\frac{\ln x}{1/x}$</p><p>Now it's $\frac{-\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle=\lim_{x\to 0^+}\frac{1/x}{-1/x^2}=\lim_{x\to 0^+}(-x)=0$</p></div><a class="jump" href="#p13">↑ problem</a></div>
+    <div class="item sol" id="s14"><span class="num">14.</span><div class="body-text"><p>Rewrite $x^2$ as $\dfrac{1}{1/x^2}$:</p><p>$\displaystyle\lim_{x\to 0^+} x^2\ln x=\lim_{x\to 0^+}\frac{\ln x}{1/x^2}$</p><p>$\frac{-\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle=\lim_{x\to 0^+}\frac{1/x}{-2/x^3}=\lim_{x\to 0^+}\left(-\frac{x^2}{2}\right)=0$</p></div><a class="jump" href="#p14">↑ problem</a></div>
+    <div class="item sol" id="s15"><span class="num">15.</span><div class="body-text"><p>As $x\to\infty$: $x\to\infty$ and $\sin(1/x)\to 0$, an $\infty\cdot 0$ form. Rewrite $x$ as $\dfrac{1}{1/x}$:</p><p>$\displaystyle\lim_{x\to \infty} x\sin\!\left(\frac1x\right)=\lim_{x\to \infty}\frac{\sin(1/x)}{1/x}$</p><p>$\frac00$. Apply L'Hôpital (differentiating with respect to $x$, using the chain rule on $\sin(1/x)$):</p><p>$\displaystyle=\lim_{x\to \infty}\frac{\cos(1/x)\cdot(-1/x^2)}{-1/x^2}=\lim_{x\to \infty}\cos\!\left(\frac1x\right)=\cos(0)=1$</p></div><a class="jump" href="#p15">↑ problem</a></div>
+    <div class="item sol" id="s16"><span class="num">16.</span><div class="body-text"><p>Rewrite $\sqrt{x}$ as $\dfrac{1}{x^{-1/2}}$:</p><p>$\displaystyle\lim_{x\to 0^+} \sqrt{x}\,\ln x=\lim_{x\to 0^+}\frac{\ln x}{x^{-1/2}}$</p><p>$\frac{-\infty}{\infty}$. Apply L'Hôpital:</p><p>$\displaystyle=\lim_{x\to 0^+}\frac{1/x}{-\frac12x^{-3/2}}=\lim_{x\to 0^+}\left(-2x^{1/2}\right)=0$</p></div><a class="jump" href="#p16">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">∞−∞ Forms</h3>
+  <div class="item-list">
+    <div class="item sol" id="s17"><span class="num">17.</span><div class="body-text"><p>Combine over a common denominator:</p><p>$\displaystyle\frac1x-\frac{1}{\sin x}=\frac{\sin x-x}{x\sin x}$</p><p>At $x=0$: $\frac{0-0}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 0^+}\frac{\sin x-x}{x\sin x}=\lim_{x\to 0^+}\frac{\cos x-1}{\sin x+x\cos x}$</p><p>Still $\frac00$ — apply again:</p><p>$\displaystyle=\lim_{x\to 0^+}\frac{-\sin x}{2\cos x-x\sin x}=\frac{0}{2}=0$</p></div><a class="jump" href="#p17">↑ problem</a></div>
+    <div class="item sol" id="s18"><span class="num">18.</span><div class="body-text"><p>Rewrite in terms of sine and cosine:</p><p>$\displaystyle\sec x-\tan x=\frac{1}{\cos x}-\frac{\sin x}{\cos x}=\frac{1-\sin x}{\cos x}$</p><p>As $x\to\frac{\pi}{2}^-$: $\frac{1-1}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to \frac{\pi}{2}^-}\frac{1-\sin x}{\cos x}=\lim_{x\to \frac{\pi}{2}^-}\frac{-\cos x}{-\sin x}=\frac{0}{1}=0$</p></div><a class="jump" href="#p18">↑ problem</a></div>
+    <div class="item sol" id="s19"><span class="num">19.</span><div class="body-text"><p>Rewrite in terms of sine and cosine:</p><p>$\displaystyle\csc x-\cot x=\frac{1}{\sin x}-\frac{\cos x}{\sin x}=\frac{1-\cos x}{\sin x}$</p><p>At $x=0$: $\frac{0}{0}$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 0}\frac{1-\cos x}{\sin x}=\lim_{x\to 0}\frac{\sin x}{\cos x}=\frac{0}{1}=0$</p></div><a class="jump" href="#p19">↑ problem</a></div>
+    <div class="item sol" id="s20"><span class="num">20.</span><div class="body-text"><p>Combine over a common denominator:</p><p>$\displaystyle\frac{1}{x-1}-\frac{1}{\ln x}=\frac{\ln x-(x-1)}{(x-1)\ln x}$</p><p>At $x=1$: $\frac{0-0}{0}=\frac00$. Apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to 1}\frac{\ln x-x+1}{(x-1)\ln x}=\lim_{x\to 1}\frac{1/x-1}{\ln x+\frac{x-1}{x}}$</p><p>Still $\frac00$ at $x=1$ — apply again:</p><p>$\displaystyle=\lim_{x\to 1}\frac{-1/x^2}{1/x+1/x^2}=\frac{-1}{1+1}=-\frac{1}{2}$</p></div><a class="jump" href="#p20">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Indeterminate Powers</h3>
+  <div class="item-list">
+    <div class="item sol" id="s21"><span class="num">21.</span><div class="body-text"><p>This is $1^\infty$. Let $y=\left(1+\frac3x\right)^x$, so $\ln y=x\ln\left(1+\frac3x\right)$, a $\infty\cdot 0$ form. Rewrite and apply L'Hôpital:</p><p>$\displaystyle\lim_{x\to\infty}\ln y=\lim_{x\to\infty}\frac{\ln(1+3/x)}{1/x}=\lim_{x\to\infty}\frac{\frac{1}{1+3/x}\cdot(-3/x^2)}{-1/x^2}=\lim_{x\to\infty}\frac{3}{1+3/x}=3$</p><p>Since $\ln y\to 3$, exponentiate: $y\to e^3$.</p><p>$\displaystyle\lim_{x\to \infty}\left(1+\frac3x\right)^x=e^3$</p></div><a class="jump" href="#p21">↑ problem</a></div>
+    <div class="item sol" id="s22"><span class="num">22.</span><div class="body-text"><p>This is $0^0$. Let $y=x^x$, so $\ln y=x\ln x$, a $0\cdot(-\infty)$ form (this is exactly Problem 13).</p><p>$\displaystyle\lim_{x\to 0^+}\ln y=\lim_{x\to 0^+}x\ln x=0$</p><p>Since $\ln y\to 0$, exponentiate: $y\to e^0=1$.</p><p>$\displaystyle\lim_{x\to 0^+} x^x=1$</p></div><a class="jump" href="#p22">↑ problem</a></div>
+    <div class="item sol" id="s23"><span class="num">23.</span><div class="body-text"><p>This is $\infty^0$. Let $y=x^{1/x}$, so $\ln y=\dfrac{\ln x}{x}$, an $\frac{\infty}{\infty}$ form.</p><p>$\displaystyle\lim_{x\to\infty}\ln y=\lim_{x\to\infty}\frac{\ln x}{x}=\lim_{x\to\infty}\frac{1/x}{1}=0$</p><p>Since $\ln y\to 0$, exponentiate: $y\to e^0=1$.</p><p>$\displaystyle\lim_{x\to \infty} x^{1/x}=1$</p></div><a class="jump" href="#p23">↑ problem</a></div>
+    <div class="item sol" id="s24"><span class="num">24.</span><div class="body-text"><p>This is $1^\infty$. Let $y=\left(1+\frac2x\right)^{3x}$, so $\ln y=3x\ln\left(1+\frac2x\right)$.</p><p>$\displaystyle\lim_{x\to\infty}\ln y=\lim_{x\to\infty}\frac{\ln(1+2/x)}{1/(3x)}=\lim_{x\to\infty}\frac{\frac{1}{1+2/x}\cdot(-2/x^2)}{-1/(3x^2)}=\lim_{x\to\infty}\frac{6}{1+2/x}=6$</p><p>Since $\ln y\to 6$, exponentiate: $y\to e^6$.</p><p>$\displaystyle\lim_{x\to \infty}\left(1+\frac2x\right)^{3x}=e^6$</p></div><a class="jump" href="#p24">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>

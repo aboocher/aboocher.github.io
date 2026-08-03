@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard I3 Practice Bank — Math 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax Integration (Safe CDN, NO Polyfill) -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root{
+    --bg: #fff8ee;
+    --card: #ffffff;
+    --line: rgba(60,40,20,0.10);
+    --line-strong: rgba(60,40,20,0.18);
+    --ink: #332944;
+    --ink-dim: #6d6079;
+    --ink-faint: #a598ab;
+    --core: #c9451f;
+    --core-soft: #ff6b4a;
+    --teal: #16816f;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      radial-gradient(680px 380px at 6% -8%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(640px 380px at 100% 6%, rgba(22,129,111,0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    font-family:'Inter', sans-serif; font-size:15px; line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:20px 20px 80px;}
+
+  a.back-link{
+    color:var(--ink-dim); text-decoration:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; display:inline-block; margin-bottom:20px;
+  }
+  a.back-link:hover{color:var(--core);}
+
+  header{margin-bottom:20px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--core); text-transform:uppercase; letter-spacing:0.12em;}
+  h1{font-family:'Fraunces', serif; font-weight:600; font-size:2rem; margin:6px 0 12px; color:var(--ink);}
+
+  .intro{color:var(--ink-dim); font-size:0.95rem;}
+  .intro ul{margin:10px 0 0; padding-left:20px;}
+  .intro li{margin-bottom:6px;}
+
+  h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.5rem; color:var(--ink);
+    margin:0; padding-top:28px; margin-top:40px; border-top:1px solid var(--line-strong);
+  }
+  h3.group-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.1em; font-weight:600;
+    margin:26px 0 4px;
+  }
+  .group-note{color:var(--ink-dim); font-size:0.9rem; margin:0 0 10px;}
+
+  .item-list{margin:0;}
+  .item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .num{
+    font-family:'IBM Plex Mono', monospace; color:var(--core); font-weight:600;
+    flex-shrink:0; min-width:26px;
+  }
+  .body-text{flex:1; min-width:0;}
+  .body-text p{margin:0 0 8px;}
+  .body-text p:last-child{margin-bottom:0;}
+  .body-text .ask{font-weight:500; color:var(--ink);}
+
+  .sol .body-text{color:var(--ink-dim); font-size:0.95rem;}
+
+  .jump{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-decoration:none; white-space:nowrap; flex-shrink:0; align-self:flex-start; margin-top:2px;
+  }
+  .jump:hover{color:var(--core);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../math150-standards-ledger.html" class="back-link">← Back to Standards Dashboard</a>
+
+  <header>
+    <div class="eyebrow">Standard Practice Bank</div>
+    <h1>I3: Riemann Sums (Rectangles)</h1>
+  </header>
+
+  <div class="intro">
+    <p>12 practice problems approximating the area under a curve with rectangles, using left, right, and midpoint Riemann sums. Give exact values, simplified as much as possible.</p>
+    <ul>
+      <li>Split $[a,b]$ into $n$ equal subintervals, each of width $\Delta x=\dfrac{b-a}{n}$.</li>
+      <li><strong>Left sum:</strong> the height of each rectangle is $f$ evaluated at the <em>left</em> edge of its subinterval. <strong>Right sum:</strong> evaluate at the <em>right</em> edge. <strong>Midpoint sum:</strong> evaluate at the midpoint of the subinterval.</li>
+      <li>Every Riemann sum has the same shape: $\text{Sum}=\Delta x\big[f(x_1)+f(x_2)+\cdots+f(x_n)\big]$ — one $\Delta x$ factored out front, times the sum of the $n$ heights.</li>
+      <li>List out the $n$ sample points first before evaluating $f$ at each one — that's where an off-by-one slip is most likely to happen.</li>
+      <li>For a midpoint sum, the sample points are $\Delta x$ apart just like left/right, but shifted by $\frac{\Delta x}{2}$ from the left endpoint of the interval.</li>
+    </ul>
+  </div>
+
+  <h2>Problems</h2>
+
+  <h3 class="group-label">Left Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item" id="p1"><span class="num">1.</span><div class="body-text">$f(x)=x^2+1$ on $[0,4]$, $n=4$ subintervals</div><a class="jump" href="#s1">↓ solution</a></div>
+    <div class="item" id="p2"><span class="num">2.</span><div class="body-text">$f(x)=2x+3$ on $[1,5]$, $n=4$ subintervals</div><a class="jump" href="#s2">↓ solution</a></div>
+    <div class="item" id="p3"><span class="num">3.</span><div class="body-text">$f(x)=x^2-4$ on $[0,6]$, $n=3$ subintervals</div><a class="jump" href="#s3">↓ solution</a></div>
+    <div class="item" id="p4"><span class="num">4.</span><div class="body-text">$f(x)=9-x^2$ on $[-3,3]$, $n=3$ subintervals</div><a class="jump" href="#s4">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Right Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item" id="p5"><span class="num">5.</span><div class="body-text">$f(x)=x^2+1$ on $[0,4]$, $n=4$ subintervals</div><a class="jump" href="#s5">↓ solution</a></div>
+    <div class="item" id="p6"><span class="num">6.</span><div class="body-text">$f(x)=2x+3$ on $[1,5]$, $n=4$ subintervals</div><a class="jump" href="#s6">↓ solution</a></div>
+    <div class="item" id="p7"><span class="num">7.</span><div class="body-text">$f(x)=x^2-4$ on $[0,6]$, $n=3$ subintervals</div><a class="jump" href="#s7">↓ solution</a></div>
+    <div class="item" id="p8"><span class="num">8.</span><div class="body-text">$f(x)=9-x^2$ on $[-3,3]$, $n=3$ subintervals</div><a class="jump" href="#s8">↓ solution</a></div>
+  </div>
+
+  <h3 class="group-label">Midpoint Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item" id="p9"><span class="num">9.</span><div class="body-text">$f(x)=x^2-1$ on $[-1,5]$, $n=3$ subintervals</div><a class="jump" href="#s9">↓ solution</a></div>
+    <div class="item" id="p10"><span class="num">10.</span><div class="body-text">$f(x)=x^2+3$ on $[0,6]$, $n=3$ subintervals</div><a class="jump" href="#s10">↓ solution</a></div>
+    <div class="item" id="p11"><span class="num">11.</span><div class="body-text">$f(x)=8-x^2$ on $[-2,4]$, $n=3$ subintervals</div><a class="jump" href="#s11">↓ solution</a></div>
+    <div class="item" id="p12"><span class="num">12.</span><div class="body-text">$f(x)=2x^2-x$ on $[0,4]$, $n=4$ subintervals</div><a class="jump" href="#s12">↓ solution</a></div>
+  </div>
+
+  <h2>Solutions</h2>
+
+  <h3 class="group-label">Left Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item sol" id="s1"><span class="num">1.</span><div class="body-text"><p>$\Delta x=\dfrac{4-0}{4}=1$. Left endpoints: $0,1,2,3$.</p><p>$f(0)=1,\;f(1)=2,\;f(2)=5,\;f(3)=10$</p><p>$\text{Sum}=1(1+2+5+10)=18$</p></div><a class="jump" href="#p1">↑ problem</a></div>
+    <div class="item sol" id="s2"><span class="num">2.</span><div class="body-text"><p>$\Delta x=\dfrac{5-1}{4}=1$. Left endpoints: $1,2,3,4$.</p><p>$f(1)=5,\;f(2)=7,\;f(3)=9,\;f(4)=11$</p><p>$\text{Sum}=1(5+7+9+11)=32$</p></div><a class="jump" href="#p2">↑ problem</a></div>
+    <div class="item sol" id="s3"><span class="num">3.</span><div class="body-text"><p>$\Delta x=\dfrac{6-0}{3}=2$. Left endpoints: $0,2,4$.</p><p>$f(0)=-4,\;f(2)=0,\;f(4)=12$</p><p>$\text{Sum}=2(-4+0+12)=16$</p></div><a class="jump" href="#p3">↑ problem</a></div>
+    <div class="item sol" id="s4"><span class="num">4.</span><div class="body-text"><p>$\Delta x=\dfrac{3-(-3)}{3}=2$. Left endpoints: $-3,-1,1$.</p><p>$f(-3)=0,\;f(-1)=8,\;f(1)=8$</p><p>$\text{Sum}=2(0+8+8)=32$</p></div><a class="jump" href="#p4">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Right Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item sol" id="s5"><span class="num">5.</span><div class="body-text"><p>$\Delta x=1$. Right endpoints: $1,2,3,4$.</p><p>$f(1)=2,\;f(2)=5,\;f(3)=10,\;f(4)=17$</p><p>$\text{Sum}=1(2+5+10+17)=34$</p></div><a class="jump" href="#p5">↑ problem</a></div>
+    <div class="item sol" id="s6"><span class="num">6.</span><div class="body-text"><p>$\Delta x=1$. Right endpoints: $2,3,4,5$.</p><p>$f(2)=7,\;f(3)=9,\;f(4)=11,\;f(5)=13$</p><p>$\text{Sum}=1(7+9+11+13)=40$</p></div><a class="jump" href="#p6">↑ problem</a></div>
+    <div class="item sol" id="s7"><span class="num">7.</span><div class="body-text"><p>$\Delta x=2$. Right endpoints: $2,4,6$.</p><p>$f(2)=0,\;f(4)=12,\;f(6)=32$</p><p>$\text{Sum}=2(0+12+32)=88$</p></div><a class="jump" href="#p7">↑ problem</a></div>
+    <div class="item sol" id="s8"><span class="num">8.</span><div class="body-text"><p>$\Delta x=2$. Right endpoints: $-1,1,3$.</p><p>$f(-1)=8,\;f(1)=8,\;f(3)=0$</p><p>$\text{Sum}=2(8+8+0)=32$</p></div><a class="jump" href="#p8">↑ problem</a></div>
+  </div>
+
+  <h3 class="group-label">Midpoint Riemann Sums</h3>
+  <div class="item-list">
+    <div class="item sol" id="s9"><span class="num">9.</span><div class="body-text"><p>$\Delta x=\dfrac{5-(-1)}{3}=2$, giving subintervals $[-1,1],[1,3],[3,5]$ with midpoints $0,2,4$.</p><p>$f(0)=-1,\;f(2)=3,\;f(4)=15$</p><p>$\text{Sum}=2(-1+3+15)=34$</p></div><a class="jump" href="#p9">↑ problem</a></div>
+    <div class="item sol" id="s10"><span class="num">10.</span><div class="body-text"><p>$\Delta x=\dfrac{6-0}{3}=2$, giving subintervals $[0,2],[2,4],[4,6]$ with midpoints $1,3,5$.</p><p>$f(1)=4,\;f(3)=12,\;f(5)=28$</p><p>$\text{Sum}=2(4+12+28)=88$</p></div><a class="jump" href="#p10">↑ problem</a></div>
+    <div class="item sol" id="s11"><span class="num">11.</span><div class="body-text"><p>$\Delta x=\dfrac{4-(-2)}{3}=2$, giving subintervals $[-2,0],[0,2],[2,4]$ with midpoints $-1,1,3$.</p><p>$f(-1)=7,\;f(1)=7,\;f(3)=-1$</p><p>$\text{Sum}=2(7+7-1)=26$</p></div><a class="jump" href="#p11">↑ problem</a></div>
+    <div class="item sol" id="s12"><span class="num">12.</span><div class="body-text"><p>$\Delta x=\dfrac{4-0}{4}=1$, giving subintervals $[0,1],[1,2],[2,3],[3,4]$ with midpoints $0.5,1.5,2.5,3.5$.</p><p>$f(0.5)=0,\;f(1.5)=3,\;f(2.5)=10,\;f(3.5)=21$</p><p>$\text{Sum}=1(0+3+10+21)=34$</p></div><a class="jump" href="#p12">↑ problem</a></div>
+  </div>
+
+</div>
+</body>
+</html>
