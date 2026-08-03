@@ -5,9 +5,11 @@ Context doc for continuing this work in a fresh conversation. Paste/attach this 
 
 ## Project
 
-Site: `math150/math150-standards-ledger.html` is the course hub for a standards-based-grading
-Calculus I course — grade estimator, grade thresholds, and an accordion **Standards Directory**
-linking to one practice-bank page per standard at `math150/standards/<CODE>.html`.
+Site is split into two pages as of 2026-08-03 (see "Site restructuring" below):
+`math150/math150-standards-ledger.html` is the **Standards & Practice** hub — an accordion
+**Standards Directory** linking to one practice-bank page per standard at
+`math150/standards/<CODE>.html`, plus per-section review-sheet placeholders. Grade estimator,
+thresholds, full matrix, and retake FAQ moved to `math150/math150-grades.html`.
 
 Source material: the teacher's real quizzes live in
 `math150/standards/OurQuizzes/Math150_Fall2026 (1)/<Folder>/`, one `.tex` file per quiz version
@@ -19,6 +21,13 @@ in depth).
 
 There's also a flat, older, duplicate copy of the G1 quizzes directly in `OurQuizzes/` — ignore it,
 the nested `Math150_Fall2026 (1)/` folder is the authoritative, complete source.
+
+**IMPORTANT — `OurQuizzes/` must never be committed.** It contains the real quiz files and must
+stay off the public GitHub repo (this is a public repo — anyone can browse it). It's listed in
+`.gitignore` at the repo root. It still exists locally on disk for source-reading purposes; just
+never `git add` it or remove it from `.gitignore`. On 2026-08-03 it was untracked and scrubbed
+from git history (via `git-filter-repo`) after being accidentally committed and pushed earlier —
+don't repeat that mistake.
 
 ## Status
 
@@ -134,8 +143,40 @@ Other conventions:
   is correct but they haven't been retrofitted with diagrams (G1 doesn't really need any; G2
   could benefit from a line-graph SVG in the "Applications" group — ask the user if desired).
 - `math150/full-matrix.html` (built 2026-08-03) fills the previously-dead banner link. It derives
-  a 5×5 "core standards passed" × "course %" grade cross-tab straight from the estimator's JS in
-  the ledger (`calculateGrade()`) — each axis is graded independently against the same thresholds
-  (90/80/70/60 for %, 23/21/19/17 for core) and the cell takes the *worse* of the two letters. If
-  the estimator's thresholds ever change, this matrix must be regenerated to match (also update
-  the optional-topics-boost footnote, which currently reflects the 85%-with-3-optionals rule).
+  a 5×5 "core standards passed" × "course %" grade cross-tab straight from the estimator's JS
+  (`calculateGrade()`, now living in `math150-grades.html`) — each axis is graded independently
+  against the same thresholds (90/80/70/60 for %, 23/21/19/17 for core) and the cell takes the
+  *worse* of the two letters. If the estimator's thresholds ever change, this matrix must be
+  regenerated to match (also update the optional-topics-boost footnote, which currently reflects
+  the 85%-with-3-optionals rule).
+
+## Site restructuring (2026-08-03)
+
+Split the single course-hub page into two, per user request, so students land on whichever they
+actually need without scrolling past the other:
+
+- **`math150-standards-ledger.html`** — Standards & Practice hub. Nav, header, Standards
+  Directory accordion (unchanged structure/content), a progress summary banner, and a
+  "📘 Review Sheet" link per unit pointing into the new `standards/review/` placeholders.
+- **`math150-grades.html`** (new) — Grades & Policy hub. Interactive Estimator, Grade
+  Thresholds, Full Matrix banner, Retake Policy/FAQ — moved verbatim from the old ledger, same
+  IDs/styles. `full-matrix.html`'s back-link now points here instead of the ledger.
+- Both pages cross-link each other in their `<nav>`.
+
+**localStorage progress tracker** (shared key across both pages): `math150_progress` in
+`localStorage` is a JSON object `{ "G1": true, "L3": false, ... }` keyed by standard code.
+- On the ledger page, each `.std-row` has a `.std-pass` checkbox (`data-code="<CODE>"`) that
+  reads/writes this object and drives a live "X/26 core · X/4 optional" counter in the
+  `#progressBanner`. Optional codes are hardcoded as `['E1','E2','E3','E6']` in both pages' JS —
+  update that array in **both** files if the optional-topics list ever changes.
+- On the grades page, `prefillFromProgress()` reads the same object on load to prefill the
+  "Core Passed" number input and the "3+ Optional" checkbox (still manually overridable — it's a
+  convenience default, not synced live/two-way).
+
+**Review-sheet placeholders**: `math150/standards/review/{gateway,limits,derivatives,
+applications,integration,optional}.html`, one per accordion unit. Currently just a "coming soon"
+notice plus a bullet list of the standard codes covered — real content (condensed formula/skill
+reference + fully worked example per standard, eventually linked explainer videos) is intentional
+future work, not started. When building these out for real, follow the same page-template
+conventions as the standard practice-bank pages (see template section above), and pause after
+each one for review, same as standard pages.

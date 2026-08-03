@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math 150 — Course Guide & Standards Hub</title>
+<title>Math 150 — Standards & Practice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -86,77 +86,30 @@
   h1{font-size:2.2rem; line-height:1.15;}
   .subtitle{color:var(--ink-dim); font-size:1rem; margin-top:10px; max-width:640px;}
 
-  /* ---- Estimator ---- */
-  .calc-box{
+  /* ---- Progress Summary ---- */
+  .progress-banner{
     background:var(--bg-surface);
     border:1px solid var(--line-strong);
     border-radius:14px;
-    padding:24px;
+    padding:18px 24px;
     margin:24px 0 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
     box-shadow: 0 10px 30px rgba(51,41,68,0.08);
   }
-  .calc-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap:20px;
-    align-items:end;
+  .progress-banner p{margin:0; font-size:0.9rem; color:var(--ink-dim);}
+  .progress-counts{display:flex; gap:20px;}
+  .progress-count{text-align:center;}
+  .progress-count .num{
+    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; color:var(--core); display:block;
   }
-  .control-group label{
-    display:block;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.75rem;
-    color:var(--ink-dim);
-    margin-bottom:6px;
-    text-transform:uppercase;
+  .progress-count.optional .num{color:var(--optional);}
+  .progress-count .lbl{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--ink-faint); text-transform:uppercase;
   }
-  .control-group input[type="number"]{
-    width:100%;
-    background:var(--card);
-    border:1px solid var(--line-strong);
-    color:var(--ink);
-    padding:10px 12px;
-    border-radius:8px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:1rem;
-  }
-  .control-group.checkbox-group{
-    display:flex; align-items:center; gap:10px; height:42px; cursor:pointer;
-  }
-  .control-group.checkbox-group input{ width:18px; height:18px; accent-color:var(--optional); cursor:pointer; }
-  
-  .result-card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px 18px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .grade-display{
-    font-family:'Fraunces', serif;
-    font-size:2rem;
-    font-weight:700;
-    line-height:1;
-  }
-  .grade-A{color:var(--grade-a);}
-  .grade-B{color:var(--grade-b);}
-  .grade-C{color:var(--grade-c);}
-  .grade-D{color:var(--grade-d);}
-  .grade-F{color:var(--grade-f);}
-
-  /* ---- Matrix Banner ---- */
-  .matrix-banner{
-    background:var(--card);
-    border:1px dashed var(--line-strong);
-    border-radius:10px;
-    padding:14px 20px;
-    margin-bottom:40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-  .matrix-banner p{margin:0; font-size:0.9rem; color:var(--ink-dim);}
   .btn-matrix{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.8rem;
@@ -231,6 +184,20 @@
   .unit-content{display:none; padding:0 20px 16px; border-top:1px solid var(--line); background:rgba(51,41,68,0.03);}
   .unit-block.open .unit-content{display:block;}
 
+  .unit-review-row{padding:12px 20px 0; display:flex; justify-content:flex-end;}
+  .btn-review{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    padding:5px 10px;
+    border-radius:5px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .btn-review:hover{border-color:var(--core); color:var(--core);}
+
   .std-row{
     background:var(--card);
     border:1px solid var(--line);
@@ -238,13 +205,17 @@
     padding:12px 16px;
     margin-top:10px;
     display:grid;
-    grid-template-columns: 48px 1fr auto;
+    grid-template-columns: 24px 48px 1fr auto;
     gap:14px;
     align-items:center;
   }
+  .std-pass{width:18px; height:18px; accent-color:var(--core); cursor:pointer;}
+  .std-row.optional .std-pass{accent-color:var(--optional);}
   .std-code{font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:0.85rem; color:var(--core);}
   .std-row.optional .std-code{color:var(--optional);}
   .std-desc{font-size:0.9rem; color:var(--ink-dim);}
+  .std-row.is-passed{border-color:var(--core); background:var(--core-dim);}
+  .std-row.optional.is-passed{border-color:var(--optional); background:var(--optional-dim);}
   .btn-practice{
     font-family:'IBM Plex Mono', monospace;
     font-size:0.75rem;
@@ -279,89 +250,40 @@
   <div class="wrap">
     <div class="brand">Math 150 <span class="brand-badge">Calculus I</span></div>
     <div class="links">
-      <a href="#calculator">Grade Estimator</a>
-      <a href="#scale">Grade Scale</a>
       <a href="#standards">Standards Directory</a>
-      <a href="#faq">Retake Policy</a>
+      <a href="math150-grades.html">📊 Grades &amp; Policy</a>
     </div>
   </div>
 </nav>
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Course Hub & Standards Directory</div>
+    <div class="eyebrow">Standards & Practice</div>
     <h1>Mastery-Based Calculus</h1>
-    <p class="subtitle">Track your progress, estimate your grade, and select any standard to open its practice page.</p>
+    <p class="subtitle">Select any standard to open its practice page, mark it passed as you go, and jump into a section's review sheet. Want your projected grade or the retake policy instead? Head to <a href="math150-grades.html" style="color:var(--core);">Grades &amp; Policy</a>.</p>
   </header>
 
-  <!-- Interactive Estimator -->
-  <div class="calc-box" id="calculator">
-    <div class="eyebrow" style="color:var(--core);">Interactive Estimator</div>
-    <h3 style="margin-bottom:16px;">Check Your Projected Grade</h3>
-    <div class="calc-grid">
-      <div class="control-group">
-        <label for="calcPct">Course Grade (%)</label>
-        <input type="number" id="calcPct" min="0" max="100" value="88">
+  <!-- Progress Summary -->
+  <div class="progress-banner" id="progressBanner">
+    <p>Check off standards as you pass them — your progress is saved in this browser.</p>
+    <div class="progress-counts">
+      <div class="progress-count">
+        <span class="num" id="coreCount">0/26</span>
+        <span class="lbl">Core Passed</span>
       </div>
-      <div class="control-group">
-        <label for="calcCore">Core Passed (Max 26)</label>
-        <input type="number" id="calcCore" min="0" max="26" value="23">
-      </div>
-      <div class="control-group">
-        <label class="checkbox-group" title="Optional standards: E1, E2, E3, E6.">
-          <input type="checkbox" id="calcOpt">
-          <span style="font-size:0.85rem; color:var(--ink-dim);">Passed 3+ Optional Topics</span>
-        </label>
-      </div>
-      <div class="result-card">
-        <div>
-          <div style="font-size:0.7rem; font-family:'IBM Plex Mono', monospace; color:var(--ink-faint); text-transform:uppercase;">Estimated Grade</div>
-          <div id="gradeStatus" style="font-size:0.75rem; color:var(--ink-dim);">On track</div>
-        </div>
-        <div class="grade-display grade-A" id="gradeOutput">A</div>
+      <div class="progress-count optional">
+        <span class="num" id="optCount">0/4</span>
+        <span class="lbl">Optional Passed</span>
       </div>
     </div>
   </div>
-
-  <!-- Full Matrix Link Banner -->
-  <div class="matrix-banner">
-    <p>Need to review the comprehensive grading matrix and rubrics?</p>
-    <a href="full-matrix.html" class="btn-matrix">📄 View Full Matrix Page</a>
-  </div>
-
-  <!-- Grade Scale Summary -->
-  <section id="scale">
-    <div class="section-head">
-      <div class="eyebrow">Course Requirements</div>
-      <h2>Grade Thresholds</h2>
-      <p>Your overall grade combines your course percentage with the total number of core standards mastered.</p>
-    </div>
-    <div class="rubric-cards">
-      <div class="r-card">
-        <span class="badge grade-A">A</span>
-        <div class="req"><b>90%+</b> (or 85%+ w/ 3 optionals)<br>&amp; <b>23+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-B">B</span>
-        <div class="req"><b>80%+</b> Course Percentage<br>&amp; <b>21+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-C">C</span>
-        <div class="req"><b>70%+</b> Course Percentage<br>&amp; <b>19+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-D">D</span>
-        <div class="req"><b>60%+</b> Course Percentage<br>&amp; <b>17+</b> Core Passed</div>
-      </div>
-    </div>
-  </section>
 
   <!-- Collapsible Standards List -->
   <section id="standards">
     <div class="section-head">
       <div class="eyebrow">Learning Directory</div>
       <h2>Standards Directory</h2>
-      <p>Click a standard to open its practice problem bank page (20–30 questions each).</p>
+      <p>Click a standard to open its practice problem bank page (20–30 questions each). Check the box once you've passed it.</p>
     </div>
 
     <!-- Gateway -->
@@ -371,10 +293,11 @@
         <span class="unit-count">4 Standards</span>
       </button>
       <div class="unit-content">
-        <div class="std-row"><div class="std-code">G1</div><div class="std-desc">Function notation, composition/decomposition, and algebraic simplification.</div><a href="standards/G1.html" class="btn-practice">✏️ Practice G1</a></div>
-        <div class="std-row"><div class="std-code">G2</div><div class="std-desc">Linear equations: properties, graphing, and finding equations.</div><a href="standards/G2.html" class="btn-practice">✏️ Practice G2</a></div>
-        <div class="std-row"><div class="std-code">G3</div><div class="std-desc">Right triangle trigonometry fundamentals.</div><a href="standards/G3.html" class="btn-practice">✏️ Practice G3</a></div>
-        <div class="std-row"><div class="std-code">G4</div><div class="std-desc">Unit circle trigonometry (special triangles, quadrant placement).</div><a href="standards/G4.html" class="btn-practice">✏️ Practice G4</a></div>
+        <div class="unit-review-row"><a href="standards/review/gateway.html" class="btn-review">📘 Gateway Review Sheet</a></div>
+        <div class="std-row" data-code="G1"><input type="checkbox" class="std-pass" data-code="G1"><div class="std-code">G1</div><div class="std-desc">Function notation, composition/decomposition, and algebraic simplification.</div><a href="standards/G1.html" class="btn-practice">✏️ Practice G1</a></div>
+        <div class="std-row" data-code="G2"><input type="checkbox" class="std-pass" data-code="G2"><div class="std-code">G2</div><div class="std-desc">Linear equations: properties, graphing, and finding equations.</div><a href="standards/G2.html" class="btn-practice">✏️ Practice G2</a></div>
+        <div class="std-row" data-code="G3"><input type="checkbox" class="std-pass" data-code="G3"><div class="std-code">G3</div><div class="std-desc">Right triangle trigonometry fundamentals.</div><a href="standards/G3.html" class="btn-practice">✏️ Practice G3</a></div>
+        <div class="std-row" data-code="G4"><input type="checkbox" class="std-pass" data-code="G4"><div class="std-code">G4</div><div class="std-desc">Unit circle trigonometry (special triangles, quadrant placement).</div><a href="standards/G4.html" class="btn-practice">✏️ Practice G4</a></div>
       </div>
     </div>
 
@@ -385,10 +308,11 @@
         <span class="unit-count">4 Standards</span>
       </button>
       <div class="unit-content">
-        <div class="std-row"><div class="std-code">L1</div><div class="std-desc">Evaluating limits graphically.</div><a href="standards/L1.html" class="btn-practice">✏️ Practice L1</a></div>
-        <div class="std-row"><div class="std-code">L3</div><div class="std-desc">Evaluating algebraic limits — Level 1.</div><a href="standards/L3.html" class="btn-practice">✏️ Practice L3</a></div>
-        <div class="std-row"><div class="std-code">L4</div><div class="std-desc">Evaluating algebraic limits — Level 2.</div><a href="standards/L4.html" class="btn-practice">✏️ Practice L4</a></div>
-        <div class="std-row"><div class="std-code">L5</div><div class="std-desc">Evaluating limits involving infinity (without L'Hôpital's Rule).</div><a href="standards/L5.html" class="btn-practice">✏️ Practice L5</a></div>
+        <div class="unit-review-row"><a href="standards/review/limits.html" class="btn-review">📘 Limits Review Sheet</a></div>
+        <div class="std-row" data-code="L1"><input type="checkbox" class="std-pass" data-code="L1"><div class="std-code">L1</div><div class="std-desc">Evaluating limits graphically.</div><a href="standards/L1.html" class="btn-practice">✏️ Practice L1</a></div>
+        <div class="std-row" data-code="L3"><input type="checkbox" class="std-pass" data-code="L3"><div class="std-code">L3</div><div class="std-desc">Evaluating algebraic limits — Level 1.</div><a href="standards/L3.html" class="btn-practice">✏️ Practice L3</a></div>
+        <div class="std-row" data-code="L4"><input type="checkbox" class="std-pass" data-code="L4"><div class="std-code">L4</div><div class="std-desc">Evaluating algebraic limits — Level 2.</div><a href="standards/L4.html" class="btn-practice">✏️ Practice L4</a></div>
+        <div class="std-row" data-code="L5"><input type="checkbox" class="std-pass" data-code="L5"><div class="std-code">L5</div><div class="std-desc">Evaluating limits involving infinity (without L'Hôpital's Rule).</div><a href="standards/L5.html" class="btn-practice">✏️ Practice L5</a></div>
       </div>
     </div>
 
@@ -399,13 +323,14 @@
         <span class="unit-count">7 Standards</span>
       </button>
       <div class="unit-content">
-        <div class="std-row"><div class="std-code">D1</div><div class="std-desc">Derivative definition, interpretation as rate of change, and assigning units.</div><a href="standards/D1.html" class="btn-practice">✏️ Practice D1</a></div>
-        <div class="std-row"><div class="std-code">D2</div><div class="std-desc">Relationships between f, f′, and f″ (slopes, concavity, increasing/decreasing).</div><a href="standards/D2.html" class="btn-practice">✏️ Practice D2</a></div>
-        <div class="std-row"><div class="std-code">D3</div><div class="std-desc">Continuity and differentiability (graphical and algebraic).</div><a href="standards/D3.html" class="btn-practice">✏️ Practice D3</a></div>
-        <div class="std-row"><div class="std-code">D4</div><div class="std-desc">Basic derivative rules and tangent line equations.</div><a href="standards/D4.html" class="btn-practice">✏️ Practice D4</a></div>
-        <div class="std-row"><div class="std-code">D5</div><div class="std-desc">Derivatives of trig, inverse trig, exponential, and logarithmic functions.</div><a href="standards/D5.html" class="btn-practice">✏️ Practice D5</a></div>
-        <div class="std-row"><div class="std-code">D6</div><div class="std-desc">Product and Quotient Rules.</div><a href="standards/D6.html" class="btn-practice">✏️ Practice D6</a></div>
-        <div class="std-row"><div class="std-code">D7</div><div class="std-desc">Chain Rule.</div><a href="standards/D7.html" class="btn-practice">✏️ Practice D7</a></div>
+        <div class="unit-review-row"><a href="standards/review/derivatives.html" class="btn-review">📘 Derivatives Review Sheet</a></div>
+        <div class="std-row" data-code="D1"><input type="checkbox" class="std-pass" data-code="D1"><div class="std-code">D1</div><div class="std-desc">Derivative definition, interpretation as rate of change, and assigning units.</div><a href="standards/D1.html" class="btn-practice">✏️ Practice D1</a></div>
+        <div class="std-row" data-code="D2"><input type="checkbox" class="std-pass" data-code="D2"><div class="std-code">D2</div><div class="std-desc">Relationships between f, f′, and f″ (slopes, concavity, increasing/decreasing).</div><a href="standards/D2.html" class="btn-practice">✏️ Practice D2</a></div>
+        <div class="std-row" data-code="D3"><input type="checkbox" class="std-pass" data-code="D3"><div class="std-code">D3</div><div class="std-desc">Continuity and differentiability (graphical and algebraic).</div><a href="standards/D3.html" class="btn-practice">✏️ Practice D3</a></div>
+        <div class="std-row" data-code="D4"><input type="checkbox" class="std-pass" data-code="D4"><div class="std-code">D4</div><div class="std-desc">Basic derivative rules and tangent line equations.</div><a href="standards/D4.html" class="btn-practice">✏️ Practice D4</a></div>
+        <div class="std-row" data-code="D5"><input type="checkbox" class="std-pass" data-code="D5"><div class="std-code">D5</div><div class="std-desc">Derivatives of trig, inverse trig, exponential, and logarithmic functions.</div><a href="standards/D5.html" class="btn-practice">✏️ Practice D5</a></div>
+        <div class="std-row" data-code="D6"><input type="checkbox" class="std-pass" data-code="D6"><div class="std-code">D6</div><div class="std-desc">Product and Quotient Rules.</div><a href="standards/D6.html" class="btn-practice">✏️ Practice D6</a></div>
+        <div class="std-row" data-code="D7"><input type="checkbox" class="std-pass" data-code="D7"><div class="std-code">D7</div><div class="std-desc">Chain Rule.</div><a href="standards/D7.html" class="btn-practice">✏️ Practice D7</a></div>
       </div>
     </div>
 
@@ -416,10 +341,11 @@
         <span class="unit-count">4 Standards</span>
       </button>
       <div class="unit-content">
-        <div class="std-row"><div class="std-code">A1</div><div class="std-desc">L'Hôpital's Rule with written justifications.</div><a href="standards/A1.html" class="btn-practice">✏️ Practice A1</a></div>
-        <div class="std-row"><div class="std-code">A2</div><div class="std-desc">Implicit differentiation and tangent lines.</div><a href="standards/A2.html" class="btn-practice">✏️ Practice A2</a></div>
-        <div class="std-row"><div class="std-code">A3</div><div class="std-desc">Applied Optimization — Level 1.</div><a href="standards/A3.html" class="btn-practice">✏️ Practice A3</a></div>
-        <div class="std-row"><div class="std-code">A4</div><div class="std-desc">Critical numbers, relative extrema, and absolute extrema.</div><a href="standards/A4.html" class="btn-practice">✏️ Practice A4</a></div>
+        <div class="unit-review-row"><a href="standards/review/applications.html" class="btn-review">📘 Applications Review Sheet</a></div>
+        <div class="std-row" data-code="A1"><input type="checkbox" class="std-pass" data-code="A1"><div class="std-code">A1</div><div class="std-desc">L'Hôpital's Rule with written justifications.</div><a href="standards/A1.html" class="btn-practice">✏️ Practice A1</a></div>
+        <div class="std-row" data-code="A2"><input type="checkbox" class="std-pass" data-code="A2"><div class="std-code">A2</div><div class="std-desc">Implicit differentiation and tangent lines.</div><a href="standards/A2.html" class="btn-practice">✏️ Practice A2</a></div>
+        <div class="std-row" data-code="A3"><input type="checkbox" class="std-pass" data-code="A3"><div class="std-code">A3</div><div class="std-desc">Applied Optimization — Level 1.</div><a href="standards/A3.html" class="btn-practice">✏️ Practice A3</a></div>
+        <div class="std-row" data-code="A4"><input type="checkbox" class="std-pass" data-code="A4"><div class="std-code">A4</div><div class="std-desc">Critical numbers, relative extrema, and absolute extrema.</div><a href="standards/A4.html" class="btn-practice">✏️ Practice A4</a></div>
       </div>
     </div>
 
@@ -430,13 +356,14 @@
         <span class="unit-count">7 Standards</span>
       </button>
       <div class="unit-content">
-        <div class="std-row"><div class="std-code">I1</div><div class="std-desc">Basic antiderivatives (direct rules).</div><a href="standards/I1.html" class="btn-practice">✏️ Practice I1</a></div>
-        <div class="std-row"><div class="std-code">I2</div><div class="std-desc">Antiderivatives requiring algebraic rewriting or geometry.</div><a href="standards/I2.html" class="btn-practice">✏️ Practice I2</a></div>
-        <div class="std-row"><div class="std-code">I3</div><div class="std-desc">Riemann sums and rectangular approximations.</div><a href="standards/I3.html" class="btn-practice">✏️ Practice I3</a></div>
-        <div class="std-row"><div class="std-code">I4</div><div class="std-desc">Particle motion, displacement, and total distance traveled.</div><a href="standards/I4.html" class="btn-practice">✏️ Practice I4</a></div>
-        <div class="std-row"><div class="std-code">I5</div><div class="std-desc">Definite integrals using geometric area formulas.</div><a href="standards/I5.html" class="btn-practice">✏️ Practice I5</a></div>
-        <div class="std-row"><div class="std-code">I6</div><div class="std-desc">Fundamental Theorem of Calculus.</div><a href="standards/I6.html" class="btn-practice">✏️ Practice I6</a></div>
-        <div class="std-row"><div class="std-code">I7</div><div class="std-desc">Integration by u-substitution.</div><a href="standards/I7.html" class="btn-practice">✏️ Practice I7</a></div>
+        <div class="unit-review-row"><a href="standards/review/integration.html" class="btn-review">📘 Integration Review Sheet</a></div>
+        <div class="std-row" data-code="I1"><input type="checkbox" class="std-pass" data-code="I1"><div class="std-code">I1</div><div class="std-desc">Basic antiderivatives (direct rules).</div><a href="standards/I1.html" class="btn-practice">✏️ Practice I1</a></div>
+        <div class="std-row" data-code="I2"><input type="checkbox" class="std-pass" data-code="I2"><div class="std-code">I2</div><div class="std-desc">Antiderivatives requiring algebraic rewriting or geometry.</div><a href="standards/I2.html" class="btn-practice">✏️ Practice I2</a></div>
+        <div class="std-row" data-code="I3"><input type="checkbox" class="std-pass" data-code="I3"><div class="std-code">I3</div><div class="std-desc">Riemann sums and rectangular approximations.</div><a href="standards/I3.html" class="btn-practice">✏️ Practice I3</a></div>
+        <div class="std-row" data-code="I4"><input type="checkbox" class="std-pass" data-code="I4"><div class="std-code">I4</div><div class="std-desc">Particle motion, displacement, and total distance traveled.</div><a href="standards/I4.html" class="btn-practice">✏️ Practice I4</a></div>
+        <div class="std-row" data-code="I5"><input type="checkbox" class="std-pass" data-code="I5"><div class="std-code">I5</div><div class="std-desc">Definite integrals using geometric area formulas.</div><a href="standards/I5.html" class="btn-practice">✏️ Practice I5</a></div>
+        <div class="std-row" data-code="I6"><input type="checkbox" class="std-pass" data-code="I6"><div class="std-code">I6</div><div class="std-desc">Fundamental Theorem of Calculus.</div><a href="standards/I6.html" class="btn-practice">✏️ Practice I6</a></div>
+        <div class="std-row" data-code="I7"><input type="checkbox" class="std-pass" data-code="I7"><div class="std-code">I7</div><div class="std-desc">Integration by u-substitution.</div><a href="standards/I7.html" class="btn-practice">✏️ Practice I7</a></div>
       </div>
     </div>
 
@@ -447,66 +374,66 @@
         <span class="unit-count">4 Optional</span>
       </button>
       <div class="unit-content">
-        <div class="std-row optional"><div class="std-code">E1</div><div class="std-desc">I can solve related rates problems.</div><a href="standards/E1.html" class="btn-practice">✏️ Practice E1</a></div>
-        <div class="std-row optional"><div class="std-code">E2</div><div class="std-desc">I can set up a limit of a Riemann sum as a definite integral.</div><a href="standards/E2.html" class="btn-practice">✏️ Practice E2</a></div>
-        <div class="std-row optional"><div class="std-code">E3</div><div class="std-desc">I can solve harder L'Hôpital's Rule problems.</div><a href="standards/E3.html" class="btn-practice">✏️ Practice E3</a></div>
-        <div class="std-row optional"><div class="std-code">E6</div><div class="std-desc">I can derive the formulas for the derivatives of inverse trig functions and natural logarithm.</div><a href="standards/E6.html" class="btn-practice">✏️ Practice E6</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Retake Policy / FAQ -->
-  <section id="faq">
-    <div class="section-head">
-      <div class="eyebrow">Common Questions</div>
-      <h2>Retake Policy & FAQ</h2>
-    </div>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <h3>How do retakes work for missed standards?</h3>
-        <p>Every time we have a scheduled midterm exam, you will have an explicit opportunity to retry any core or optional standards you have not yet passed, as well as during subsequent retake opportunities (e.g., office hours / designated retake sessions).</p>
-      </div>
-      <div class="faq-item">
-        <h3>Can I retake Capstones?</h3>
-        <p>No. Capstones are evaluated like traditional midterms and factored directly into your course percentage grade. Standard retake opportunities apply strictly to core and optional outcomes.</p>
+        <div class="unit-review-row"><a href="standards/review/optional.html" class="btn-review">📘 Additional Topics Review Sheet</a></div>
+        <div class="std-row optional" data-code="E1"><input type="checkbox" class="std-pass" data-code="E1"><div class="std-code">E1</div><div class="std-desc">I can solve related rates problems.</div><a href="standards/E1.html" class="btn-practice">✏️ Practice E1</a></div>
+        <div class="std-row optional" data-code="E2"><input type="checkbox" class="std-pass" data-code="E2"><div class="std-code">E2</div><div class="std-desc">I can set up a limit of a Riemann sum as a definite integral.</div><a href="standards/E2.html" class="btn-practice">✏️ Practice E2</a></div>
+        <div class="std-row optional" data-code="E3"><input type="checkbox" class="std-pass" data-code="E3"><div class="std-code">E3</div><div class="std-desc">I can solve harder L'Hôpital's Rule problems.</div><a href="standards/E3.html" class="btn-practice">✏️ Practice E3</a></div>
+        <div class="std-row optional" data-code="E6"><input type="checkbox" class="std-pass" data-code="E6"><div class="std-code">E6</div><div class="std-desc">I can derive the formulas for the derivatives of inverse trig functions and natural logarithm.</div><a href="standards/E6.html" class="btn-practice">✏️ Practice E6</a></div>
       </div>
     </div>
   </section>
 
   <footer>
-    Math 150 · Calculus 1 Learning Outcomes & Assessment Hub
+    Math 150 · Calculus 1 Learning Outcomes &amp; Assessment Hub · <a href="math150-grades.html" style="color:var(--ink-faint);">Grades &amp; Policy →</a>
   </footer>
 </div>
 
 <script>
+  const CORE_TOTAL = 26;
+  const OPTIONAL_CODES = ['E1','E2','E3','E6'];
+
   function toggleUnit(btn) {
     btn.parentElement.classList.toggle('open');
   }
 
-  function calculateGrade() {
-    const pct = parseFloat(document.getElementById('calcPct').value) || 0;
-    const core = parseInt(document.getElementById('calcCore').value) || 0;
-    const opt = document.getElementById('calcOpt').checked;
-
-    const reqA_pct = opt ? 85 : 90;
-    let grade = 'F';
-    let status = 'Needs Improvement';
-
-    if (pct >= reqA_pct && core >= 23) { grade = 'A'; status = opt ? 'Qualifies for A (Boosted)' : 'Qualifies for A'; }
-    else if (pct >= 80 && core >= 21) { grade = 'B'; status = 'Qualifies for B'; }
-    else if (pct >= 70 && core >= 19) { grade = 'C'; status = 'Qualifies for C'; }
-    else if (pct >= 60 && core >= 17) { grade = 'D'; status = 'Qualifies for D'; }
-
-    const outputEl = document.getElementById('gradeOutput');
-    outputEl.textContent = grade;
-    outputEl.className = 'grade-display grade-' + grade;
-    document.getElementById('gradeStatus').textContent = status;
+  function loadProgress(){
+    try{
+      return JSON.parse(localStorage.getItem('math150_progress')) || {};
+    }catch(e){
+      return {};
+    }
   }
 
-  document.getElementById('calcPct').addEventListener('input', calculateGrade);
-  document.getElementById('calcCore').addEventListener('input', calculateGrade);
-  document.getElementById('calcOpt').addEventListener('change', calculateGrade);
-  calculateGrade();
+  function saveProgress(progress){
+    localStorage.setItem('math150_progress', JSON.stringify(progress));
+  }
+
+  function refreshCounts(progress){
+    const codes = Object.keys(progress).filter(c => progress[c]);
+    const optPassed = codes.filter(c => OPTIONAL_CODES.includes(c)).length;
+    const corePassed = codes.length - optPassed;
+    document.getElementById('coreCount').textContent = `${corePassed}/${CORE_TOTAL}`;
+    document.getElementById('optCount').textContent = `${optPassed}/${OPTIONAL_CODES.length}`;
+  }
+
+  function initProgress(){
+    const progress = loadProgress();
+    document.querySelectorAll('.std-pass').forEach(box => {
+      const code = box.dataset.code;
+      box.checked = !!progress[code];
+      box.closest('.std-row').classList.toggle('is-passed', box.checked);
+      box.addEventListener('change', () => {
+        const current = loadProgress();
+        current[code] = box.checked;
+        saveProgress(current);
+        box.closest('.std-row').classList.toggle('is-passed', box.checked);
+        refreshCounts(current);
+      });
+    });
+    refreshCounts(progress);
+  }
+
+  initProgress();
 </script>
 
 </body>
