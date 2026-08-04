@@ -413,11 +413,6 @@
             <p id="quicksetupStatus" style="font-size: 14px; margin: 0 0 16px;"></p>
 
             <div class="setup-bar" id="lexchoose">
-                <div class="radio-group">
-                    <label><input type="radio" id="nwl" name="wordlist" value="NWL" checked /> WOW</label>
-                    <label><input type="radio" id="csw" name="wordlist" value="CSW" /> CSW</label>
-                </div>
-
                 <div class="radio-group" style="align-items: center;">
                     <label for="targetCards" style="font-weight: 500;">Cards:</label>
                     <input type="number" id="targetCards" value="50" min="10" max="200"
@@ -493,42 +488,25 @@
     </div>
 
     <script>
-        const nwlRadio = document.getElementById('nwl');
-        const cswRadio = document.getElementById('csw');
-        let wordListType = nwlRadio.checked ? 'NWL' : 'CSW';
-
-        nwlRadio.addEventListener('change', () => { if (nwlRadio.checked) wordListType = 'NWL'; });
-        cswRadio.addEventListener('change', () => { if (cswRadio.checked) wordListType = 'CSW'; });
-
         let total1 = 0; let total2 = 0;
         let score1 = 0; let score2 = 0;
         let userWords = new Set();
         let userAlphagrams = new Set();
         let masterData = {};
+        let masterData2 = {}; // two-blank racks
         let gridWords = [];
         let wordCounts = {};
         let enteredWords = new Set();
         let hintLength = 1;
 
-        // NEW: Generates an indigo heat-map based strictly on knowns left
-        // 1. NEW RAINBOW COLOR SCHEME
+        // Heat-map based on knowns left: light blue at 1, warming up to red at 7+
         function getTileColor(n) {
             if (n === 0) return ""; // Let CSS handle solved/partial states
 
-            // Distinct colors for 1 through 7+ knowns
-            const rainbow = [
-                "",          // 0 (handled above)
-                "#ffb3ba",   // 1: Pastel Red
-                "#ffdfba",   // 2: Pastel Orange
-                "#ffffba",   // 3: Pastel Yellow
-                "#baffc9",   // 4: Pastel Green
-                "#bae1ff",   // 5: Pastel Blue
-                "#c9c9ff",   // 6: Pastel Indigo
-                "#e8baff"    // 7+: Pastel Violet
-            ];
-
-            // Cap at 7 so anything 7 or higher gets the violet color
-            return rainbow[Math.min(n, 7)];
+            // Cap at 7 so anything 7 or higher gets the hottest color
+            const step = Math.min(n, 7) - 1; // 0..6
+            const hue = 210 - (step * (210 / 6)); // 210 (blue) down to 0 (red)
+            return `hsl(${hue}, 70%, 82%)`;
         }
 
         // 2. AGGRESSIVE FOCUS LISTENER
@@ -556,12 +534,6 @@
 
         async function generateKnownList() {
             const statusEl = document.getElementById('quicksetupStatus');
-            if (wordListType !== 'NWL') {
-                statusEl.textContent = "Quick Setup currently only supports the WOW/NWL word list. Switch to WOW, or upload your own list for CSW.";
-                statusEl.style.color = "var(--danger)";
-                return;
-            }
-
             statusEl.style.color = "var(--text-muted)";
             statusEl.textContent = "Generating…";
 
@@ -619,6 +591,12 @@
             return userAlphagrams.has(word.split('').sort().join(''));
         }
 
+        // Internal keys sort '?' to the front (alphabetically first); display them at the end instead.
+        function displayKey(key) {
+            const blanks = (key.match(/\?/g) || []).length;
+            return key.replace(/\?/g, '') + '?'.repeat(blanks);
+        }
+
         function updateScores() {
             let score3 = score1 + score2;
             let total3 = total1 + total2;
@@ -654,19 +632,27 @@
             setTimeout(() => document.getElementById("wordInput").focus(), 100);
         }
 
-        async function loadMasterData() {
+        async function loadWordListFile(path, target) {
             try {
-                let response = await fetch(wordListType === "NWL" ? "master.txt" : "masterCSW.txt");
+                const response = await fetch(path);
                 const text = await response.text();
                 text.split('\n').forEach(line => {
                     const parts = line.trim().split(' ');
                     if (parts.length > 1) {
-                        masterData[parts[0]] = parts.slice(1);
+                        target[parts[0]] = parts.slice(1);
                     }
                 });
             } catch (e) {
-                console.warn("Could not load master data. Ensure files exist.", e);
+                console.warn(`Could not load ${path}. Ensure the file exists.`, e);
             }
+        }
+
+        async function loadMasterData() {
+            await Promise.all([
+                loadWordListFile("master.txt", masterData),
+                loadWordListFile("blank2_7.txt", masterData2),
+                loadWordListFile("blank2_8.txt", masterData2),
+            ]);
         }
 
         async function processFile() {
@@ -705,6 +691,7 @@
             let seenModified = new Set();
 
             for (let word of userWords) {
+                // Single-blank racks: remove one letter.
                 for (let i = 0; i < word.length; i++) {
                     let chars = word.split("");
                     chars[i] = "?";
@@ -717,7 +704,31 @@
                             let m = validWords.length;
                             if (m <= 9) {
                                 let n = validWords.filter(w => isKnownWord(w)).length;
-                                candidates.push({ modifiedWord, n, m, words: validWords });
+                                candidates.push({ modifiedWord, n, m, words: validWords, blanks: 1 });
+                            }
+                        }
+                    }
+                }
+
+                // Two-blank racks: remove every pair of letters. blank2_*.txt keys are
+                // "remaining letters sorted, then ??" (not a full sort of letters+blanks).
+                for (let i = 0; i < word.length; i++) {
+                    for (let j = i + 1; j < word.length; j++) {
+                        let remaining2 = [];
+                        for (let k = 0; k < word.length; k++) {
+                            if (k !== i && k !== j) remaining2.push(word[k]);
+                        }
+                        let modifiedWord2 = remaining2.sort().join("").replace(/[\r\n]+/g, '') + "??";
+
+                        if (!seenModified.has(modifiedWord2)) {
+                            seenModified.add(modifiedWord2);
+                            if (masterData2[modifiedWord2]) {
+                                const validWords2 = masterData2[modifiedWord2];
+                                let m2 = validWords2.length;
+                                if (m2 <= 9) {
+                                    let n2 = validWords2.filter(w => isKnownWord(w)).length;
+                                    candidates.push({ modifiedWord: modifiedWord2, n: n2, m: m2, words: validWords2, blanks: 2 });
+                                }
                             }
                         }
                     }
@@ -726,6 +737,38 @@
 
             wordCounts = {};
             candidates.sort(() => Math.random() - 0.5);
+
+            // Guarantee a small share of "double bingo" cards (exactly 2 valid answers) for variety.
+            const doubleBingoTarget = Math.min(
+                candidates.filter(c => c.m === 2).length,
+                Math.max(1, Math.round(targetCards * 0.09))
+            );
+            if (doubleBingoTarget > 0) {
+                const pickedIdxs = [];
+                for (let i = 0; i < candidates.length && pickedIdxs.length < doubleBingoTarget; i++) {
+                    if (candidates[i].m === 2) pickedIdxs.push(i);
+                }
+                const picked = pickedIdxs.map(i => candidates[i]);
+                candidates = candidates.filter((_, i) => !pickedIdxs.includes(i));
+                candidates = [...picked, ...candidates];
+            }
+
+            // Guarantee a small share of two-blank racks (two letters removed instead of one),
+            // split evenly between 7s and 8s.
+            for (const len of [7, 8]) {
+                const target = Math.min(
+                    candidates.filter(c => c.blanks === 2 && c.modifiedWord.length === len).length,
+                    Math.max(0, Math.round(targetCards * 0.04))
+                );
+                if (target <= 0) continue;
+                const pickedIdxs = [];
+                for (let i = 0; i < candidates.length && pickedIdxs.length < target; i++) {
+                    if (candidates[i].blanks === 2 && candidates[i].modifiedWord.length === len) pickedIdxs.push(i);
+                }
+                const picked = pickedIdxs.map(i => candidates[i]);
+                candidates = candidates.filter((_, i) => !pickedIdxs.includes(i));
+                candidates = [...picked, ...candidates];
+            }
 
             for (let i = 0; i < targetCards; i++) {
                 if (candidates.length === 0) break;
@@ -751,7 +794,7 @@
 
                 let bgColor = getTileColor(bestFit.n);
                 // NEW: Spans added for flexbox left/right alignment + dynamic background
-                gridHtml += `<div id='${bestFit.modifiedWord}' style='background-color: ${bgColor}'><span>${bestFit.modifiedWord}</span> <span>${bestFit.n}|${bestFit.m}</span></div>`;
+                gridHtml += `<div id='${bestFit.modifiedWord}' style='background-color: ${bgColor}'><span>${displayKey(bestFit.modifiedWord)}</span> <span>${bestFit.n}|${bestFit.m}</span></div>`;
             }
 
             document.getElementById("grid").innerHTML = gridHtml;
@@ -818,7 +861,7 @@
                                 } else {
                                     gridCell.classList.add("partial");
                                 }
-                                gridCell.innerHTML = `<span>${modifiedWord}</span> <span>${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m}</span>`;
+                                gridCell.innerHTML = `<span>${displayKey(modifiedWord)}</span> <span>${wordCounts[modifiedWord].n}|${wordCounts[modifiedWord].m}</span>`;
                             } else {
                                 gridCell.classList.remove("partial", "tile-pulse");
                                 gridCell.classList.add("cleared");
@@ -959,12 +1002,14 @@
             }
         }
 
+        // Works for any number of blanks: whatever's left after removing the key's fixed letters.
         function findRemovedChar(fullWord, wildcardAlphagram) {
-            const base = wildcardAlphagram.replace('?', '').split('').sort().join('');
-            for (let i = 0; i < fullWord.length; i++) {
-                if ((fullWord.slice(0, i) + fullWord.slice(i + 1)).split('').sort().join('') === base) return fullWord[i];
+            const remaining = fullWord.split('').sort();
+            for (const c of wildcardAlphagram.replace(/\?/g, '').split('')) {
+                const idx = remaining.indexOf(c);
+                if (idx !== -1) remaining.splice(idx, 1);
             }
-            return null;
+            return remaining.join('');
         }
 
         document.getElementById('numInput').addEventListener('input', (e) => {
