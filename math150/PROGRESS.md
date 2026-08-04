@@ -6,7 +6,7 @@ Context doc for continuing this work in a fresh conversation. Paste/attach this 
 ## Project
 
 Site is split into two pages as of 2026-08-03 (see "Site restructuring" below):
-`math150/math150-standards-ledger.html` is the **Standards & Practice** hub — an accordion
+`math150/index.html` is the **Standards & Practice** hub — an accordion
 **Standards Directory** linking to one practice-bank page per standard at
 `math150/standards/<CODE>.html`, plus per-section review-sheet placeholders. Grade estimator,
 thresholds, full matrix, and retake FAQ moved to `math150/math150-grades.html`.
@@ -70,7 +70,7 @@ whether quiz files exist elsewhere, or whether to build from the ledger's one-li
 ## Established page template (follow exactly — copy `G2.html` as the starting point)
 
 Structure, in order:
-1. Back link to `../math150-standards-ledger.html`
+1. Back link to `../index.html`
 2. Header: eyebrow "Standard Practice Bank" + `<h1>CODE: Title</h1>`
 3. Plain intro block: one sentence stating problem count, then a bullet list of key
    pitfalls/reminders for that standard (no box/border around it)
@@ -155,7 +155,8 @@ Other conventions:
 Split the single course-hub page into two, per user request, so students land on whichever they
 actually need without scrolling past the other:
 
-- **`math150-standards-ledger.html`** — Standards & Practice hub. Nav, header, Standards
+- **`index.html`** (renamed from `math150-standards-ledger.html` on 2026-08-03, so
+  `aboocher.github.io/math150/` just works) — Standards & Practice hub. Nav, header, Standards
   Directory accordion (unchanged structure/content), a progress summary banner, and a
   "📘 Review Sheet" link per unit pointing into the new `standards/review/` placeholders.
 - **`math150-grades.html`** (new) — Grades & Policy hub. Interactive Estimator, Grade
