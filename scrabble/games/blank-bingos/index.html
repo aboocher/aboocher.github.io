@@ -382,12 +382,37 @@
 
         <div class="card" id="info">
             <h1>Blank Bingos</h1>
-            <p>This game helps you practice finding bingos that you (in theory) know. Upload a list of known words, or
-                use the default (words containing AENRT). Known words appear in <span
+            <p>This game helps you practice finding bingos that you (in theory) know. Known words appear in <span
                     style="color: var(--primary); font-weight: bold;">Blue</span>, unknowns in Black.</p>
 
+            <div class="setup-bar" id="quicksetup" style="align-items: center;">
+                <div class="radio-group" style="align-items: center; gap: 8px;">
+                    <label for="topN7" style="font-weight: 500;">Know top</label>
+                    <input type="number" id="topN7" value="5000" min="0" max="21223" step="100"
+                        style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    <span>7s</span>
+                </div>
+
+                <div class="radio-group" style="align-items: center; gap: 8px;">
+                    <label for="topN8" style="font-weight: 500;">top</label>
+                    <input type="number" id="topN8" value="4000" min="0" max="28177" step="100"
+                        style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    <span>8s</span>
+                </div>
+
+                <div class="radio-group" style="align-items: center; gap: 8px;">
+                    <label for="toughyMax" style="font-weight: 500;">+ toughies ranked &le;</label>
+                    <input type="number" id="toughyMax" value="10000" min="0" max="30000" step="500"
+                        style="width: 80px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                </div>
+
+                <button id="generateListBtn" type="button">Generate &amp; Save List</button>
+                <button id="downloadListBtn" type="button" style="background: var(--text-muted);">Download
+                    List</button>
+            </div>
+            <p id="quicksetupStatus" style="font-size: 14px; margin: 0 0 16px;"></p>
+
             <div class="setup-bar" id="lexchoose">
-                <input type="file" id="fileInput">
                 <div class="radio-group">
                     <label><input type="radio" id="nwl" name="wordlist" value="NWL" checked /> WOW</label>
                     <label><input type="radio" id="csw" name="wordlist" value="CSW" /> CSW</label>
@@ -407,6 +432,9 @@
 
                 <button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
             </div>
+
+            <p style="font-size: 14px; margin: 12px 0 0;">Or upload/paste your own known-word list instead: <input
+                    type="file" id="fileInput" style="margin-left: 8px;"></p>
         </div>
 
         <div class="score hidden" id="scoreBox">
@@ -511,6 +539,80 @@
             if (e.target.tagName !== 'INPUT' && wordInput) {
                 wordInput.focus();
             }
+        });
+
+        const rankFileCache = {};
+        async function loadRankFile(path) {
+            if (rankFileCache[path]) return rankFileCache[path];
+            const response = await fetch(path);
+            const text = await response.text();
+            const rows = text.trim().split('\n').map(line => {
+                const idx = line.lastIndexOf(',');
+                return [line.slice(0, idx), parseInt(line.slice(idx + 1), 10)];
+            });
+            rankFileCache[path] = rows;
+            return rows;
+        }
+
+        async function generateKnownList() {
+            const statusEl = document.getElementById('quicksetupStatus');
+            if (wordListType !== 'NWL') {
+                statusEl.textContent = "Quick Setup currently only supports the WOW/NWL word list. Switch to WOW, or upload your own list for CSW.";
+                statusEl.style.color = "var(--danger)";
+                return;
+            }
+
+            statusEl.style.color = "var(--text-muted)";
+            statusEl.textContent = "Generating…";
+
+            const topN7 = parseInt(document.getElementById('topN7').value, 10) || 0;
+            const topN8 = parseInt(document.getElementById('topN8').value, 10) || 0;
+            const toughyMax = parseInt(document.getElementById('toughyMax').value, 10) || 0;
+
+            const [all7, all8, tough7, tough8] = await Promise.all([
+                loadRankFile('allwords7.txt'),
+                loadRankFile('allwords8.txt'),
+                loadRankFile('toughies7.txt'),
+                loadRankFile('toughies8.txt'),
+            ]);
+
+            const known = new Set();
+            for (const [w, r] of all7) if (r <= topN7) known.add(w);
+            for (const [w, r] of all8) if (r <= topN8) known.add(w);
+            for (const [w, r] of tough7) if (r <= toughyMax) known.add(w);
+            for (const [w, r] of tough8) if (r <= toughyMax) known.add(w);
+
+            const listText = [...known].sort().join('\n');
+            localStorage.setItem('blankBingosWordList', listText);
+            document.getElementById('fileInput').value = '';
+
+            const n7 = [...known].filter(w => w.length === 7).length;
+            const n8 = [...known].filter(w => w.length === 8).length;
+            statusEl.style.color = "var(--success)";
+            statusEl.textContent = `Saved ${known.size} known words (${n7} 7s, ${n8} 8s) to this browser.`;
+
+            const startBtn = document.getElementById('startButton');
+            startBtn.textContent = "Start Game (Using Saved List)";
+            startBtn.style.backgroundColor = "var(--success)";
+        }
+
+        document.getElementById('generateListBtn').addEventListener('click', generateKnownList);
+
+        document.getElementById('downloadListBtn').addEventListener('click', () => {
+            const statusEl = document.getElementById('quicksetupStatus');
+            const text = localStorage.getItem('blankBingosWordList');
+            if (!text) {
+                statusEl.style.color = "var(--danger)";
+                statusEl.textContent = "No saved list yet — generate or upload one first.";
+                return;
+            }
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'known-bingos.txt';
+            a.click();
+            URL.revokeObjectURL(url);
         });
 
         function isKnownWord(word) {
