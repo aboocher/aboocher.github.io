@@ -382,54 +382,70 @@
 
         <div class="card" id="info">
             <h1>Blank Bingos</h1>
-            <p>This game helps you practice finding bingos that you (in theory) know. Known words appear in <span
+            <p>Practice finding bingos that you (in theory) know. Known words appear in <span
                     style="color: var(--primary); font-weight: bold;">Blue</span>, unknowns in Black.</p>
 
-            <div class="setup-bar" id="quicksetup" style="align-items: center;">
-                <div class="radio-group" style="align-items: center; gap: 8px;">
-                    <label for="topN7" style="font-weight: 500;">Know top</label>
-                    <input type="number" id="topN7" value="5000" min="0" max="21223" step="100"
-                        style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
-                    <span>7s</span>
+            <div class="card" id="startSection"
+                style="background: var(--bg-color); margin-bottom: 20px; box-shadow: none;">
+                <p id="savedListStatus" style="font-size: 15px; font-weight: 600; margin: 0 0 14px;"></p>
+
+                <div class="setup-bar" style="align-items: center;">
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="racksPerLength" style="font-weight: 500;">Racks per length:</label>
+                        <input type="number" id="racksPerLength" value="25" min="5" max="100"
+                            style="width: 55px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    </div>
+
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="maxSolutions" style="font-weight: 500;">Max answers/rack:</label>
+                        <input type="number" id="maxSolutions" value="5" min="1" max="20"
+                            style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    </div>
+
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="numWith2Blanks" style="font-weight: 500;">2-blank racks/length:</label>
+                        <input type="number" id="numWith2Blanks" value="2" min="0" max="25"
+                            style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    </div>
+
+                    <button id="startButton" onclick="startGame()" class="start-btn">&#9654; Start Game</button>
                 </div>
-
-                <div class="radio-group" style="align-items: center; gap: 8px;">
-                    <label for="topN8" style="font-weight: 500;">top</label>
-                    <input type="number" id="topN8" value="4000" min="0" max="28177" step="100"
-                        style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
-                    <span>8s</span>
-                </div>
-
-                <div class="radio-group" style="align-items: center; gap: 8px;">
-                    <label for="toughyMax" style="font-weight: 500;">+ toughies ranked &le;</label>
-                    <input type="number" id="toughyMax" value="10000" min="0" max="30000" step="500"
-                        style="width: 80px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
-                </div>
-
-                <button id="generateListBtn" type="button">Generate &amp; Save List</button>
-                <button id="downloadListBtn" type="button" style="background: var(--text-muted);">Download
-                    List</button>
-            </div>
-            <p id="quicksetupStatus" style="font-size: 14px; margin: 0 0 16px;"></p>
-
-            <div class="setup-bar" id="lexchoose">
-                <div class="radio-group" style="align-items: center;">
-                    <label for="targetCards" style="font-weight: 500;">Cards:</label>
-                    <input type="number" id="targetCards" value="50" min="10" max="200"
-                        style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
-
-                    <div style="width: 1px; height: 16px; background: var(--border-color); margin: 0 8px;"></div>
-
-                    <label for="targetAnswers" style="font-weight: 500;">Answers:</label>
-                    <input type="number" id="targetAnswers" value="100" min="10" max="1000"
-                        style="width: 50px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
-                </div>
-
-                <button id="startButton" onclick="startGame()" class="start-btn">Start Game</button>
             </div>
 
-            <p style="font-size: 14px; margin: 12px 0 0;">Or upload/paste your own known-word list instead: <input
-                    type="file" id="fileInput" style="margin-left: 8px;"></p>
+            <details id="quicksetupDetails">
+                <summary style="cursor: pointer; font-weight: 600; margin-bottom: 12px;">Set up or change your
+                    known-word list</summary>
+
+                <div class="setup-bar" id="quicksetup" style="align-items: center;">
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="topN7" style="font-weight: 500;">Know top</label>
+                        <input type="number" id="topN7" value="5000" min="0" max="21223" step="100"
+                            style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                        <span>7s</span>
+                    </div>
+
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="topN8" style="font-weight: 500;">top</label>
+                        <input type="number" id="topN8" value="4000" min="0" max="28177" step="100"
+                            style="width: 70px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                        <span>8s</span>
+                    </div>
+
+                    <div class="radio-group" style="align-items: center; gap: 8px;">
+                        <label for="toughyMax" style="font-weight: 500;">+ toughies ranked &le;</label>
+                        <input type="number" id="toughyMax" value="10000" min="0" max="30000" step="500"
+                            style="width: 80px; padding: 4px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit;">
+                    </div>
+
+                    <button id="generateListBtn" type="button">Generate &amp; Save List</button>
+                    <button id="downloadListBtn" type="button" style="background: var(--text-muted);">Download
+                        List</button>
+                </div>
+                <p id="quicksetupStatus" style="font-size: 14px; margin: 8px 0 0;"></p>
+
+                <p style="font-size: 14px; margin: 16px 0 0;">Or upload/paste your own known-word list instead: <input
+                        type="file" id="fileInput" style="margin-left: 8px;"></p>
+            </details>
         </div>
 
         <div class="score hidden" id="scoreBox">
@@ -563,9 +579,7 @@
             statusEl.style.color = "var(--success)";
             statusEl.textContent = `Saved ${known.size} known words (${n7} 7s, ${n8} 8s) to this browser.`;
 
-            const startBtn = document.getElementById('startButton');
-            startBtn.textContent = "Start Game (Using Saved List)";
-            startBtn.style.backgroundColor = "var(--success)";
+            refreshSavedListStatus(false);
         }
 
         document.getElementById('generateListBtn').addEventListener('click', generateKnownList);
@@ -683,9 +697,9 @@
             total1 = 0; total2 = 0;
             score1 = 0; score2 = 0;
 
-            const targetCards = parseInt(document.getElementById('targetCards').value, 10) || 50;
-            const targetAnswers = parseInt(document.getElementById('targetAnswers').value, 10) || 100;
-            let currentTotalAnswers = 0;
+            const racksPerLength = parseInt(document.getElementById('racksPerLength').value, 10) || 25;
+            const maxSolutions = parseInt(document.getElementById('maxSolutions').value, 10) || 5;
+            const numWith2Blanks = parseInt(document.getElementById('numWith2Blanks').value, 10) || 0;
 
             let candidates = [];
             let seenModified = new Set();
@@ -702,7 +716,7 @@
                         if (masterData[modifiedWord]) {
                             const validWords = masterData[modifiedWord];
                             let m = validWords.length;
-                            if (m <= 9) {
+                            if (m <= maxSolutions) {
                                 let n = validWords.filter(w => isKnownWord(w)).length;
                                 candidates.push({ modifiedWord, n, m, words: validWords, blanks: 1 });
                             }
@@ -725,7 +739,7 @@
                             if (masterData2[modifiedWord2]) {
                                 const validWords2 = masterData2[modifiedWord2];
                                 let m2 = validWords2.length;
-                                if (m2 <= 9) {
+                                if (m2 <= maxSolutions) {
                                     let n2 = validWords2.filter(w => isKnownWord(w)).length;
                                     candidates.push({ modifiedWord: modifiedWord2, n: n2, m: m2, words: validWords2, blanks: 2 });
                                 }
@@ -736,65 +750,53 @@
             }
 
             wordCounts = {};
-            candidates.sort(() => Math.random() - 0.5);
 
-            // Guarantee a small share of "double bingo" cards (exactly 2 valid answers) for variety.
-            const doubleBingoTarget = Math.min(
-                candidates.filter(c => c.m === 2).length,
-                Math.max(1, Math.round(targetCards * 0.09))
-            );
-            if (doubleBingoTarget > 0) {
-                const pickedIdxs = [];
-                for (let i = 0; i < candidates.length && pickedIdxs.length < doubleBingoTarget; i++) {
-                    if (candidates[i].m === 2) pickedIdxs.push(i);
+            // Aerolith/Webolith's Blank Bingos structure: generate each rack length (7s, 8s)
+            // independently, each with its own quota of racks and a fixed count of two-blank
+            // racks mixed in, rather than pulling from one combined pool.
+            for (const length of [7, 8]) {
+                let pool = candidates.filter(c => c.modifiedWord.length === length);
+                pool.sort(() => Math.random() - 0.5);
+
+                const picked = [];
+
+                const twoBlankTarget = Math.min(numWith2Blanks, pool.filter(c => c.blanks === 2).length);
+                if (twoBlankTarget > 0) {
+                    const idxs = [];
+                    for (let i = 0; i < pool.length && idxs.length < twoBlankTarget; i++) {
+                        if (pool[i].blanks === 2) idxs.push(i);
+                    }
+                    picked.push(...idxs.map(i => pool[i]));
+                    pool = pool.filter((_, i) => !idxs.includes(i));
                 }
-                const picked = pickedIdxs.map(i => candidates[i]);
-                candidates = candidates.filter((_, i) => !pickedIdxs.includes(i));
-                candidates = [...picked, ...candidates];
-            }
 
-            // Guarantee a small share of two-blank racks (two letters removed instead of one),
-            // split evenly between 7s and 8s.
-            for (const len of [7, 8]) {
-                const target = Math.min(
-                    candidates.filter(c => c.blanks === 2 && c.modifiedWord.length === len).length,
-                    Math.max(0, Math.round(targetCards * 0.04))
+                // Guarantee a small share of "double bingo" racks (exactly 2 valid answers) for variety.
+                const doubleBingoTarget = Math.min(
+                    Math.max(1, Math.round(racksPerLength * 0.08)),
+                    pool.filter(c => c.m === 2).length
                 );
-                if (target <= 0) continue;
-                const pickedIdxs = [];
-                for (let i = 0; i < candidates.length && pickedIdxs.length < target; i++) {
-                    if (candidates[i].blanks === 2 && candidates[i].modifiedWord.length === len) pickedIdxs.push(i);
-                }
-                const picked = pickedIdxs.map(i => candidates[i]);
-                candidates = candidates.filter((_, i) => !pickedIdxs.includes(i));
-                candidates = [...picked, ...candidates];
-            }
-
-            for (let i = 0; i < targetCards; i++) {
-                if (candidates.length === 0) break;
-
-                let cardsLeft = targetCards - i;
-                let safeMax = (targetAnswers - currentTotalAnswers) - (cardsLeft - 1);
-                if (safeMax < 1) safeMax = 1;
-
-                let selectedIdx = candidates.findIndex(c => c.m <= safeMax);
-                if (selectedIdx === -1) {
-                    let minM = Math.min(...candidates.map(c => c.m));
-                    selectedIdx = candidates.findIndex(c => c.m === minM);
+                if (doubleBingoTarget > 0) {
+                    const idxs = [];
+                    for (let i = 0; i < pool.length && idxs.length < doubleBingoTarget; i++) {
+                        if (pool[i].m === 2) idxs.push(i);
+                    }
+                    picked.push(...idxs.map(i => pool[i]));
+                    pool = pool.filter((_, i) => !idxs.includes(i));
                 }
 
-                let bestFit = candidates.splice(selectedIdx, 1)[0];
+                const remainingSlots = racksPerLength - picked.length;
+                picked.push(...pool.slice(0, Math.max(0, remainingSlots)));
 
-                wordCounts[bestFit.modifiedWord] = { n: bestFit.n, m: bestFit.m, words: bestFit.words };
-                gridWords.push(bestFit.modifiedWord);
+                for (const c of picked) {
+                    wordCounts[c.modifiedWord] = { n: c.n, m: c.m, words: c.words };
+                    gridWords.push(c.modifiedWord);
 
-                total1 += bestFit.n;
-                total2 += (bestFit.m - bestFit.n);
-                currentTotalAnswers += bestFit.m;
+                    total1 += c.n;
+                    total2 += (c.m - c.n);
 
-                let bgColor = getTileColor(bestFit.n);
-                // NEW: Spans added for flexbox left/right alignment + dynamic background
-                gridHtml += `<div id='${bestFit.modifiedWord}' style='background-color: ${bgColor}'><span>${displayKey(bestFit.modifiedWord)}</span> <span>${bestFit.n}|${bestFit.m}</span></div>`;
+                    const bgColor = getTileColor(c.n);
+                    gridHtml += `<div id='${c.modifiedWord}' style='background-color: ${bgColor}'><span>${displayKey(c.modifiedWord)}</span> <span>${c.n}|${c.m}</span></div>`;
+                }
             }
 
             document.getElementById("grid").innerHTML = gridHtml;
@@ -1016,13 +1018,31 @@
             hintLength = parseInt(e.target.value, 10);
         });
 
-        window.addEventListener('DOMContentLoaded', (event) => {
-            if (localStorage.getItem('blankBingosWordList')) {
-                const startBtn = document.getElementById('startButton');
-                startBtn.textContent = "Start Game (Using Saved List)";
+        function refreshSavedListStatus(adjustDetailsOpen = true) {
+            const statusEl = document.getElementById('savedListStatus');
+            const startBtn = document.getElementById('startButton');
+            const details = document.getElementById('quicksetupDetails');
+            const saved = localStorage.getItem('blankBingosWordList');
+
+            if (saved) {
+                const words = saved.split(/\r?\n/).map(w => w.trim()).filter(Boolean);
+                const n7 = words.filter(w => w.length === 7).length;
+                const n8 = words.filter(w => w.length === 8).length;
+                statusEl.innerHTML = `&#9989; You have a saved list of <strong>${words.length}</strong> known words (${n7} 7s, ${n8} 8s). Just click <strong>Start Game</strong> below to use it.`;
+                statusEl.style.color = "var(--success)";
+                startBtn.textContent = "▶ Start Game (Using Saved List)";
                 startBtn.style.backgroundColor = "var(--success)";
+                if (adjustDetailsOpen) details.open = false;
+            } else {
+                statusEl.innerHTML = "No saved list yet &mdash; using the small built-in example list (words containing AENRT). Open “Set up or change your known-word list” below to build your own first.";
+                statusEl.style.color = "var(--text-muted)";
+                startBtn.textContent = "▶ Start Game";
+                startBtn.style.backgroundColor = "";
+                if (adjustDetailsOpen) details.open = true;
             }
-        });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => refreshSavedListStatus());
     </script>
 </body>
 
