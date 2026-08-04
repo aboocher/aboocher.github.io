@@ -150,33 +150,6 @@
     margin-top:10px;
   }
 
-  /* ---- Matrix Banner ---- */
-  .matrix-banner{
-    background:var(--card);
-    border:1px dashed var(--line-strong);
-    border-radius:10px;
-    padding:14px 20px;
-    margin-bottom:40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
-  }
-  .matrix-banner p{margin:0; font-size:0.9rem; color:var(--ink-dim);}
-  .btn-matrix{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
-    color:var(--core);
-    background:var(--core-dim);
-    border:1px solid var(--core);
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-    text-decoration:none;
-  }
-  .btn-matrix:hover{background:var(--core-soft); color:var(--ink); border-color:var(--core-soft);}
-
   /* ---- Sections ---- */
   section{padding:36px 0; border-top:1px solid var(--line);}
   .section-head{margin-bottom:20px;}
@@ -202,6 +175,101 @@
   }
   .r-card .req{font-size:0.8rem; color:var(--ink-dim); line-height:1.3;}
 
+  h3.subhead{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.08em; margin:32px 0 6px;
+  }
+  .subhead-desc{color:var(--ink-dim); font-size:0.92rem; margin:0 0 16px; max-width:640px;}
+
+  /* ---- Matrix table ---- */
+  .matrix-scroll{ overflow-x:auto; }
+  table.matrix{
+    border-collapse:collapse;
+    width:100%;
+    min-width:560px;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  table.matrix th, table.matrix td{
+    border:1px solid var(--line);
+    padding:12px 10px;
+    text-align:center;
+    font-size:0.88rem;
+  }
+  table.matrix thead th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  table.matrix tbody th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  table.matrix .corner{ background:var(--bg-surface); }
+  .cell-grade{ font-family:'Fraunces', serif; font-weight:700; font-size:1.15rem; }
+  .cell-A{ background:rgba(47,158,68,0.10); color:var(--grade-a); }
+  .cell-B{ background:rgba(201,138,0,0.10); color:var(--grade-b); }
+  .cell-C{ background:rgba(217,105,31,0.10); color:var(--grade-c); }
+  .cell-D{ background:rgba(207,74,41,0.10); color:var(--grade-d); }
+  .cell-F{ background:rgba(204,51,51,0.10); color:var(--grade-f); }
+
+  table.matrix tbody tr, .r-card{ transition:opacity 0.2s, filter 0.2s; }
+  table.matrix tbody tr.row-dim td, table.matrix tbody tr.row-dim th{ opacity:0.35; filter:grayscale(60%); }
+  table.matrix tbody tr.row-active th{ background:var(--core); color:#fff; }
+  .r-card.row-dim{ opacity:0.35; filter:grayscale(60%); }
+  .r-card.row-active{ border:1px solid var(--core); box-shadow:0 0 0 2px var(--core-dim); }
+
+  .note{
+    background:var(--bg-surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--optional);
+    border-radius:8px;
+    padding:12px 16px;
+    font-size:0.88rem;
+    color:var(--ink-dim);
+    margin-top:16px;
+  }
+  .note b{color:var(--ink);}
+
+  /* ---- Unit breakdown table ---- */
+  table.units{
+    border-collapse:collapse;
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  table.units th, table.units td{
+    border-bottom:1px solid var(--line);
+    padding:10px 14px;
+    text-align:left;
+    font-size:0.9rem;
+  }
+  table.units th{
+    background:var(--bg-surface);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  table.units td.num, table.units th.num{ text-align:center; }
+  table.units tr:last-child td{ border-bottom:none; }
+  table.units tr.total td{ font-weight:600; background:var(--bg-surface); }
+  .tag-core{ color:var(--core); font-family:'IBM Plex Mono', monospace; font-size:0.75rem; }
+  .tag-opt{ color:var(--optional); font-family:'IBM Plex Mono', monospace; font-size:0.75rem; }
+
   /* ---- FAQ Section ---- */
   .faq-grid{display:grid; gap:12px;}
   .faq-item{
@@ -222,9 +290,10 @@
   <div class="wrap">
     <div class="brand">Math 150 <span class="brand-badge">Calculus I</span></div>
     <div class="links">
-      <a href="index.html">✏️ Standards &amp; Practice</a>
+      <a href="index.html">👋 How the Course Works</a>
+      <a href="standards.html">✏️ Standards &amp; Practice</a>
       <a href="#calculator">Grade Estimator</a>
-      <a href="#scale">Grade Scale</a>
+      <a href="#scale">Grade Matrix</a>
       <a href="#faq">Retake Policy</a>
     </div>
   </div>
@@ -234,7 +303,7 @@
   <header>
     <div class="eyebrow">Grades &amp; Policy</div>
     <h1>How Your Grade Works</h1>
-    <p class="subtitle">Curious where you stand? Estimate your projected grade below, see what each letter grade requires, and check the retake policy if you need another shot at a standard. Ready to practice instead? Head to the <a href="index.html" style="color:var(--core);">Standards &amp; Practice</a> hub.</p>
+    <p class="subtitle">Curious where you stand? Estimate your projected grade below, see what each letter grade requires, and check the retake policy if you need another shot at a standard. Ready to practice instead? Head to the <a href="standards.html" style="color:var(--core);">Standards &amp; Practice</a> hub.</p>
   </header>
 
   <!-- Interactive Estimator -->
@@ -247,13 +316,13 @@
         <input type="number" id="calcPct" min="0" max="100" value="88">
       </div>
       <div class="control-group">
-        <label for="calcCore">Core Passed (Max 26)</label>
+        <label for="calcCore">Core Passed (Max <span id="coreMaxLabel">26</span>)</label>
         <input type="number" id="calcCore" min="0" max="26" value="23">
       </div>
       <div class="control-group">
         <label class="checkbox-group" title="Optional standards: E1, E2, E3, E6.">
           <input type="checkbox" id="calcOpt">
-          <span style="font-size:0.85rem; color:var(--ink-dim);">Passed 3+ Optional Topics</span>
+          <span style="font-size:0.85rem; color:var(--ink-dim);">Passed <span id="optMinLabel">3</span>+ Optional Topics</span>
         </label>
       </div>
       <div class="result-card">
@@ -267,37 +336,44 @@
     <div class="prefill-note" id="prefillNote"></div>
   </div>
 
-  <!-- Full Matrix Link Banner -->
-  <div class="matrix-banner">
-    <p>Want to see every possible combination spelled out?</p>
-    <a href="full-matrix.html" class="btn-matrix">📄 View Full Matrix Page</a>
-  </div>
-
-  <!-- Grade Scale Summary -->
+  <!-- Grade Scale + Full Matrix -->
   <section id="scale">
     <div class="section-head">
       <div class="eyebrow">Course Requirements</div>
       <h2>Grade Thresholds</h2>
-      <p>Your overall grade combines two things: your course percentage, and how many core standards you've mastered. You need to clear both bars for a given letter grade.</p>
+      <p>Your core standards set a <b>ceiling and a floor</b> for your grade — you can never score better than your standards allow, but a rough percentage can only pull you down <b>one letter</b> below it. Your course percentage decides exactly where in that range you land. (The one exception: an A always requires actually hitting the percentage bar too — there's no floor above a B.)</p>
     </div>
-    <div class="rubric-cards">
-      <div class="r-card">
-        <span class="badge grade-A">A</span>
-        <div class="req"><b>90%+</b> (or 85%+ w/ 3 optionals)<br>&amp; <b>23+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-B">B</span>
-        <div class="req"><b>80%+</b> Course Percentage<br>&amp; <b>21+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-C">C</span>
-        <div class="req"><b>70%+</b> Course Percentage<br>&amp; <b>19+</b> Core Passed</div>
-      </div>
-      <div class="r-card">
-        <span class="badge grade-D">D</span>
-        <div class="req"><b>60%+</b> Course Percentage<br>&amp; <b>17+</b> Core Passed</div>
-      </div>
+    <div class="rubric-cards" id="rubricCards"><!-- rendered by renderRubricCards() --></div>
+
+    <h3 class="subhead">Cross-Reference</h3>
+    <p class="subhead-desc">Find your course-percentage column and your core-standards row — the cell where they intersect is your letter grade. Type your Core Passed count into the estimator above and this table will highlight your row.</p>
+    <div class="matrix-scroll">
+      <table class="matrix" id="matrixTable">
+        <thead id="matrixHead"><!-- rendered by renderMatrix() --></thead>
+        <tbody id="matrixBody"><!-- rendered by renderMatrix() --></tbody>
+      </table>
     </div>
+    <div class="note" id="matrixCallout">
+      Type your Core Passed count into the estimator above to see your guaranteed floor and ceiling highlighted here.
+    </div>
+    <div class="note" id="boostNote"><!-- rendered by renderBoostNote() --></div>
+
+    <h3 class="subhead">Core Standards by Unit</h3>
+    <p class="subhead-desc">The <span id="coreTotalLabel1">26</span> core standards behind the "Core Passed" axis above, grouped by unit. Optional standards are tracked separately and never count toward the total.</p>
+    <table class="units">
+      <thead>
+        <tr><th>Unit</th><th>Standards</th><th class="num">Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Gateway Topics</td><td><span class="tag-core">G1 · G2 · G3 · G4</span></td><td class="num">4</td></tr>
+        <tr><td>Limits</td><td><span class="tag-core">L1 · L3 · L4 · L5</span></td><td class="num">4</td></tr>
+        <tr><td>Derivatives</td><td><span class="tag-core">D1 · D2 · D3 · D4 · D5 · D6 · D7</span></td><td class="num">7</td></tr>
+        <tr><td>Applications of Derivatives</td><td><span class="tag-core">A1 · A2 · A3 · A4</span></td><td class="num">4</td></tr>
+        <tr><td>Integration</td><td><span class="tag-core">I1 · I2 · I3 · I4 · I5 · I6 · I7</span></td><td class="num">7</td></tr>
+        <tr class="total"><td>Core Total</td><td>—</td><td class="num" id="coreTotalLabel2">26</td></tr>
+        <tr><td>Additional &amp; Advanced (optional)</td><td><span class="tag-opt">E1 · E2 · E3 · E6</span></td><td class="num">4</td></tr>
+      </tbody>
+    </table>
   </section>
 
   <!-- Retake Policy / FAQ -->
@@ -320,13 +396,189 @@
   </section>
 
   <footer>
-    Math 150 · Calculus I — one standard at a time, you've got this. · <a href="index.html" style="color:var(--ink-faint);">Standards &amp; Practice →</a>
+    Math 150 · Calculus I — one standard at a time, you've got this. · <a href="standards.html" style="color:var(--ink-faint);">Standards &amp; Practice →</a>
   </footer>
 </div>
 
 <script>
+  // ============================================================================
+  // GRADE_CONFIG — the single source of truth for every grading threshold on
+  // this page. Change a number here and the estimator, the matrix table, and
+  // the rubric cards all regenerate to match — nothing else needs editing.
+  //
+  //   coreTotal   — total core standards in the course
+  //   tiers       — ordered BEST (A) to WORST (D). Each tier's coreMin/pctMin
+  //                 is the minimum to reach that tier on that axis. F is
+  //                 implicit: anything below the last tier's minimums.
+  //   optionalBoost — passing `minPassed`+ optional standards drops the A
+  //                   percentage bar from the base (tiers[0].pctMin) to
+  //                   `boostedPct`.
+  //
+  // Combination rule (see PROGRESS.md "Grading policy redesign" for the full
+  // rationale): core standards set a CEILING (final grade can never exceed
+  // your standards tier) and a FLOOR one letter below the ceiling (percentage
+  // can only drag you down one letter, never further). A is the one
+  // exception to the floor — it still requires actually hitting the
+  // percentage bar, which falls out of the math for free.
+  // ============================================================================
+  const GRADE_CONFIG = {
+    coreTotal: 26,
+    tiers: [
+      { grade: 'A', coreMin: 23, pctMin: 90 },
+      { grade: 'B', coreMin: 21, pctMin: 80 },
+      { grade: 'C', coreMin: 19, pctMin: 70 },
+      { grade: 'D', coreMin: 17, pctMin: 60 },
+    ],
+    optionalBoost: { minPassed: 3, boostedPct: 85 },
+  };
+
   const CORE_PREFIXES = ['G','L','D','A','I'];
   const OPTIONAL_CODES = ['E1','E2','E3','E6'];
+
+  // ---- Derived from GRADE_CONFIG — don't hand-edit these, edit the config above ----
+  const GRADES = ['F', ...GRADE_CONFIG.tiers.slice().reverse().map(t => t.grade)]; // ['F','D','C','B','A']
+  const MIN_CORE_FOR_ANY_GRADE = GRADE_CONFIG.tiers[GRADE_CONFIG.tiers.length - 1].coreMin;
+
+  function reqAPct(opt) {
+    return opt ? GRADE_CONFIG.optionalBoost.boostedPct : GRADE_CONFIG.tiers[0].pctMin;
+  }
+
+  function standardsRank(core) {
+    const tiers = GRADE_CONFIG.tiers;
+    for (let i = 0; i < tiers.length; i++) {
+      if (core >= tiers[i].coreMin) return tiers.length - i;
+    }
+    return 0;
+  }
+
+  function percentRank(pct, reqA_pct) {
+    const tiers = GRADE_CONFIG.tiers;
+    for (let i = 0; i < tiers.length; i++) {
+      const min = i === 0 ? reqA_pct : tiers[i].pctMin;
+      if (pct >= min) return tiers.length - i;
+    }
+    return 0;
+  }
+
+  function pctNeededForRank(rank, reqA_pct) {
+    if (rank === 0) return 0;
+    const i = GRADE_CONFIG.tiers.length - rank;
+    return i === 0 ? reqA_pct : GRADE_CONFIG.tiers[i].pctMin;
+  }
+
+  // Core bands, best (A) to worst (F), as {grade, min, max}.
+  function coreBands() {
+    const tiers = GRADE_CONFIG.tiers;
+    const bands = tiers.map((t, i) => ({
+      grade: t.grade,
+      min: t.coreMin,
+      max: i === 0 ? GRADE_CONFIG.coreTotal : tiers[i - 1].coreMin - 1,
+    }));
+    bands.push({ grade: 'F', min: 0, max: MIN_CORE_FOR_ANY_GRADE - 1 });
+    return bands;
+  }
+
+  // Percent bands (unboosted/base thresholds — used for the static matrix
+  // reference table; the boost is explained separately in the note below it).
+  function pctBands() {
+    const tiers = GRADE_CONFIG.tiers;
+    const bands = tiers.map((t, i) => ({
+      grade: t.grade,
+      min: t.pctMin,
+      max: i === 0 ? 100 : tiers[i - 1].pctMin - 1,
+    }));
+    bands.push({ grade: 'F', min: 0, max: tiers[tiers.length - 1].pctMin - 1 });
+    return bands;
+  }
+
+  function finalGradeInfo(core, pct, opt) {
+    const reqA_pct = reqAPct(opt);
+    const sRank = standardsRank(core);
+    const pRank = percentRank(pct, reqA_pct);
+    const floorRank = Math.max(sRank - 1, 0);
+    const finalRank = Math.min(Math.max(pRank, floorRank), sRank);
+    return {
+      grade: GRADES[finalRank],
+      ceiling: GRADES[sRank],
+      ceilingPct: pctNeededForRank(sRank, reqA_pct),
+      floor: GRADES[floorRank],
+      atCeiling: finalRank === sRank,
+      reqA_pct,
+    };
+  }
+
+  // ---- Rendering: matrix table, rubric cards, and boost note all generate
+  // from GRADE_CONFIG on load, so they can never drift out of sync with the
+  // actual calculation. ----
+  function renderMatrix() {
+    const cBands = coreBands();
+    const pBands = pctBands();
+
+    document.getElementById('matrixHead').innerHTML =
+      '<tr><th class="corner">Core Passed ↓ / Course % →</th>' +
+      pBands.map(b => `<th>${b.min}–${b.max}%</th>`).join('') +
+      '</tr>';
+
+    document.getElementById('matrixBody').innerHTML = cBands.map((cb, ci) => {
+      const sRank = cBands.length - 1 - ci;
+      const label = cb.min === cb.max ? `${cb.min}` : `${cb.min}–${cb.max}`;
+      const cells = pBands.map((pb, pi) => {
+        const pRank = pBands.length - 1 - pi;
+        const floorRank = Math.max(sRank - 1, 0);
+        const finalRank = Math.min(Math.max(pRank, floorRank), sRank);
+        const g = GRADES[finalRank];
+        return `<td class="cell-${g}"><span class="cell-grade">${g}</span></td>`;
+      }).join('');
+      return `<tr data-min-core="${cb.min}"><th>${label}</th>${cells}</tr>`;
+    }).join('');
+  }
+
+  function renderRubricCards() {
+    const cBands = coreBands();
+    const baseAPct = GRADE_CONFIG.tiers[0].pctMin;
+    const boost = GRADE_CONFIG.optionalBoost;
+
+    document.getElementById('rubricCards').innerHTML = cBands.map((cb, ci) => {
+      const sRank = cBands.length - 1 - ci;
+      const floorRank = Math.max(sRank - 1, 0);
+      const floorGrade = GRADES[floorRank];
+      const ceilingGrade = GRADES[sRank];
+      const label = cb.min === cb.max ? `${cb.min}` : `${cb.min}–${cb.max}`;
+      const pctNeeded = pctNeededForRank(sRank, baseAPct);
+
+      let req;
+      if (sRank === 0) {
+        req = `Core Standards Passed<br>Capped at <b>F</b> — percentage can't help below ${MIN_CORE_FOR_ANY_GRADE}`;
+      } else if (ceilingGrade === 'A') {
+        req = `Core Standards Passed<br>Guarantees at least a <b>${floorGrade}</b> · reach <b>${pctNeeded}%+</b> (${boost.boostedPct}%+ boosted) for <b>${ceilingGrade}</b>`;
+      } else if (floorRank === 0) {
+        req = `Core Standards Passed<br>Reach <b>${pctNeeded}%+</b> for <b>${ceilingGrade}</b>, otherwise <b>F</b>`;
+      } else {
+        req = `Core Standards Passed<br>Guarantees at least a <b>${floorGrade}</b> · reach <b>${pctNeeded}%+</b> for <b>${ceilingGrade}</b>`;
+      }
+
+      return `<div class="r-card" data-min-core="${cb.min}">
+        <span class="badge grade-${ceilingGrade}">${label}</span>
+        <div class="req">${req}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderBoostNote() {
+    const boost = GRADE_CONFIG.optionalBoost;
+    const aTier = GRADE_CONFIG.tiers[0];
+    const otherGrades = GRADE_CONFIG.tiers.slice(1).map(t => t.grade).join('/');
+    document.getElementById('boostNote').innerHTML =
+      `<b>Optional-topics boost:</b> if you've passed <b>${boost.minPassed} or more</b> of the four optional standards (E1, E2, E3, E6), the course-percentage bar for an ${aTier.grade} drops from ${aTier.pctMin}% to <b>${boost.boostedPct}%</b>. This only affects the top row, and only when your percentage lands between ${boost.boostedPct}% and ${aTier.pctMin - 1}%. It has no effect on the ${otherGrades} rows, since those never required hitting an exact percentage — only a floor.`;
+  }
+
+  function renderStaticLabels() {
+    document.getElementById('coreMaxLabel').textContent = GRADE_CONFIG.coreTotal;
+    document.getElementById('optMinLabel').textContent = GRADE_CONFIG.optionalBoost.minPassed;
+    document.getElementById('coreTotalLabel1').textContent = GRADE_CONFIG.coreTotal;
+    document.getElementById('coreTotalLabel2').textContent = GRADE_CONFIG.coreTotal;
+    document.getElementById('calcCore').max = GRADE_CONFIG.coreTotal;
+  }
 
   function loadProgress(){
     try{
@@ -345,7 +597,7 @@
     const optionalPassed = codes.filter(c => OPTIONAL_CODES.includes(c)).length;
 
     document.getElementById('calcCore').value = corePassed;
-    document.getElementById('calcOpt').checked = optionalPassed >= 3;
+    document.getElementById('calcOpt').checked = optionalPassed >= GRADE_CONFIG.optionalBoost.minPassed;
 
     const note = document.getElementById('prefillNote');
     note.textContent = `Prefilled from your saved progress on the Standards & Practice page: ${corePassed} core passed, ${optionalPassed} optional passed. Feel free to override these to try other scenarios.`;
@@ -360,25 +612,63 @@
     const core = parseInt(document.getElementById('calcCore').value) || 0;
     const opt = document.getElementById('calcOpt').checked;
 
-    const reqA_pct = opt ? 85 : 90;
-    let grade = 'F';
-    let status = 'Needs Improvement';
-
-    if (pct >= reqA_pct && core >= 23) { grade = 'A'; status = opt ? 'Qualifies for A (Boosted)' : 'Qualifies for A'; }
-    else if (pct >= 80 && core >= 21) { grade = 'B'; status = 'Qualifies for B'; }
-    else if (pct >= 70 && core >= 19) { grade = 'C'; status = 'Qualifies for C'; }
-    else if (pct >= 60 && core >= 17) { grade = 'D'; status = 'Qualifies for D'; }
+    const info = finalGradeInfo(core, pct, opt);
+    let status;
+    if (core < MIN_CORE_FOR_ANY_GRADE) {
+      status = `Below ${MIN_CORE_FOR_ANY_GRADE} core standards caps you at F — no percentage can lift you above it`;
+    } else if (info.atCeiling) {
+      status = (info.grade === 'A' && opt) ? 'Qualifies for A (Boosted)' : `On track for ${info.grade}`;
+    } else {
+      status = `${info.grade} for now — reach ${info.ceilingPct}%+ for your ${info.ceiling} ceiling`;
+    }
 
     const outputEl = document.getElementById('gradeOutput');
-    outputEl.textContent = grade;
-    outputEl.className = 'grade-display grade-' + grade;
+    outputEl.textContent = info.grade;
+    outputEl.className = 'grade-display grade-' + info.grade;
     document.getElementById('gradeStatus').textContent = status;
+
+    highlightMatrix(core, pct, opt);
+  }
+
+  function highlightMatrix(core, pct, opt) {
+    const info = finalGradeInfo(core, pct, opt);
+    const rows = document.querySelectorAll('#matrixTable tbody tr');
+    const cards = document.querySelectorAll('#rubricCards .r-card');
+    let activeMinCore = 0;
+    rows.forEach(row => {
+      const minCore = parseInt(row.dataset.minCore, 10);
+      if (minCore <= core && minCore >= activeMinCore) activeMinCore = minCore;
+    });
+
+    rows.forEach(row => {
+      const isActive = parseInt(row.dataset.minCore, 10) === activeMinCore;
+      row.classList.toggle('row-active', isActive);
+      row.classList.toggle('row-dim', !isActive);
+    });
+    cards.forEach(card => {
+      const isActive = parseInt(card.dataset.minCore, 10) === activeMinCore;
+      card.classList.toggle('row-active', isActive);
+      card.classList.toggle('row-dim', !isActive);
+    });
+
+    const callout = document.getElementById('matrixCallout');
+    if (core < MIN_CORE_FOR_ANY_GRADE) {
+      callout.innerHTML = `With <b>${core}</b> core standards passed, you're capped at <b>F</b> — you need at least ${MIN_CORE_FOR_ANY_GRADE} core standards before percentage can help at all.`;
+    } else if (info.ceiling === info.floor) {
+      callout.innerHTML = `With <b>${core}</b> core standards passed, your grade is <b>${info.ceiling}</b> no matter your percentage.`;
+    } else {
+      callout.innerHTML = `With <b>${core}</b> core standards passed, you're <b>guaranteed at least a ${info.floor}</b> — and a strong percentage can lift you to <b>${info.ceiling}</b>.`;
+    }
   }
 
   document.getElementById('calcPct').addEventListener('input', calculateGrade);
   document.getElementById('calcCore').addEventListener('input', calculateGrade);
   document.getElementById('calcOpt').addEventListener('change', calculateGrade);
 
+  renderStaticLabels();
+  renderMatrix();
+  renderRubricCards();
+  renderBoostNote();
   prefillFromProgress();
   calculateGrade();
 </script>

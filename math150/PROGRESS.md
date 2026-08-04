@@ -5,11 +5,14 @@ Context doc for continuing this work in a fresh conversation. Paste/attach this 
 
 ## Project
 
-Site is split into two pages as of 2026-08-03 (see "Site restructuring" below):
-`math150/index.html` is the **Standards & Practice** hub — an accordion
+Site is three pages as of 2026-08-03 (see "Site restructuring" below):
+`math150/index.html` is now the **course-flow explainer/landing page** ("How the Course Works")
+— the first thing a student sees at `aboocher.github.io/math150/`. The old landing content moved
+to `math150/standards.html`, the **Standards & Practice** hub — an accordion
 **Standards Directory** linking to one practice-bank page per standard at
 `math150/standards/<CODE>.html`, plus per-section review-sheet placeholders. Grade estimator,
-thresholds, full matrix, and retake FAQ moved to `math150/math150-grades.html`.
+thresholds, full matrix, and retake FAQ live in `math150/math150-grades.html`. All three pages
+cross-link each other via `<nav>`.
 
 Source material: the teacher's real quizzes live in
 `math150/standards/OurQuizzes/Math150_Fall2026 (1)/<Folder>/`, one `.tex` file per quiz version
@@ -70,7 +73,7 @@ whether quiz files exist elsewhere, or whether to build from the ledger's one-li
 ## Established page template (follow exactly — copy `G2.html` as the starting point)
 
 Structure, in order:
-1. Back link to `../index.html`
+1. Back link to `../standards.html`
 2. Header: eyebrow "Standard Practice Bank" + `<h1>CODE: Title</h1>`
 3. Plain intro block: one sentence stating problem count, then a bullet list of key
    pitfalls/reminders for that standard (no box/border around it)
@@ -142,26 +145,26 @@ Other conventions:
 - G1 and G2 were built before the color-scheme/diagram conventions above existed. Their content
   is correct but they haven't been retrofitted with diagrams (G1 doesn't really need any; G2
   could benefit from a line-graph SVG in the "Applications" group — ask the user if desired).
-- `math150/full-matrix.html` (built 2026-08-03) fills the previously-dead banner link. It derives
-  a 5×5 "core standards passed" × "course %" grade cross-tab straight from the estimator's JS
-  (`calculateGrade()`, now living in `math150-grades.html`) — each axis is graded independently
-  against the same thresholds (90/80/70/60 for %, 23/21/19/17 for core) and the cell takes the
-  *worse* of the two letters. If the estimator's thresholds ever change, this matrix must be
-  regenerated to match (also update the optional-topics-boost footnote, which currently reflects
-  the 85%-with-3-optionals rule).
+- `math150/full-matrix.html` existed briefly (built 2026-08-03) as a standalone matrix page, then
+  was merged directly into `math150-grades.html`'s `#scale` section and deleted the same day —
+  user didn't want it as a separate page. The 5×5 "core standards passed" × "course %" cross-tab
+  now lives inline there. Its combination rule was later redesigned the same day — see "Grading
+  policy redesign" below for the current (ceiling/floor clamp) logic; don't assume "worse of the
+  two axes" anymore.
 
 ## Site restructuring (2026-08-03)
 
 Split the single course-hub page into two, per user request, so students land on whichever they
 actually need without scrolling past the other:
 
-- **`index.html`** (renamed from `math150-standards-ledger.html` on 2026-08-03, so
-  `aboocher.github.io/math150/` just works) — Standards & Practice hub. Nav, header, Standards
+- **`standards.html`** (renamed from `math150-standards-ledger.html`, then from `index.html` —
+  see the second restructuring note below) — Standards & Practice hub. Nav, header, Standards
   Directory accordion (unchanged structure/content), a progress summary banner, and a
   "📘 Review Sheet" link per unit pointing into the new `standards/review/` placeholders.
 - **`math150-grades.html`** (new) — Grades & Policy hub. Interactive Estimator, Grade
-  Thresholds, Full Matrix banner, Retake Policy/FAQ — moved verbatim from the old ledger, same
-  IDs/styles. `full-matrix.html`'s back-link now points here instead of the ledger.
+  Thresholds, Retake Policy/FAQ — moved verbatim from the old ledger, same IDs/styles. The full
+  grading matrix was later merged directly into this page's `#scale` section (see note above) —
+  there is no separate matrix page anymore.
 - Both pages cross-link each other in their `<nav>`.
 
 **localStorage progress tracker** (shared key across both pages): `math150_progress` in
@@ -181,3 +184,122 @@ reference + fully worked example per standard, eventually linked explainer video
 future work, not started. When building these out for real, follow the same page-template
 conventions as the standard practice-bank pages (see template section above), and pause after
 each one for review, same as standard pages.
+
+## Second restructuring — course-flow landing page (2026-08-03)
+
+Per user request, `math150/index.html` was repurposed as a "How the Course Works" explainer —
+an even more basic entry point than the Standards & Practice hub, aimed at orienting a first-year
+student before they see any standards at all. The former `index.html` (the Standards & Practice
+hub) was renamed to **`standards.html`**. All three hub pages (`index.html`, `standards.html`,
+`math150-grades.html`) now cross-link each other in `<nav>`; every back-link on the 22
+practice-bank pages and 6 review placeholders was repointed from `../index.html` /
+`../../index.html` to `../standards.html` / `../../standards.html`.
+
+Content on the new `index.html`, straight from the user's description of how the course actually
+runs — treat this as the source of truth if it ever needs updating:
+- **Two grade tracks, color-coded**: a coral-bordered card for the "Standards Track" (direct,
+  self-paced mastery quizzes, unlimited retakes) and a teal-bordered card for "Class Time,
+  Capstones & Your Percentage" (deeper/exploratory in-class work + capstones). Coral reuses
+  `--core`, teal reuses `--optional` — same semantic colors as the rest of the site, just applied
+  to a new distinction (mastery track vs. percentage track, not core-vs-optional standards).
+- **"A Day in This Class"**: three recurring activity types (standard-style practice, exploratory
+  challenge problems, project work), all feeding the class participation grade — framed as "why
+  attendance pays off twice" (participation credit + it's how skills actually get built).
+- **Capstones**: four total, one per major unit — Limits, Derivatives, Applications, Integration
+  — shown as a 4-pill row, **plus a separate standalone final exam** (5th pill, styled distinctly)
+  at the end of the semester. Capstones and the final are graded like midterms (not retakable,
+  unlike standards). Corrected 2026-08-03 — an earlier draft of this page said the 4th capstone
+  doubled as the final; user clarified the final is its own exam in addition to all four
+  capstones. This matches the existing LC/DC/AC/IC capstone codes noted as
+  out-of-scope-for-practice-pages earlier in this doc; Gateway has no capstone (it's prerequisite
+  review, not one of the four graded units). If the capstone count/order or the final's structure
+  ever changes again, update both the `.capstone-row` markup here and this note.
+- **Extra-credit callout** (`.bonus-box`, amber accent — reuses `--grade-b`'s hue as a new
+  `--amber` variable rather than introducing an unrelated color): explicitly reassures students
+  that standard retakes are the real safety net, so they likely won't need traditional extra
+  credit; separately explains the optional-topics video-modules plan (E1/E2/E3/E6) and the
+  85%-with-3-optionals A-grade boost, linking to `standards.html#optional-topics` (an `id` added
+  to that specific accordion unit-block for this deep link — don't remove it).
+  Framing note: the optional topics are **intentionally** beyond the core curriculum ("go beyond
+  the core of the course... if you want to go deeper") — not things we "won't have time for."
+  An earlier draft used the "won't have time" framing and the user corrected it; don't reintroduce
+  that phrasing.
+
+## Corrections + matrix consolidation (2026-08-03)
+
+User review caught two factual errors on the new `index.html` and requested a structural change
+on the grades page:
+1. **Final exam is separate from the capstones** (not merged into the 4th one) — fixed, see the
+   Capstones note above.
+2. **Optional-topics framing** — fixed, see the note above.
+3. **`full-matrix.html` deleted**; its content (rule-recap cards, cross-reference table,
+   optional-boost note, unit-breakdown table) now lives inline in `math150-grades.html`'s
+   `#scale` section. The "View Full Matrix Page" banner/button is gone. Nav label there changed
+   from "Grade Scale" to "Grade Matrix" (still `href="#scale"`, id unchanged).
+
+### Grading policy redesign — resolved (2026-08-03)
+
+User's intent, verbatim: **"we want to be strict with the standards but more relaxed with the
+letter grade."** Landed rule, implemented in `math150-grades.html` (`calculateGrade()` +
+`finalGradeInfo()` in the `<script>`, the inline matrix table, and the rubric-cards):
+
+- Core standards set a **ceiling** (`standardsRank`, from the same 23/21/19/17 bands as before —
+  A/B/C/D/F tiers by rank 4..0) — your final grade can **never exceed** this, no matter how high
+  your percentage is. This is the "strict with standards" half.
+- Core standards also set a **floor**, exactly **one letter rank below the ceiling**
+  (`Math.max(sRank - 1, 0)`) — your final grade can never be dragged down more than one letter by
+  a weak percentage. This is the "more relaxed with the letter grade [via percentage]" half.
+- Final grade = `percentRank` clamped into `[floor, ceiling]`.
+- **A is still strict**: this falls out of the formula for free rather than needing a special
+  case — to land on A, `sRank` must be 4 (23+ core) *and* `percentRank` must also be 4 (i.e.
+  actually hit 90%, or 85% boosted). If percent misses that bar, the clamp floors you to B, never
+  all the way to A — there's no partial credit for A specifically, exactly as the user asked.
+- Below 17 core (`sRank` = 0), ceiling = floor = F — percentage can't lift you at all. This is
+  intentional, not a bug: standards remain the hard gate.
+
+Every row in the 5×5 matrix now only ever shows **two possible letters** (its ceiling and its
+floor) instead of the old full A→F spread — e.g. the 23–26 core row is now `A,B,B,B,B` instead of
+`A,B,C,D,F`.
+
+**Interactive row highlighting** (also new): typing a value into the Estimator's "Core Passed"
+input now also drives `highlightMatrix()`, which finds the matching `data-min-core` row/card,
+dims every other row/card (`.row-dim`), highlights the match (`.row-active`), and writes a plain-
+language callout into `#matrixCallout` ("With N core standards passed, you're guaranteed at least
+a ___, and a strong percentage can lift you to ___.").
+
+### Config-driven refactor (2026-08-03, same day)
+
+User asked for an easy way to tweak these numbers going forward (expects to adjust them again).
+Refactored `math150-grades.html` so **every threshold lives in one place**: the `GRADE_CONFIG`
+object at the top of the `<script>` block —
+
+```js
+const GRADE_CONFIG = {
+  coreTotal: 26,
+  tiers: [
+    { grade: 'A', coreMin: 23, pctMin: 90 },
+    { grade: 'B', coreMin: 21, pctMin: 80 },
+    { grade: 'C', coreMin: 19, pctMin: 70 },
+    { grade: 'D', coreMin: 17, pctMin: 60 },
+  ],
+  optionalBoost: { minPassed: 3, boostedPct: 85 },
+};
+```
+
+The matrix table (`renderMatrix()`), the rubric cards (`renderRubricCards()`), the boost
+explainer note (`renderBoostNote()`), and small labels like "Max 26" / "3+ Optional Topics"
+(`renderStaticLabels()`) are **all generated from this object on page load** — the `<thead>`,
+`<tbody>`, and `.rubric-cards` containers in the HTML start empty (`id="matrixHead"`,
+`id="matrixBody"`, `id="rubricCards"`) and get filled in by JS. **There is no static/hardcoded
+copy of the matrix or cards left in the HTML anymore** — editing `GRADE_CONFIG` and reloading the
+page is the only step needed to change thresholds. `standardsRank()`, `percentRank()`,
+`pctNeededForRank()`, `coreBands()`, and `pctBands()` all derive from `GRADE_CONFIG` too, so the
+live estimator, the matrix, and the cards can't drift out of sync with each other.
+
+To add a grade tier (e.g. a "B+") or change any threshold: edit the `tiers` array (keep it
+ordered best-to-worst — order determines rank, not the `grade` label) or `optionalBoost`, save,
+reload. Nothing else in the file needs to change. `coreTotal` also drives the "Core Passed (Max
+N)" label and the unit-breakdown table's total row/intro text via `coreTotalLabel1`/
+`coreTotalLabel2` spans (the per-unit standard counts in that table are curriculum data, not
+threshold data, and are still hand-written — update them separately if a standard is added or
+removed from a unit).

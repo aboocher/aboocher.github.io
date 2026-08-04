@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math 150 — Standards & Practice</title>
+<title>Math 150 — How the Course Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -22,11 +22,8 @@
     --core-dim: rgba(201,69,31,0.12);
     --optional: #16816f;
     --optional-dim: rgba(22,129,111,0.12);
-    --grade-a: #2f9e44;
-    --grade-b: #c98a00;
-    --grade-c: #d9691f;
-    --grade-d: #cf4a29;
-    --grade-f: #cc3333;
+    --amber: #b5790a;
+    --amber-dim: rgba(201,138,0,0.12);
   }
 
   *{box-sizing:border-box;}
@@ -41,7 +38,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     font-size:15px;
-    line-height:1.5;
+    line-height:1.6;
   }
 
   .wrap{max-width:920px; margin:0 auto; padding:0 20px;}
@@ -86,160 +83,106 @@
   h1{font-size:2.2rem; line-height:1.15;}
   .subtitle{color:var(--ink-dim); font-size:1rem; margin-top:10px; max-width:640px;}
 
-  /* ---- Progress Summary ---- */
-  .progress-banner{
-    background:var(--bg-surface);
-    border:1px solid var(--line-strong);
-    border-radius:14px;
-    padding:18px 24px;
-    margin:24px 0 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:12px;
-    box-shadow: 0 10px 30px rgba(51,41,68,0.08);
-  }
-  .progress-banner p{margin:0; font-size:0.9rem; color:var(--ink-dim);}
-  .progress-counts{display:flex; gap:20px;}
-  .progress-count{text-align:center;}
-  .progress-count .num{
-    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; color:var(--core); display:block;
-  }
-  .progress-count.optional .num{color:var(--optional);}
-  .progress-count .lbl{
-    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--ink-faint); text-transform:uppercase;
-  }
-  .btn-matrix{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
-    color:var(--core);
-    background:var(--core-dim);
-    border:1px solid var(--core);
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-    text-decoration:none;
-  }
-  .btn-matrix:hover{background:var(--core-soft); color:var(--ink); border-color:var(--core-soft);}
-
   /* ---- Sections ---- */
-  section{padding:36px 0; border-top:1px solid var(--line);}
+  section{padding:32px 0; border-top:1px solid var(--line);}
   .section-head{margin-bottom:20px;}
   .section-head h2{font-size:1.5rem;}
-  .section-head p{color:var(--ink-dim); font-size:0.92rem; margin-top:4px;}
+  .section-head p{color:var(--ink-dim); font-size:0.95rem; margin-top:6px; max-width:680px;}
 
-  /* ---- Grade Threshold Cards ---- */
-  .rubric-cards{
+  /* ---- Two-track columns ---- */
+  .track-grid{
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap:12px;
-    margin-bottom:20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap:18px;
   }
-  .r-card{
+  .track-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--core);
+    border-radius:12px;
+    padding:22px 24px;
+  }
+  .track-card.track-percent{border-left-color:var(--optional);}
+  .track-label{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem;
+    color:var(--core); margin-bottom:10px;
+  }
+  .track-percent .track-label{color:var(--optional);}
+  .track-card p{color:var(--ink-dim); font-size:0.92rem; margin:0 0 14px;}
+  .track-cta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
+    color:var(--core); text-decoration:none; font-weight:600;
+  }
+  .track-percent .track-cta{color:var(--optional);}
+  .track-cta:hover{text-decoration:underline;}
+
+  /* ---- Daily flow list ---- */
+  .flow-list{display:grid; gap:14px; margin:0 0 16px;}
+  .flow-item{
+    display:flex; gap:14px; align-items:flex-start;
     background:var(--bg-surface);
     border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 18px;
+  }
+  .flow-icon{font-size:1.3rem; line-height:1.3;}
+  .flow-text{color:var(--ink-dim); font-size:0.92rem;}
+  .flow-text b{color:var(--ink); font-weight:600;}
+  .flow-note{color:var(--ink-dim); font-size:0.92rem; max-width:680px;}
+
+  /* ---- Capstone pills ---- */
+  .capstone-row{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap:10px;
+    margin:18px 0 16px;
+  }
+  .capstone-pill{
+    background:var(--bg-surface);
+    border:1px solid var(--line-strong);
     border-radius:10px;
     padding:14px;
     text-align:center;
   }
-  .r-card .badge{
-    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; display:block; margin-bottom:4px;
+  .capstone-pill .num{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px;
   }
-  .r-card .req{font-size:0.8rem; color:var(--ink-dim); line-height:1.3;}
+  .capstone-pill .name{font-family:'Fraunces', serif; font-weight:600; font-size:1rem;}
+  .capstone-pill.is-final{border-color:var(--core); background:var(--core-dim);}
+  .capstone-pill.is-final .name{color:var(--core);}
+  .capstone-note{color:var(--ink-dim); font-size:0.92rem; max-width:680px;}
 
-  /* ---- Collapsible Accordion Units ---- */
-  .unit-block{
-    margin-bottom:16px;
-    border:1px solid var(--line-strong);
-    border-radius:12px;
-    background:var(--bg-surface);
-    overflow:hidden;
+  /* ---- Bonus / extra-credit callout ---- */
+  .bonus-box{
+    background:var(--amber-dim);
+    border:1px solid var(--amber);
+    border-radius:14px;
+    padding:22px 26px;
   }
-  .unit-header-btn{
-    width:100%;
-    background:none;
-    border:none;
-    padding:16px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:var(--ink);
-    cursor:pointer;
-    text-align:left;
-    transition:background 0.15s;
+  .bonus-box h3{color:var(--amber); font-size:1.1rem; margin-bottom:10px;}
+  .bonus-box p{color:var(--ink); font-size:0.94rem; margin:0 0 12px;}
+  .bonus-box p:last-of-type{margin-bottom:14px;}
+  .bonus-cta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
+    color:var(--amber); text-decoration:none; font-weight:600;
   }
-  .unit-header-btn:hover{background:var(--card-hover);}
-  .unit-header-title{
-    font-family:'Fraunces', serif;
-    font-size:1.15rem;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .chevron{font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--ink-faint); transition:transform 0.2s;}
-  .unit-block.open .chevron{transform:rotate(90deg);}
-  .unit-count{font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--ink-faint);}
-  .unit-content{display:none; padding:0 20px 16px; border-top:1px solid var(--line); background:rgba(51,41,68,0.03);}
-  .unit-block.open .unit-content{display:block;}
+  .bonus-cta:hover{text-decoration:underline;}
 
-  .unit-review-row{padding:12px 20px 0; display:flex; justify-content:flex-end;}
-  .btn-review{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.72rem;
-    color:var(--ink-dim);
-    background:var(--card);
-    border:1px solid var(--line-strong);
-    padding:5px 10px;
-    border-radius:5px;
-    text-decoration:none;
-    white-space:nowrap;
+  /* ---- CTA row ---- */
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn-primary{
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; font-weight:600;
+    color:#fff; background:var(--core); border:1px solid var(--core);
+    padding:12px 20px; border-radius:8px; text-decoration:none;
   }
-  .btn-review:hover{border-color:var(--core); color:var(--core);}
-
-  .std-row{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:12px 16px;
-    margin-top:10px;
-    display:grid;
-    grid-template-columns: 24px 48px 1fr auto;
-    gap:14px;
-    align-items:center;
+  .btn-primary:hover{background:var(--core-soft); border-color:var(--core-soft);}
+  .btn-secondary{
+    font-family:'IBM Plex Mono', monospace; font-size:0.85rem; font-weight:600;
+    color:var(--optional); background:var(--optional-dim); border:1px solid var(--optional);
+    padding:12px 20px; border-radius:8px; text-decoration:none;
   }
-  .std-pass{width:18px; height:18px; accent-color:var(--core); cursor:pointer;}
-  .std-row.optional .std-pass{accent-color:var(--optional);}
-  .std-code{font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:0.85rem; color:var(--core);}
-  .std-row.optional .std-code{color:var(--optional);}
-  .std-desc{font-size:0.9rem; color:var(--ink-dim);}
-  .std-row.is-passed{border-color:var(--core); background:var(--core-dim);}
-  .std-row.optional.is-passed{border-color:var(--optional); background:var(--optional-dim);}
-  .btn-practice{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.75rem;
-    color:var(--ink);
-    background:var(--bg-surface);
-    border:1px solid var(--line-strong);
-    padding:6px 12px;
-    border-radius:5px;
-    text-decoration:none;
-    white-space:nowrap;
-    transition:all 0.15s;
-  }
-  .btn-practice:hover{border-color:var(--core); color:var(--core);}
-
-  /* ---- FAQ Section ---- */
-  .faq-grid{display:grid; gap:12px;}
-  .faq-item{
-    background:var(--bg-surface);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:16px 20px;
-  }
-  .faq-item h3{font-size:1.05rem; color:var(--ink); margin-bottom:6px;}
-  .faq-item p{color:var(--ink-dim); font-size:0.9rem; margin:0;}
+  .btn-secondary:hover{background:var(--optional); color:#fff;}
 
   footer{padding:40px 0; text-align:center; color:var(--ink-faint); font-size:0.8rem;}
 </style>
@@ -250,7 +193,7 @@
   <div class="wrap">
     <div class="brand">Math 150 <span class="brand-badge">Calculus I</span></div>
     <div class="links">
-      <a href="#standards">Standards Directory</a>
+      <a href="standards.html">✏️ Standards &amp; Practice</a>
       <a href="math150-grades.html">📊 Grades &amp; Policy</a>
     </div>
   </div>
@@ -258,183 +201,111 @@
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Standards & Practice</div>
+    <div class="eyebrow">Course Overview</div>
     <h1>Welcome to Calculus I 👋</h1>
-    <p class="subtitle">This course is mastery-based: instead of one big test, you build your grade standard by standard. Pick one below, work through the practice problems, and check it off once you've got it. Looking for your projected grade or the retake rules instead? Head to <a href="math150-grades.html" style="color:var(--core);">Grades &amp; Policy</a>.</p>
+    <p class="subtitle">Before you dive in, here's the quick version of how this course actually runs — what you'll do each day, how your grade comes together, and where to go from here.</p>
   </header>
 
-  <!-- Progress Summary -->
-  <div class="progress-banner" id="progressBanner">
-    <p>Check off each standard as you pass it — your progress is saved right here in this browser, so it'll be waiting for you next time.</p>
-    <div class="progress-counts">
-      <div class="progress-count">
-        <span class="num" id="coreCount">0/26</span>
-        <span class="lbl">Core Passed</span>
-      </div>
-      <div class="progress-count optional">
-        <span class="num" id="optCount">0/4</span>
-        <span class="lbl">Optional Passed</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Collapsible Standards List -->
-  <section id="standards">
+  <!-- Two tracks -->
+  <section id="tracks">
     <div class="section-head">
-      <div class="eyebrow">Learning Directory</div>
-      <h2>Standards Directory</h2>
-      <p>Browse by unit below. Each standard opens a practice bank of 20–30 problems with full worked solutions — take your time, and check the box once you've passed it.</p>
+      <h2>Two Halves of Your Grade</h2>
+      <p>Your grade comes from two different places, and they're set up to work differently on purpose.</p>
     </div>
-
-    <!-- Gateway -->
-    <div class="unit-block open">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Gateway Topics</span>
-        <span class="unit-count">4 Standards</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/gateway.html" class="btn-review">📘 Gateway Review Sheet</a></div>
-        <div class="std-row" data-code="G1"><input type="checkbox" class="std-pass" data-code="G1"><div class="std-code">G1</div><div class="std-desc">Function notation, composition/decomposition, and algebraic simplification.</div><a href="standards/G1.html" class="btn-practice">✏️ Practice G1</a></div>
-        <div class="std-row" data-code="G2"><input type="checkbox" class="std-pass" data-code="G2"><div class="std-code">G2</div><div class="std-desc">Linear equations: properties, graphing, and finding equations.</div><a href="standards/G2.html" class="btn-practice">✏️ Practice G2</a></div>
-        <div class="std-row" data-code="G3"><input type="checkbox" class="std-pass" data-code="G3"><div class="std-code">G3</div><div class="std-desc">Right triangle trigonometry fundamentals.</div><a href="standards/G3.html" class="btn-practice">✏️ Practice G3</a></div>
-        <div class="std-row" data-code="G4"><input type="checkbox" class="std-pass" data-code="G4"><div class="std-code">G4</div><div class="std-desc">Unit circle trigonometry (special triangles, quadrant placement).</div><a href="standards/G4.html" class="btn-practice">✏️ Practice G4</a></div>
+    <div class="track-grid">
+      <div class="track-card">
+        <div class="track-label">🎯 The Standards Track</div>
+        <p>Calculus I breaks down into specific skills — derivative rules, limit techniques, integration, and more. Each one gets its own short, direct quiz, and the practice pages on this site are built to look just like it, so there are no surprises. Pass a standard once and it's yours for good. Don't pass it the first time? You'll get more chances at every midterm and during office hours. This is the mostly self-paced, skill-building side of the course.</p>
+        <a href="standards.html" class="track-cta">Browse the Standards →</a>
       </div>
-    </div>
-
-    <!-- Limits -->
-    <div class="unit-block">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Limits</span>
-        <span class="unit-count">4 Standards</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/limits.html" class="btn-review">📘 Limits Review Sheet</a></div>
-        <div class="std-row" data-code="L1"><input type="checkbox" class="std-pass" data-code="L1"><div class="std-code">L1</div><div class="std-desc">Evaluating limits graphically.</div><a href="standards/L1.html" class="btn-practice">✏️ Practice L1</a></div>
-        <div class="std-row" data-code="L3"><input type="checkbox" class="std-pass" data-code="L3"><div class="std-code">L3</div><div class="std-desc">Evaluating algebraic limits — Level 1.</div><a href="standards/L3.html" class="btn-practice">✏️ Practice L3</a></div>
-        <div class="std-row" data-code="L4"><input type="checkbox" class="std-pass" data-code="L4"><div class="std-code">L4</div><div class="std-desc">Evaluating algebraic limits — Level 2.</div><a href="standards/L4.html" class="btn-practice">✏️ Practice L4</a></div>
-        <div class="std-row" data-code="L5"><input type="checkbox" class="std-pass" data-code="L5"><div class="std-code">L5</div><div class="std-desc">Evaluating limits involving infinity (without L'Hôpital's Rule).</div><a href="standards/L5.html" class="btn-practice">✏️ Practice L5</a></div>
-      </div>
-    </div>
-
-    <!-- Derivatives -->
-    <div class="unit-block">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Derivatives</span>
-        <span class="unit-count">7 Standards</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/derivatives.html" class="btn-review">📘 Derivatives Review Sheet</a></div>
-        <div class="std-row" data-code="D1"><input type="checkbox" class="std-pass" data-code="D1"><div class="std-code">D1</div><div class="std-desc">Derivative definition, interpretation as rate of change, and assigning units.</div><a href="standards/D1.html" class="btn-practice">✏️ Practice D1</a></div>
-        <div class="std-row" data-code="D2"><input type="checkbox" class="std-pass" data-code="D2"><div class="std-code">D2</div><div class="std-desc">Relationships between f, f′, and f″ (slopes, concavity, increasing/decreasing).</div><a href="standards/D2.html" class="btn-practice">✏️ Practice D2</a></div>
-        <div class="std-row" data-code="D3"><input type="checkbox" class="std-pass" data-code="D3"><div class="std-code">D3</div><div class="std-desc">Continuity and differentiability (graphical and algebraic).</div><a href="standards/D3.html" class="btn-practice">✏️ Practice D3</a></div>
-        <div class="std-row" data-code="D4"><input type="checkbox" class="std-pass" data-code="D4"><div class="std-code">D4</div><div class="std-desc">Basic derivative rules and tangent line equations.</div><a href="standards/D4.html" class="btn-practice">✏️ Practice D4</a></div>
-        <div class="std-row" data-code="D5"><input type="checkbox" class="std-pass" data-code="D5"><div class="std-code">D5</div><div class="std-desc">Derivatives of trig, inverse trig, exponential, and logarithmic functions.</div><a href="standards/D5.html" class="btn-practice">✏️ Practice D5</a></div>
-        <div class="std-row" data-code="D6"><input type="checkbox" class="std-pass" data-code="D6"><div class="std-code">D6</div><div class="std-desc">Product and Quotient Rules.</div><a href="standards/D6.html" class="btn-practice">✏️ Practice D6</a></div>
-        <div class="std-row" data-code="D7"><input type="checkbox" class="std-pass" data-code="D7"><div class="std-code">D7</div><div class="std-desc">Chain Rule.</div><a href="standards/D7.html" class="btn-practice">✏️ Practice D7</a></div>
-      </div>
-    </div>
-
-    <!-- Applications -->
-    <div class="unit-block">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Applications of Derivatives</span>
-        <span class="unit-count">4 Standards</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/applications.html" class="btn-review">📘 Applications Review Sheet</a></div>
-        <div class="std-row" data-code="A1"><input type="checkbox" class="std-pass" data-code="A1"><div class="std-code">A1</div><div class="std-desc">L'Hôpital's Rule with written justifications.</div><a href="standards/A1.html" class="btn-practice">✏️ Practice A1</a></div>
-        <div class="std-row" data-code="A2"><input type="checkbox" class="std-pass" data-code="A2"><div class="std-code">A2</div><div class="std-desc">Implicit differentiation and tangent lines.</div><a href="standards/A2.html" class="btn-practice">✏️ Practice A2</a></div>
-        <div class="std-row" data-code="A3"><input type="checkbox" class="std-pass" data-code="A3"><div class="std-code">A3</div><div class="std-desc">Applied Optimization — Level 1.</div><a href="standards/A3.html" class="btn-practice">✏️ Practice A3</a></div>
-        <div class="std-row" data-code="A4"><input type="checkbox" class="std-pass" data-code="A4"><div class="std-code">A4</div><div class="std-desc">Critical numbers, relative extrema, and absolute extrema.</div><a href="standards/A4.html" class="btn-practice">✏️ Practice A4</a></div>
-      </div>
-    </div>
-
-    <!-- Integration -->
-    <div class="unit-block">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Integration</span>
-        <span class="unit-count">7 Standards</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/integration.html" class="btn-review">📘 Integration Review Sheet</a></div>
-        <div class="std-row" data-code="I1"><input type="checkbox" class="std-pass" data-code="I1"><div class="std-code">I1</div><div class="std-desc">Basic antiderivatives (direct rules).</div><a href="standards/I1.html" class="btn-practice">✏️ Practice I1</a></div>
-        <div class="std-row" data-code="I2"><input type="checkbox" class="std-pass" data-code="I2"><div class="std-code">I2</div><div class="std-desc">Antiderivatives requiring algebraic rewriting or geometry.</div><a href="standards/I2.html" class="btn-practice">✏️ Practice I2</a></div>
-        <div class="std-row" data-code="I3"><input type="checkbox" class="std-pass" data-code="I3"><div class="std-code">I3</div><div class="std-desc">Riemann sums and rectangular approximations.</div><a href="standards/I3.html" class="btn-practice">✏️ Practice I3</a></div>
-        <div class="std-row" data-code="I4"><input type="checkbox" class="std-pass" data-code="I4"><div class="std-code">I4</div><div class="std-desc">Particle motion, displacement, and total distance traveled.</div><a href="standards/I4.html" class="btn-practice">✏️ Practice I4</a></div>
-        <div class="std-row" data-code="I5"><input type="checkbox" class="std-pass" data-code="I5"><div class="std-code">I5</div><div class="std-desc">Definite integrals using geometric area formulas.</div><a href="standards/I5.html" class="btn-practice">✏️ Practice I5</a></div>
-        <div class="std-row" data-code="I6"><input type="checkbox" class="std-pass" data-code="I6"><div class="std-code">I6</div><div class="std-desc">Fundamental Theorem of Calculus.</div><a href="standards/I6.html" class="btn-practice">✏️ Practice I6</a></div>
-        <div class="std-row" data-code="I7"><input type="checkbox" class="std-pass" data-code="I7"><div class="std-code">I7</div><div class="std-desc">Integration by u-substitution.</div><a href="standards/I7.html" class="btn-practice">✏️ Practice I7</a></div>
-      </div>
-    </div>
-
-    <!-- Additional & Advanced Topics (Optional) -->
-    <div class="unit-block">
-      <button class="unit-header-btn" onclick="toggleUnit(this)">
-        <span class="unit-header-title"><span class="chevron">▶</span> Additional &amp; Advanced Topics</span>
-        <span class="unit-count">4 Optional</span>
-      </button>
-      <div class="unit-content">
-        <div class="unit-review-row"><a href="standards/review/optional.html" class="btn-review">📘 Additional Topics Review Sheet</a></div>
-        <div class="std-row optional" data-code="E1"><input type="checkbox" class="std-pass" data-code="E1"><div class="std-code">E1</div><div class="std-desc">I can solve related rates problems.</div><a href="standards/E1.html" class="btn-practice">✏️ Practice E1</a></div>
-        <div class="std-row optional" data-code="E2"><input type="checkbox" class="std-pass" data-code="E2"><div class="std-code">E2</div><div class="std-desc">I can set up a limit of a Riemann sum as a definite integral.</div><a href="standards/E2.html" class="btn-practice">✏️ Practice E2</a></div>
-        <div class="std-row optional" data-code="E3"><input type="checkbox" class="std-pass" data-code="E3"><div class="std-code">E3</div><div class="std-desc">I can solve harder L'Hôpital's Rule problems.</div><a href="standards/E3.html" class="btn-practice">✏️ Practice E3</a></div>
-        <div class="std-row optional" data-code="E6"><input type="checkbox" class="std-pass" data-code="E6"><div class="std-code">E6</div><div class="std-desc">I can derive the formulas for the derivatives of inverse trig functions and natural logarithm.</div><a href="standards/E6.html" class="btn-practice">✏️ Practice E6</a></div>
+      <div class="track-card track-percent">
+        <div class="track-label">🧩 Class Time, Capstones &amp; Your Percentage</div>
+        <p>This is where the deeper, more open-ended work happens — the kind of problem you can't fully prep for with a formula sheet. In class you'll dig into challenging problems, explore ideas, and work on projects that stretch how you use the skills you're building. That work builds toward four capstone exams, where you show you can combine skills and reason through harder problems. Capstones plus your daily participation make up your course percentage.</p>
+        <a href="math150-grades.html" class="track-cta">See How Grades Are Calculated →</a>
       </div>
     </div>
   </section>
 
+  <!-- Daily flow -->
+  <section id="daily">
+    <div class="section-head">
+      <h2>A Day in This Class</h2>
+      <p>Most days, class time looks like one of these three things:</p>
+    </div>
+    <div class="flow-list">
+      <div class="flow-item">
+        <span class="flow-icon">📝</span>
+        <span class="flow-text"><b>Standard-style practice.</b> Solving problems similar to what you'll see on the standard quizzes — building the muscle memory you need to pass them.</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-icon">🔍</span>
+        <span class="flow-text"><b>Challenging, exploratory problems.</b> Digging into something open-ended that goes beyond a single formula.</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-icon">🛠️</span>
+        <span class="flow-text"><b>Project work.</b> Tying several skills together on something bigger than a single problem.</span>
+      </div>
+    </div>
+    <p class="flow-note">All of this counts toward your class participation grade — so showing up and engaging matters. It's also simply where you build the skills you'll need for the standards and capstones, so attendance pays off twice.</p>
+  </section>
+
+  <!-- Capstones + Final -->
+  <section id="capstones">
+    <div class="section-head">
+      <h2>Midterms, Capstones &amp; the Final</h2>
+      <p>Throughout the semester, you'll take four capstone exams — one for each major part of the course — plus a standalone final exam at the end of the semester. All of these are graded like traditional exams and go straight into your course percentage; they're not part of the standards retake system.</p>
+    </div>
+    <div class="capstone-row">
+      <div class="capstone-pill">
+        <span class="num">Capstone 1</span>
+        <span class="name">Limits</span>
+      </div>
+      <div class="capstone-pill">
+        <span class="num">Capstone 2</span>
+        <span class="name">Derivatives</span>
+      </div>
+      <div class="capstone-pill">
+        <span class="num">Capstone 3</span>
+        <span class="name">Applications</span>
+      </div>
+      <div class="capstone-pill">
+        <span class="num">Capstone 4</span>
+        <span class="name">Integration</span>
+      </div>
+      <div class="capstone-pill is-final">
+        <span class="num">Final Exam</span>
+        <span class="name">End of Semester</span>
+      </div>
+    </div>
+    <p class="capstone-note">The final exam is separate from the four capstones — it's its own exam at the end of the semester, on top of the four unit capstones.</p>
+  </section>
+
+  <!-- Extra credit -->
+  <section id="bonus">
+    <div class="bonus-box">
+      <h3>💡 A Note on Extra Credit</h3>
+      <p>Short version: you probably won't need it. Since you can always go back and retake a standard you haven't passed yet, there's a built-in way to raise your grade all semester long — no extra-credit assignment required.</p>
+      <p>That said, there are a few optional topics that go beyond the core of the course — things like related rates and harder L'Hôpital's Rule problems. If you want to go deeper, we'll post short video modules so you can learn them on your own. Pass three or more of these optional topics, and the course percentage you need for an A drops from 90% to 85% — a nice bonus if you're up for the extra challenge, not a requirement for anyone.</p>
+      <a href="standards.html#optional-topics" class="bonus-cta">See the Optional Topics →</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="start">
+    <div class="section-head">
+      <h2>Ready to Start?</h2>
+      <p>Jump into the practice pages, or check where your grade stands right now.</p>
+    </div>
+    <div class="cta-row">
+      <a href="standards.html" class="btn-primary">✏️ Start Practicing</a>
+      <a href="math150-grades.html" class="btn-secondary">📊 Check My Grade</a>
+    </div>
+  </section>
+
   <footer>
-    Math 150 · Calculus I — one standard at a time, you've got this. · <a href="math150-grades.html" style="color:var(--ink-faint);">Grades &amp; Policy →</a>
+    Math 150 · Calculus I — one standard at a time, you've got this.
   </footer>
 </div>
-
-<script>
-  const CORE_TOTAL = 26;
-  const OPTIONAL_CODES = ['E1','E2','E3','E6'];
-
-  function toggleUnit(btn) {
-    btn.parentElement.classList.toggle('open');
-  }
-
-  function loadProgress(){
-    try{
-      return JSON.parse(localStorage.getItem('math150_progress')) || {};
-    }catch(e){
-      return {};
-    }
-  }
-
-  function saveProgress(progress){
-    localStorage.setItem('math150_progress', JSON.stringify(progress));
-  }
-
-  function refreshCounts(progress){
-    const codes = Object.keys(progress).filter(c => progress[c]);
-    const optPassed = codes.filter(c => OPTIONAL_CODES.includes(c)).length;
-    const corePassed = codes.length - optPassed;
-    document.getElementById('coreCount').textContent = `${corePassed}/${CORE_TOTAL}`;
-    document.getElementById('optCount').textContent = `${optPassed}/${OPTIONAL_CODES.length}`;
-  }
-
-  function initProgress(){
-    const progress = loadProgress();
-    document.querySelectorAll('.std-pass').forEach(box => {
-      const code = box.dataset.code;
-      box.checked = !!progress[code];
-      box.closest('.std-row').classList.toggle('is-passed', box.checked);
-      box.addEventListener('change', () => {
-        const current = loadProgress();
-        current[code] = box.checked;
-        saveProgress(current);
-        box.closest('.std-row').classList.toggle('is-passed', box.checked);
-        refreshCounts(current);
-      });
-    });
-    refreshCounts(progress);
-  }
-
-  initProgress();
-</script>
 
 </body>
 </html>
