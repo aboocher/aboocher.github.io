@@ -3,6 +3,26 @@
 Context doc for continuing this work in a fresh conversation. Paste/attach this file and say
 "continue building standard practice pages, pick up where PROGRESS.md leaves off."
 
+## Where we left off (2026-08-03, end of session)
+
+Everything below is committed and pushed to `origin/main` (`git log` for exact SHAs) — no
+uncommitted work pending. Quick orientation before reading the rest of this doc:
+
+- **Site is 3 pages**: `index.html` (new "How the Course Works" landing/explainer),
+  `standards.html` (the old landing page — Standards Directory + practice banks + progress
+  tracker), `math150-grades.html` (estimator + grade matrix + retake FAQ). See "Site
+  restructuring" and "Second restructuring" sections below for how/why.
+- **Grading rule changed**: core standards now set a ceiling *and* a floor (one letter below) for
+  your grade, instead of the old "worse of two axes" rule — see "Grading policy redesign" below.
+  All thresholds live in one `GRADE_CONFIG` object in `math150-grades.html` — see "Config-driven
+  refactor" below before touching any grading number.
+- **`OurQuizzes/` is gitignored and history-scrubbed** — never commit it, see the warning a few
+  lines down.
+- **Not started yet, likely next**: real content for the 6 `standards/review/*.html` placeholder
+  pages (condensed formula sheets + worked examples), and the still-missing standard pages
+  (D1–D3, A3–A4, I5, E1–E3, E6 — see the Status table below for why each is blocked).
+- Nothing is currently blocked on the user — no open questions pending an answer.
+
 ## Project
 
 Site is three pages as of 2026-08-03 (see "Site restructuring" below):
