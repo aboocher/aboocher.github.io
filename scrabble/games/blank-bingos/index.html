@@ -755,37 +755,32 @@
             // independently, each with its own quota of racks and a fixed count of two-blank
             // racks mixed in, rather than pulling from one combined pool.
             for (const length of [7, 8]) {
-                let pool = candidates.filter(c => c.modifiedWord.length === length);
-                pool.sort(() => Math.random() - 0.5);
+                const lengthPool = candidates.filter(c => c.modifiedWord.length === length);
+                lengthPool.sort(() => Math.random() - 0.5);
 
-                const picked = [];
+                // Exactly `numWith2Blanks` two-blank racks, matching Aerolith's num_with_2_blanks —
+                // the rest of the quota is filled from one-blank racks only, never more of these.
+                const twoBlankPool = lengthPool.filter(c => c.blanks === 2);
+                let onceBlankPool = lengthPool.filter(c => c.blanks === 1);
 
-                const twoBlankTarget = Math.min(numWith2Blanks, pool.filter(c => c.blanks === 2).length);
-                if (twoBlankTarget > 0) {
-                    const idxs = [];
-                    for (let i = 0; i < pool.length && idxs.length < twoBlankTarget; i++) {
-                        if (pool[i].blanks === 2) idxs.push(i);
-                    }
-                    picked.push(...idxs.map(i => pool[i]));
-                    pool = pool.filter((_, i) => !idxs.includes(i));
-                }
+                const picked = twoBlankPool.slice(0, numWith2Blanks);
 
                 // Guarantee a small share of "double bingo" racks (exactly 2 valid answers) for variety.
                 const doubleBingoTarget = Math.min(
                     Math.max(1, Math.round(racksPerLength * 0.08)),
-                    pool.filter(c => c.m === 2).length
+                    onceBlankPool.filter(c => c.m === 2).length
                 );
                 if (doubleBingoTarget > 0) {
                     const idxs = [];
-                    for (let i = 0; i < pool.length && idxs.length < doubleBingoTarget; i++) {
-                        if (pool[i].m === 2) idxs.push(i);
+                    for (let i = 0; i < onceBlankPool.length && idxs.length < doubleBingoTarget; i++) {
+                        if (onceBlankPool[i].m === 2) idxs.push(i);
                     }
-                    picked.push(...idxs.map(i => pool[i]));
-                    pool = pool.filter((_, i) => !idxs.includes(i));
+                    picked.push(...idxs.map(i => onceBlankPool[i]));
+                    onceBlankPool = onceBlankPool.filter((_, i) => !idxs.includes(i));
                 }
 
                 const remainingSlots = racksPerLength - picked.length;
-                picked.push(...pool.slice(0, Math.max(0, remainingSlots)));
+                picked.push(...onceBlankPool.slice(0, Math.max(0, remainingSlots)));
 
                 for (const c of picked) {
                     wordCounts[c.modifiedWord] = { n: c.n, m: c.m, words: c.words };
@@ -829,9 +824,12 @@
                     }
                 }
 
-                // If it's NOT a real word, it goes to the Wrong Box immediately.
+                // If it's NOT a real word, it goes to the Wrong Box immediately —
+                // but only for 7s/8s, so stray typos of other lengths are just ignored.
                 if (!isRealWord) {
-                    addWordToWrongBox(inputWord);
+                    if (inputWord.length === 7 || inputWord.length === 8) {
+                        addWordToWrongBox(inputWord);
+                    }
                     return;
                 }
 

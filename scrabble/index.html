@@ -62,6 +62,13 @@
             margin: 0;
             flex-grow: 1;
         }
+
+        #versionTag {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 28px;
+        }
     </style>
 </head>
 
@@ -115,7 +122,18 @@
                 <p>Compare exact draw probabilities between words, with 0, 1, or 2 blanks.</p>
             </a>
         </div>
+
+        <p id="versionTag"></p>
     </div>
+
+    <script>
+        fetch("version.json")
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById("versionTag").textContent = `v${data.version}`;
+            })
+            .catch(() => {});
+    </script>
 </body>
 
 </html>

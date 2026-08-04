@@ -1,0 +1,41 @@
+name: Bump scrabble version
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scrabble/**"
+      - "!scrabble/version.json"
+
+permissions:
+  contents: write
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version.json
+        id: bump
+        run: |
+          FILE=scrabble/version.json
+          if [ -f "$FILE" ]; then
+            MINOR=$(jq -r '.minor // 0' "$FILE")
+          else
+            MINOR=0
+          fi
+          NEXT=$((MINOR + 1))
+          VERSION=$(printf "1.%02d" "$NEXT")
+          jq -n --argjson minor "$NEXT" --arg version "$VERSION" '{minor: $minor, version: $version}' > "$FILE"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scrabble/version.json
+          git commit -m "Bump scrabble version to ${{ steps.bump.outputs.version }}"
+          git push
