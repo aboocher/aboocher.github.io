@@ -977,7 +977,18 @@
 
                         const [originalWord, ...restParts] = originalGridWords[id].split(" ");
                         const rest = restParts.length ? " " + restParts.join(" ") : "";
-                        const animated = originalWord.split("").map(c => c === "?" ? String.fromCharCode(65 + step) : c);
+                        const chars = originalWord.split("");
+                        const blankCount = chars.filter(c => c === "?").length;
+                        // With 2 blanks, cycling both through the same letter every tick just
+                        // shows AA, BB, CC... Hold the first blank fixed and animate only the
+                        // second one instead — showing all 26x26 pairs isn't useful anyway.
+                        let seenBlanks = 0;
+                        const animated = chars.map(c => {
+                            if (c !== "?") return c;
+                            seenBlanks++;
+                            if (blankCount >= 2 && seenBlanks === 1) return "A";
+                            return String.fromCharCode(65 + step);
+                        });
                         el.textContent = animated.sort().join("") + rest;
                     });
                     step++;
