@@ -963,32 +963,30 @@
 
             if (!isAnimating) {
                 originalGridWords = {};
+                // For each tile, cycle through the blank-fill letters of its actual
+                // remaining answers (via findRemovedChar) instead of brute-forcing A-Z.
+                // A single blank has only a handful of real fills, and two blanks would
+                // otherwise mean 26x26 mostly-nonsense combos — so show what's real instead.
+                const animatedFills = {};
                 keys.forEach(id => {
                     const el = document.getElementById(id);
-                    if (el) originalGridWords[id] = el.textContent;
+                    if (!el) return;
+                    originalGridWords[id] = el.textContent;
+                    const fills = [...new Set(wordCounts[id].words.map(w => findRemovedChar(w, id)))];
+                    animatedFills[id] = fills.length ? fills : [(id.match(/\?/g) || []).join("")];
                 });
 
                 let step = 0;
                 animationInterval = setInterval(() => {
-                    if (step >= 26) step = 0;
                     keys.forEach(id => {
                         const el = document.getElementById(id);
                         if (!el || el.classList.contains("cleared")) return;
 
                         const [originalWord, ...restParts] = originalGridWords[id].split(" ");
                         const rest = restParts.length ? " " + restParts.join(" ") : "";
-                        const chars = originalWord.split("");
-                        const blankCount = chars.filter(c => c === "?").length;
-                        // With 2 blanks, cycling both through the same letter every tick just
-                        // shows AA, BB, CC... Hold the first blank fixed and animate only the
-                        // second one instead — showing all 26x26 pairs isn't useful anyway.
-                        let seenBlanks = 0;
-                        const animated = chars.map(c => {
-                            if (c !== "?") return c;
-                            seenBlanks++;
-                            if (blankCount >= 2 && seenBlanks === 1) return "A";
-                            return String.fromCharCode(65 + step);
-                        });
+                        const fills = animatedFills[id];
+                        const fillChars = fills[step % fills.length].split("");
+                        const animated = originalWord.split("").map(c => c === "?" ? (fillChars.shift() ?? "?") : c);
                         el.textContent = animated.sort().join("") + rest;
                     });
                     step++;
